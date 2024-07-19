@@ -22,10 +22,6 @@ public class Plan {
 
     private String title;
 
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @OneToMany(mappedBy = "plan")
-    private List<Column> columnList;
-
     @Builder
     public Plan(String title){
         this.title = title;

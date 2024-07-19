@@ -25,9 +25,6 @@ public class Column {
     @ManyToOne(fetch = FetchType.LAZY)
     private Plan plans;
 
-    @OneToMany(mappedBy = "column")
-    private List<Card> cards;
-
     @Builder
     public Column(String title){
         this.title = title;
