@@ -223,3 +223,4 @@ $RECYCLE.BIN/
 /.gradle/8.8/dependencies-accessors/gc.properties
 /.gradle/8.8/fileHashes/fileHashes.lock
 /.gradle/8.8/fileHashes/fileHashes.bin
+/.idea/dataSources.xml
