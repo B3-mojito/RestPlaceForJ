@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+import com.sparta.restplaceforj.common.Response;
+
 @Getter
 @AllArgsConstructor
-public enum ErrorMessageEnum {
+public enum ErrorEnum implements Response {
 
     //user error
     USER_NOT_FOUND("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
