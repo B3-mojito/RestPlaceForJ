@@ -1,5 +1,7 @@
 package com.sparta.restplaceforj.entity;
 
+import com.sparta.restplaceforj.dto.PostRequestDto;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -10,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -37,7 +40,14 @@ public class Post {
     private long view_count;
 
     @Enumerated(EnumType.STRING)
-    private ThemaEnum themes;
+    private ThemaEnum themeEnum;
 
-
+    @Builder
+    public Post(PostRequestDto requestDto, User user) {
+        this.user = user;
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+        this.address = requestDto.getAddress();
+        this.themeEnum = requestDto.getThemaEnum();
+    }
 }
