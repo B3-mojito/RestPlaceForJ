@@ -23,11 +23,12 @@ public class Column {
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
-    private Plan plans;
+    private Plan plan;
 
     @Builder
-    public Column(String title){
+    public Column(String title, Plan plan){
         this.title = title;
+        this.plan = plan;
     }
 }
 
