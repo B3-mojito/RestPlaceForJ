@@ -1,0 +1,109 @@
+## Variables
+@username = fltnsah121
+@password = test@1231
+
+@title = 밥
+@content = 밥 먹으러 갈건데 점메추 해줄사람? -공유빈-
+@edit_content = edit 밥 먹으러 갈건데 점메추 해줄사람? -공유빈-
+
+
+
+###  로그인
+POST http://localhost:8080/v1/login
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "password": "{{password}}"
+}
+
+> {% client.global.set("Authorization", response.headers.valueOf("Authorization")); %}
+
+
+
+
+### 글 작성
+POST http://localhost:8080/posts
+Authorization:{{Authorization}}
+Content-Type: application/json
+
+{
+  "title": "{{title}}",
+  "content": "{{content}}"
+}
+
+
+
+### 글 수정
+PUT http://localhost:8080/posts/1
+Authorization:{{Authorization}}
+Content-Type: application/json
+
+{
+  "content": "{{edit_content}}"
+}
+
+
+### 글 삭제
+DELETE http://localhost:8080/posts/2
+Authorization:{{Authorization}}
+Content-Type: application/json
+
+
+
+### 글 조회 - 생성시간
+GET http://localhost:8080/posts
+
+
+
+
+
+### 글 조회 - 생성시간
+GET http://localhost:8080/posts?page=0
+
+
+
+
+### 글 조회 - dsl
+GET http://localhost:8080/posts/dsl?page=0
+
+
+
+
+
+
+
+
+### 글 조회 - dsl 내가 좋아요한글 생성 내림순
+GET http://localhost:8080/posts/likes?page=0&size=5
+Authorization:{{Authorization}}
+
+
+
+
+
+
+
+
+### 글 조회 - dsl 내가 팔로우한 생성 내림순
+GET http://localhost:8080/posts/follow?page=0&size=5
+Authorization:{{Authorization}}
+
+
+
+
+
+
+### 글 조회 - 좋아요 순
+GET http://localhost:8080/posts/likes
+
+
+
+### 글 조회 기간별
+GET http://localhost:8080/posts/period?
+    startDate=2024-06-08&endDate=2024-06-10
+
+
+
+###단권 글 조회
+GET http://localhost:8080/posts/1

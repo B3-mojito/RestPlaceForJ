@@ -1,0 +1,68 @@
+## Variables
+@username = fltnsah121
+@password = test@1231
+
+@content = 언제나 당신을 응원해요. 힘내세요!
+@edit_content = edit 언제나 당신을 응원해요. 힘내세요!dd
+
+@post_id = 24
+
+###  로그인
+POST http://localhost:8080/v1/login
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "password": "{{password}}"
+}
+
+> {% client.global.set("Authorization", response.headers.valueOf("Authorization")); %}
+
+
+
+
+### 댓글 작성
+POST http://localhost:8080/posts/4/comment
+Authorization:{{Authorization}}
+Content-Type: application/json
+
+{
+  "postId": {{post_id}},
+  "content": "{{content}}"
+}
+
+
+
+### 댓글 수정
+PUT http://localhost:8080/posts/1/comment/2
+Authorization:{{Authorization}}
+Content-Type: application/json
+
+{
+  "content": "{{edit_content}}"
+}
+
+
+### 댓글 삭제
+DELETE http://localhost:8080/posts/1/comment/2
+Authorization:{{Authorization}}
+Content-Type: application/json
+
+
+
+### 단권 댓글 조회
+GET http://localhost:8080/posts/1/comment/2
+
+
+
+
+
+### 특정 글에 있는 댓글 조회(페이징, 생성 내림차순)
+GET http://localhost:8080/posts/1/comment?page=1
+
+
+
+
+### 특정 글에 있는 댓글 조회(페이징, 생성 내림차순)
+GET http://localhost:8080/posts/1/comment/likes?page=0&size=3
+Authorization:{{Authorization}}
