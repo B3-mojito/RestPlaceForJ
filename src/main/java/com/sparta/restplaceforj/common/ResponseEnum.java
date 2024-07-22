@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum ResponseEnum {
+public enum ResponseEnum implements Response {
 
     //card
     CREATE_CARD("카드 생성 완료", HttpStatus.CREATED),
@@ -18,6 +18,7 @@ public enum ResponseEnum {
 
 
     //post
+    CREATE_POST("글 생성 완료", HttpStatus.CREATED),
 
 
     //comment

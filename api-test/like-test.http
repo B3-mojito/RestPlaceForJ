@@ -1,0 +1,60 @@
+## Variables
+@username = fltnsah121
+@password = test@1231
+
+
+@contentId = 9
+@contentType_post = post
+@contentType_comment = comment
+
+
+
+###  로그인
+POST http://localhost:8080/v1/login
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "password": "{{password}}"
+}
+
+> {% client.global.set("Authorization", response.headers.valueOf("Authorization")); %}
+
+
+
+
+### 좋아요 작성 - post
+POST http://localhost:8080/posts/15/likes
+Authorization:{{Authorization}}
+Content-Type: application/json
+
+
+
+
+
+### 좋아요 작성 - comment
+POST http://localhost:8080/posts/2/comment/3/likes
+Authorization:{{Authorization}}
+Content-Type: application/json
+
+
+
+
+
+
+
+### 좋아요 취소
+DELETE http://localhost:8080/posts/15/likes/12
+Authorization:{{Authorization}}
+Content-Type: application/json
+
+
+
+
+
+
+
+### 좋아요 취소
+DELETE http://localhost:8080/posts/2/comment/15/likes/2
+Authorization:{{Authorization}}
+Content-Type: application/json

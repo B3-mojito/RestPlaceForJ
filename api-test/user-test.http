@@ -1,0 +1,157 @@
+## Variables
+@username = fltnsah121
+@password = test@1231
+@name = testna1
+
+@edit_name = editTestUsername12
+@password1 = test@1234AAAA11
+@password2 = test@1234AAAA12
+@password3 = test@1234AAAA13
+@password4 = test@1234AAAA14
+
+
+@authNum = 74569
+
+
+### 유정 등록
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "password": "{{password}}",
+  "name": "{{name}}"
+}
+
+
+
+
+###  로그인
+POST http://localhost:8080/v1/login
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "password": "{{password}}"
+}
+
+> {% client.global.set("Authorization", response.headers.valueOf("Authorization")),
+ client.global.set("Refresh_token", response.headers.valueOf("Refresh_token")); %}
+
+
+
+
+
+
+### 유저 조회
+GET http://localhost:8080/users
+Authorization:{{Authorization}}
+
+
+
+
+### 유저 프로필 수정
+PUT http://localhost:8080/users
+Authorization:{{Authorization}}
+Content-Type: application/json
+
+{
+  "name": "{{edit_name}}"
+}
+
+
+
+### 유저 프로필 수정 2 password
+PUT http://localhost:8080/users
+Authorization:{{Authorization}}
+Content-Type: application/json
+
+{
+  "password": "{{password1}}"
+}
+
+
+
+
+### 유저 프로필 수정 3 password
+PUT http://localhost:8080/users
+Authorization:{{Authorization}}
+Content-Type: application/json
+
+{
+  "password": "{{password2}}"
+}
+
+
+
+
+### 유저 프로필 수정 4 password
+PUT http://localhost:8080/users
+Authorization:{{Authorization}}
+Content-Type: application/json
+
+{
+  "password": "{{password3}}"
+}
+
+
+
+### 유저 프로필 수정 5 password
+PUT http://localhost:8080/users
+Authorization:{{Authorization}}
+Content-Type: application/json
+
+{
+  "password": "{{password4}}"
+}
+
+
+
+
+
+### 유저 토큰 재발급
+GET http://localhost:8080/refreshToken
+Authorization:{{Authorization}}
+Refresh_token:{{Refresh_token}}
+
+
+
+
+
+### 유저 조회
+GET http://localhost:8080/users
+Authorization:{{Authorization}}
+
+
+
+
+
+
+### 유저 로그아웃
+POST http://localhost:8080/v1/logout
+Authorization:{{Authorization}}
+Content-Type: application/json
+
+
+
+
+###  로그인
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "password": "{{edit_password}}"
+}
+
+> {% client.global.set("Authorization", response.headers.valueOf("Authorization")),
+        client.global.set("Refresh_token", response.headers.valueOf("Refresh_token")); %}
+
+
+
+
+### 유저 탈퇴
+DELETE http://localhost:8080/users
+Authorization:{{Authorization}}
+Content-Type: application/json
+

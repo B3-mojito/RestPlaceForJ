@@ -1,0 +1,34 @@
+## Variables
+@username = test
+@password = test
+
+@title = title
+@content = content
+@edit_content = edit content
+
+
+
+###  로그인
+POST http://localhost:8080/v1/login
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "password": "{{password}}"
+}
+
+> {% client.global.set("Authorization", response.headers.valueOf("Authorization")); %}
+
+
+
+
+### 글 작성
+POST http://localhost:8080/posts
+Authorization:{{Authorization}}
+Content-Type: application/json
+
+{
+  "title": "{{title}}",
+  "content": "{{content}}"
+}
+
