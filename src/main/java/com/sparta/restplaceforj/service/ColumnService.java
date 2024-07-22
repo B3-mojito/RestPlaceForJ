@@ -29,7 +29,7 @@ public class ColumnService {
     public ColumnResponseDto createColumn(Long planId, String columnTitle){
         Plan plan = planRepository.findById(planId).orElseThrow(() -> new CommonException(
                 ErrorEnum.COLUMN_NOT_FOUND));
-        Column columns = Column.builder().title(columnTitle).plans(plan).build();
+        Column columns = Column.builder().title(columnTitle).plan(plan).build();
         columnRepository.save(columns);
         return new ColumnResponseDto(columns.getTitle());
     }
