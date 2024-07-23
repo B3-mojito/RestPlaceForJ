@@ -9,6 +9,7 @@ import com.sparta.restplaceforj.service.ColumnService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.Mapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -34,7 +35,10 @@ public class ColumnController {
     public ResponseEntity<CommonResponse<ColumnResponseDto>> createColumn(@RequestParam(value = "plan-id") Long planId, @RequestBody ColumnRequestDto columnRequestDto) {
         ColumnResponseDto responseDto = columnService.createColumn(planId, columnRequestDto.getTitle());
         return ResponseEntity.ok(
-                CommonResponse.<ColumnResponseDto>builder().response(ResponseEnum.CREATE_COLUMN).data(responseDto).build()
+                CommonResponse.<ColumnResponseDto>builder()
+                        .response(ResponseEnum.CREATE_COLUMN)
+                        .data(responseDto)
+                        .build()
         );
     }
 
@@ -46,11 +50,14 @@ public class ColumnController {
      * @param columnRequestDto
      * @return CommonResponse
      */
-    @PutMapping("/{column-id}")
+    @PatchMapping("/{column-id}")
     public ResponseEntity<CommonResponse<ColumnResponseDto>> updateColumn(@RequestParam(value = "plan-id") Long planId,@PathVariable("column-id") Long columnId, @RequestBody ColumnRequestDto columnRequestDto) {
         ColumnResponseDto responseDto = columnService.updateColumn(planId,columnId ,columnRequestDto.getTitle());
         return ResponseEntity.ok(
-                CommonResponse.<ColumnResponseDto>builder().response(ResponseEnum.UPDATE_COLUMN).data(responseDto).build()
+                CommonResponse.<ColumnResponseDto>builder()
+                        .response(ResponseEnum.UPDATE_COLUMN)
+                        .data(responseDto)
+                        .build()
         );
     }
 }
