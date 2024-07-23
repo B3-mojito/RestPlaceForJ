@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -29,6 +30,9 @@ public class Column {
     public Column(String title, Plan plan){
         this.title = title;
         this.plan = plan;
+    }
+    public void updateColumn(String title) {
+        this.title = title;
     }
 }
 
