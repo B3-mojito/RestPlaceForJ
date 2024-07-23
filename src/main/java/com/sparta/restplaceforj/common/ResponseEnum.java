@@ -10,11 +10,10 @@ public enum ResponseEnum implements Response {
 
     //card
     CREATE_CARD("카드 생성 완료", HttpStatus.CREATED),
-
+    UPDATE_CARD("카드 수정 완료", HttpStatus.OK),
 
 
     //user
-
 
 
     //post

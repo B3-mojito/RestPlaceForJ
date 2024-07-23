@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "cards")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Card{
+public class Card extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -43,4 +43,9 @@ public class Card{
         this.post = post;
     }
 
+    public void update(String title, String address, LocalDateTime time){
+        this.title = title;
+        this.address = address;
+        this.time = time;
+    }
 }

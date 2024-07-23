@@ -30,5 +30,6 @@ public class Column {
         this.title = title;
         this.plan = plan;
     }
+
 }
 
