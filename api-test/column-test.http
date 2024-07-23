@@ -1,0 +1,13 @@
+## Variables
+# @no-cookie-jar
+@plan_id = 1
+@title = 하이요s
+
+
+### 컬럼 생성
+POST http://localhost:8080/v1/plans/{{plan_id}}/columns
+Content-Type: application/json
+
+{
+  "title": "{{title}}"
+}
