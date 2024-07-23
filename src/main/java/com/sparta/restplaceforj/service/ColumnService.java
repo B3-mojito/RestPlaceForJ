@@ -8,6 +8,7 @@ import com.sparta.restplaceforj.exception.ErrorEnum;
 import com.sparta.restplaceforj.repository.ColumnRepository;
 import com.sparta.restplaceforj.repository.PlanRepository;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Columns;
 import org.springframework.stereotype.Service;
@@ -27,10 +28,9 @@ public class ColumnService {
      * @return ColumnResponseDto
      */
     public ColumnResponseDto createColumn(Long planId, String columnTitle){
-        Plan plan = planRepository.findById(planId).orElseThrow(() -> new CommonException(
-                ErrorEnum.COLUMN_NOT_FOUND));
+        Plan plan = planRepository.findPlanById(planId);
         Column columns = Column.builder().title(columnTitle).plan(plan).build();
         columnRepository.save(columns);
-        return new ColumnResponseDto(columns.getTitle());
+        return ColumnResponseDto.builder().title(columns.getTitle()).build();
     }
 }

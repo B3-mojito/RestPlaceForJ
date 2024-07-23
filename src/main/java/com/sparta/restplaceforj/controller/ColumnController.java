@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/v1/plan/{plan-id}/columns")
+@RequestMapping("/v1/plans/{plan-id}/columns")
 public class ColumnController {
     private final ColumnService columnService;
 
@@ -27,7 +27,7 @@ public class ColumnController {
      * @param columnRequestDto
      * @return CommonResponse
      */
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<CommonResponse<ColumnResponseDto>> createColumn(@PathVariable("plan-id") Long planId, @RequestBody ColumnRequestDto columnRequestDto) {
         ColumnResponseDto responseDto = columnService.createColumn(planId, columnRequestDto.getTitle());
         return ResponseEntity.ok(
