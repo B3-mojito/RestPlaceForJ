@@ -1,4 +1,5 @@
 package com.sparta.restplaceforj.controller;
+
 import com.sparta.restplaceforj.service.PlanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
@@ -7,5 +8,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class PlanController {
 
-    private final PlanService planService;
+  private final PlanService planService;
 }

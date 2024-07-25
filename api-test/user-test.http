@@ -35,8 +35,10 @@ Content-Type: application/json
   "password": "{{password}}"
 }
 
-> {% client.global.set("Authorization", response.headers.valueOf("Authorization")),
- client.global.set("Refresh_token", response.headers.valueOf("Refresh_token")); %}
+> {%
+  client.global.set("Authorization", response.headers.valueOf("Authorization")),
+      client.global.set("Refresh_token", response.headers.valueOf("Refresh_token"));
+%}
 
 
 
@@ -144,8 +146,10 @@ Content-Type: application/json
   "password": "{{edit_password}}"
 }
 
-> {% client.global.set("Authorization", response.headers.valueOf("Authorization")),
-        client.global.set("Refresh_token", response.headers.valueOf("Refresh_token")); %}
+> {%
+  client.global.set("Authorization", response.headers.valueOf("Authorization")),
+      client.global.set("Refresh_token", response.headers.valueOf("Refresh_token"));
+%}
 
 
 

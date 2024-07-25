@@ -8,5 +8,6 @@ import lombok.Getter;
 @Getter
 @Builder
 public class ColumnResponseDto {
-    private String title;
+
+  private String title;
 }
