@@ -7,5 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 public class CommentController {
-    private final CommentService commentService;
+
+  private final CommentService commentService;
 }

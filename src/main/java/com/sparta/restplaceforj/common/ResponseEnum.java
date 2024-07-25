@@ -8,32 +8,24 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ResponseEnum implements Response {
 
-    //card
-    CREATE_CARD("카드 생성 완료", HttpStatus.CREATED),
+  //card
+  CREATE_CARD("카드 생성 완료", HttpStatus.CREATED),
 
+  //user
 
+  //post
+  CREATE_POST("글 생성 완료", HttpStatus.CREATED),
 
-    //user
+  //comment
 
+  //like
 
+  //column
+  CREATE_COLUMN("컬럼 생성 완료", HttpStatus.CREATED),
+  UPDATE_COLUMN("컬럼 수정 완료", HttpStatus.OK);
 
-    //post
-    CREATE_POST("글 생성 완료", HttpStatus.CREATED),
-
-
-    //comment
-
-
-    //like
-
-
-    //column
-    CREATE_COLUMN("컬럼 생성 완료", HttpStatus.CREATED),
-    UPDATE_COLUMN("컬럼 수정 완료", HttpStatus.OK)
-    ;
-
-    private final String message;
-    private final HttpStatus httpStatus;
+  private final String message;
+  private final HttpStatus httpStatus;
 
 
 }
