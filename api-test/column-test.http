@@ -1,11 +1,22 @@
 ## Variables
 # @no-cookie-jar
 @plan_id = 1
-@title = 하이요s
-
+@column_id = 1
+@title = 하이요s5
+@title2 = 수정ㅎ
 
 ### 컬럼 생성
-POST http://localhost:8080/v1/plans/{{plan_id}}/columns
+POST http://localhost:8080/v1/columns?plan-id=1
+Content-Type: application/json
+
+{
+  "title": "{{title}}"
+}
+
+
+### 컬럼 수정
+# @no-cookie-jar
+PUT http://localhost:8080/v1/columns/{{column_id}}?plan-id=1
 Content-Type: application/json
 
 {

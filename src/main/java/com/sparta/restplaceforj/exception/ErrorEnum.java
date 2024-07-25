@@ -9,6 +9,8 @@ import com.sparta.restplaceforj.common.Response;
 @Getter
 @AllArgsConstructor
 public enum ErrorEnum implements Response {
+    // 공통
+    BAD_REQUEST("잘못된 요청입니다.", HttpStatus.BAD_REQUEST),
 
     //user error
     USER_NOT_FOUND("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
@@ -17,6 +19,9 @@ public enum ErrorEnum implements Response {
 
     //Post error
     POST_NOT_FOUND("포스트를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+
+    //Plan error
+    PLAN_NOT_FOUND("플랜을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
     // Column errors
     COLUMN_NOT_FOUND("컬럼을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),

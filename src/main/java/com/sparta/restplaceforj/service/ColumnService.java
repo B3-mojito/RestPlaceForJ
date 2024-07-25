@@ -12,9 +12,11 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Columns;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
+@Transactional(readOnly = true)
 public class ColumnService {
     private final ColumnRepository columnRepository;
     private final PlanRepository planRepository;
@@ -27,10 +29,30 @@ public class ColumnService {
      * @param columnTitle
      * @return ColumnResponseDto
      */
+    @Transactional
     public ColumnResponseDto createColumn(Long planId, String columnTitle){
         Plan plan = planRepository.findPlanById(planId);
         Column columns = Column.builder().title(columnTitle).plan(plan).build();
         columnRepository.save(columns);
         return ColumnResponseDto.builder().title(columns.getTitle()).build();
+    }
+
+    /**
+     * 컬럼 수정 로직
+     *
+     * @param planId
+     * @param columnId
+     * @param columnTitle
+     * @return ColumnResponseDto
+     */
+    @Transactional
+    public ColumnResponseDto updateColumn(Long planId, Long columnId ,String columnTitle){
+        Column column = columnRepository.findColumnById(columnId);
+        if(!column.getPlan().equals(planRepository.findPlanById(planId))){
+            throw new CommonException(ErrorEnum.BAD_REQUEST);
+        }
+        column.updateColumn(columnTitle);
+        columnRepository.save(column);
+        return ColumnResponseDto.builder().title(column.getTitle()).build();
     }
 }

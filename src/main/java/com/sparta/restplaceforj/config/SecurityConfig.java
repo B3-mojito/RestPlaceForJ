@@ -10,8 +10,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    // 시큐리티 완성 전 인증 비활성화
-    /*
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
@@ -23,5 +22,5 @@ public class SecurityConfig {
         return http.build();
     }
 
-     */
+
 }
