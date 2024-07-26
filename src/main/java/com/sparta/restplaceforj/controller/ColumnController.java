@@ -5,6 +5,7 @@ import com.sparta.restplaceforj.common.ResponseEnum;
 import com.sparta.restplaceforj.dto.ColumnRequestDto;
 import com.sparta.restplaceforj.dto.ColumnResponseDto;
 import com.sparta.restplaceforj.service.ColumnService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,7 +35,7 @@ public class ColumnController {
   @PostMapping
   public ResponseEntity<CommonResponse<ColumnResponseDto>> createColumn(
       @PathVariable("plan-id") Long planId,
-      @RequestBody ColumnRequestDto requestDto) {
+      @RequestBody @Valid ColumnRequestDto requestDto) {
     ColumnResponseDto responseDto = columnService.createColumn(planId, requestDto);
     return ResponseEntity.ok(
         CommonResponse.<ColumnResponseDto>builder()
@@ -55,7 +56,7 @@ public class ColumnController {
   @PatchMapping("/{column-id}")
   public ResponseEntity<CommonResponse<ColumnResponseDto>> updateColumn(
       @PathVariable("plan-id") Long planId, @PathVariable("column-id") Long columnId,
-      @RequestBody ColumnRequestDto requestDto) {
+      @RequestBody @Valid ColumnRequestDto requestDto) {
     ColumnResponseDto responseDto = columnService.updateColumn(planId, columnId,
         requestDto);
     return ResponseEntity.ok(
