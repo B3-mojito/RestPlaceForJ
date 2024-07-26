@@ -1,5 +1,6 @@
 package com.sparta.restplaceforj.entity;
 
+import com.sparta.restplaceforj.dto.ColumnRequestDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -7,6 +8,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.util.Date;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,18 +30,22 @@ public class Column {
 
   private String title;
 
+  private LocalDate date;
+
   @OnDelete(action = OnDeleteAction.CASCADE)
   @ManyToOne(fetch = FetchType.LAZY)
   private Plan plan;
 
   @Builder
-  public Column(String title, Plan plan) {
+  public Column(String title, LocalDate date, Plan plan) {
     this.title = title;
+    this.date = date;
     this.plan = plan;
   }
 
-  public void updateColumn(String title) {
-    this.title = title;
+  public void updateColumn(ColumnRequestDto columnRequestDto) {
+    this.title = columnRequestDto.getTitle();
+    this.date = columnRequestDto.getDate();
   }
 }
 

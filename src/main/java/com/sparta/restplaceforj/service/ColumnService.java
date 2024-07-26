@@ -1,5 +1,6 @@
 package com.sparta.restplaceforj.service;
 
+import com.sparta.restplaceforj.dto.ColumnRequestDto;
 import com.sparta.restplaceforj.dto.ColumnResponseDto;
 import com.sparta.restplaceforj.entity.Column;
 import com.sparta.restplaceforj.entity.Plan;
@@ -24,15 +25,23 @@ public class ColumnService {
    * 컬럼 생성 로직
    *
    * @param planId
-   * @param columnTitle
+   * @param requestDto
    * @return ColumnResponseDto
    */
   @Transactional
-  public ColumnResponseDto createColumn(Long planId, String columnTitle) {
+  public ColumnResponseDto createColumn(Long planId, ColumnRequestDto requestDto)
+      throws CommonException {
     Plan plan = planRepository.findPlanById(planId);
-    Column columns = Column.builder().title(columnTitle).plan(plan).build();
+    Column columns = Column.builder()
+        .title(requestDto.getTitle())
+        .date(requestDto.getDate())
+        .plan(plan)
+        .build();
     columnRepository.save(columns);
-    return ColumnResponseDto.builder().title(columns.getTitle()).build();
+    return ColumnResponseDto.builder()
+        .title(columns.getTitle())
+        .date(columns.getDate())
+        .build();
   }
 
   /**
@@ -40,17 +49,36 @@ public class ColumnService {
    *
    * @param planId
    * @param columnId
-   * @param columnTitle
+   * @param requestDto
    * @return ColumnResponseDto
    */
   @Transactional
-  public ColumnResponseDto updateColumn(Long planId, Long columnId, String columnTitle) {
+  public ColumnResponseDto updateColumn(Long planId, Long columnId,
+      ColumnRequestDto requestDto) {
     Column column = columnRepository.findColumnById(columnId);
     if (!column.getPlan().equals(planRepository.findPlanById(planId))) {
       throw new CommonException(ErrorEnum.BAD_REQUEST);
     }
-    column.updateColumn(columnTitle);
+    column.updateColumn(requestDto);
     columnRepository.save(column);
-    return ColumnResponseDto.builder().title(column.getTitle()).build();
+    return ColumnResponseDto.builder()
+        .title(column.getTitle())
+        .date(column.getDate())
+        .build();
+  }
+
+  /**
+   * 컬럼 삭제 로직
+   *
+   * @param planId
+   * @param columnId
+   */
+  @Transactional
+  public void deleteColumn(Long planId, Long columnId) {
+    Column column = columnRepository.findColumnById(columnId);
+    if (!column.getPlan().equals(planRepository.findPlanById(planId))) {
+      throw new CommonException(ErrorEnum.BAD_REQUEST);
+    }
+    columnRepository.delete(column);
   }
 }
