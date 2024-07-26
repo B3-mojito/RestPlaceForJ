@@ -5,6 +5,7 @@ import com.sparta.restplaceforj.common.ResponseEnum;
 import com.sparta.restplaceforj.dto.UserSignUpRequestDto;
 import com.sparta.restplaceforj.dto.UserSignUpResponseDto;
 import com.sparta.restplaceforj.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +28,7 @@ public class UserController {
    */
   @PostMapping
   public ResponseEntity<CommonResponse<UserSignUpResponseDto>> createUser(
-      @RequestBody UserSignUpRequestDto userSignUpRequestDto) {
+      @RequestBody @Valid UserSignUpRequestDto userSignUpRequestDto) {
     UserSignUpResponseDto responseDto = userService.createUser(userSignUpRequestDto);
     return ResponseEntity.ok(
         CommonResponse.<UserSignUpResponseDto>builder()
