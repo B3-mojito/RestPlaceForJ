@@ -23,17 +23,17 @@ public class UserController {
   /**
    * 유저 생성 controller
    *
-   * @param userSignUpRequestDto
+   * @param userSignUprequestDto
    * @return CommonResponse
    */
   @PostMapping
   public ResponseEntity<CommonResponse<UserSignUpResponseDto>> createUser(
-      @RequestBody @Valid UserSignUpRequestDto userSignUpRequestDto) {
-    UserSignUpResponseDto responseDto = userService.createUser(userSignUpRequestDto);
+      @RequestBody @Valid UserSignUpRequestDto userSignUprequestDto) {
+    UserSignUpResponseDto userSignUpresponseDto = userService.createUser(userSignUprequestDto);
     return ResponseEntity.ok(
         CommonResponse.<UserSignUpResponseDto>builder()
             .response(ResponseEnum.CREATE_USER)
-            .data(responseDto)
+            .data(userSignUpresponseDto)
             .build()
     );
   }

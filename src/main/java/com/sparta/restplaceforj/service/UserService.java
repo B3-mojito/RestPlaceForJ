@@ -20,31 +20,31 @@ public class UserService {
   private final PasswordEncoder passwordEncoder;
 
   @Transactional
-  public UserSignUpResponseDto createUser(UserSignUpRequestDto requestDto) {
+  public UserSignUpResponseDto createUser(UserSignUpRequestDto userSignUprequestDto) {
 
-    if (userRepository.existsByEmail(requestDto.getEmail())) {
+    if (userRepository.existsByEmail(userSignUprequestDto.getEmail())) {
       throw new CommonException(ErrorEnum.DUPLICATED_EMAIL);
     }
 
-    if (userRepository.existsByNickname(requestDto.getNickname())) {
+    if (userRepository.existsByNickname(userSignUprequestDto.getNickname())) {
       throw new CommonException(ErrorEnum.DUPLICATED_NICKNAME);
     }
 
-    String password = passwordEncoder.encode(requestDto.getPassword());
+    String password = passwordEncoder.encode(userSignUprequestDto.getPassword());
 
     User user = User.builder()
-        .email(requestDto.getEmail())
+        .email(userSignUprequestDto.getEmail())
         .password(password)
-        .name(requestDto.getName())
-        .nickname(requestDto.getNickname())
+        .name(userSignUprequestDto.getName())
+        .nickname(userSignUprequestDto.getNickname())
         .build();
 
     userRepository.save(user);
 
-    UserSignUpResponseDto userSignUpResponseDto = UserSignUpResponseDto.builder()
+    UserSignUpResponseDto userSignUpresponseDto = UserSignUpResponseDto.builder()
         .user(user)
         .build();
 
-    return userSignUpResponseDto;
+    return userSignUpresponseDto;
   }
 }
