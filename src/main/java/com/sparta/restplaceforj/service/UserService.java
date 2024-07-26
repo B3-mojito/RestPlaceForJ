@@ -3,6 +3,8 @@ package com.sparta.restplaceforj.service;
 import com.sparta.restplaceforj.dto.UserSignUpRequestDto;
 import com.sparta.restplaceforj.dto.UserSignUpResponseDto;
 import com.sparta.restplaceforj.entity.User;
+import com.sparta.restplaceforj.exception.CommonException;
+import com.sparta.restplaceforj.exception.ErrorEnum;
 import com.sparta.restplaceforj.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,16 +22,16 @@ public class UserService {
   @Transactional
   public UserSignUpResponseDto createUser(UserSignUpRequestDto requestDto) {
 
-    // 이메일 중복 검사
-    userRepository.findByEmailOrThrow(requestDto.getEmail());
+    if (userRepository.existsByEmail(requestDto.getEmail())) {
+      throw new CommonException(ErrorEnum.DUPLICATED_EMAIL);
+    }
 
-    // 닉네임 중복 검사
-    userRepository.findByNicknameOrThrow(requestDto.getNickname());
+    if (userRepository.existsByNickname(requestDto.getNickname())) {
+      throw new CommonException(ErrorEnum.DUPLICATED_NICKNAME);
+    }
 
-    // 비밀번호 암호화
     String password = passwordEncoder.encode(requestDto.getPassword());
 
-    // User DB에 저장
     User user = User.builder()
         .email(requestDto.getEmail())
         .password(password)
