@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 public class CardController {
 
   private final CardService cardService;
-  private final CardRepository cardRepository;
 
   /**
    * 카드 생성 controller
