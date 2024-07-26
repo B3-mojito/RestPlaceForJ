@@ -1,6 +1,9 @@
 package com.sparta.restplaceforj.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+import com.sparta.restplaceforj.entity.Timestamped;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
@@ -8,12 +11,19 @@ import java.time.LocalDateTime;
 
 @Getter
 public class CardRequestDto {
-    @NotNull(message = "카드 제목을 입력해 주세요")
-    private String title;
 
-    @NotNull(message = "주소를 입력해 주세요.")
-    private String address;
+  @NotNull
+  private Long columnId;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime time;
+  @NotBlank(message = "카드 제목을 입력해 주세요")
+  private String title;
+
+  @NotBlank(message = "주소를 입력해 주세요.")
+  private String address;
+
+  @NotBlank(message = "장소를 입력해 주세요.")
+  private String placeName;
+
+  @NotBlank(message = "메모를 입력해 주세요.")
+  private String memo;
 }

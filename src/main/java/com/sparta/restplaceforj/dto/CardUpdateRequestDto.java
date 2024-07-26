@@ -1,19 +1,20 @@
 package com.sparta.restplaceforj.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.Setter;
 
-import java.time.LocalDate;
-
-@AllArgsConstructor
+@Setter
 @Getter
-@Builder
-public class CardResponseDto {
+public class CardUpdateRequestDto {
 
-  private Long id;
   private String title;
+
   private String address;
+
   private String placeName;
+
   private String memo;
+
 }
