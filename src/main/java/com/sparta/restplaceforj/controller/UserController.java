@@ -1,12 +1,40 @@
 package com.sparta.restplaceforj.controller;
 
+import com.sparta.restplaceforj.common.CommonResponse;
+import com.sparta.restplaceforj.common.ResponseEnum;
+import com.sparta.restplaceforj.dto.UserSignUpRequestDto;
+import com.sparta.restplaceforj.dto.UserSignUpResponseDto;
 import com.sparta.restplaceforj.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/v1/users")
 public class UserController {
 
   private final UserService userService;
+
+  /**
+   * 유저 생성 controller
+   *
+   * @param userSignUpRequestDto
+   * @return CommonResponse
+   */
+  @PostMapping
+  public ResponseEntity<CommonResponse<UserSignUpResponseDto>> createUser(
+      @RequestBody UserSignUpRequestDto userSignUpRequestDto) {
+    UserSignUpResponseDto responseDto = userService.createUser(userSignUpRequestDto);
+    return ResponseEntity.ok(
+        CommonResponse.<UserSignUpResponseDto>builder()
+            .response(ResponseEnum.CREATE_USER)
+            .data(responseDto)
+            .build()
+    );
+  }
+
 }

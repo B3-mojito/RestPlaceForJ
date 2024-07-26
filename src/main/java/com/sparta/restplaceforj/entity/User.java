@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,10 +22,19 @@ public class User {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
   private String nickname;
+  private String name;
   private String email;
   private String password;
   private String bio;
   private String picture;
   @Enumerated(value = EnumType.STRING)
   private UserStatus userStatus;
+
+  @Builder
+  public User(String nickname, String name, String email, String password) {
+    this.nickname = nickname;
+    this.name = name;
+    this.email = email;
+    this.password = password;
+  }
 }
