@@ -18,11 +18,12 @@ public class PostService {
   private final PostRepository postRepository;
 
   @Transactional
-  public PostResponseDto createPost(PostRequestDto requestDto) {
+  public PostResponseDto createPost(PostRequestDto postRequestDto) {
 
-    Post post = postRepository.save(Post.builder()
-        .requestDto(requestDto)
-        .build());
+    Post post = postRepository.save(
+        Post.builder()
+            .requestDto(postRequestDto)
+            .build());
 
     Post savedPost = postRepository.save(post);
 
@@ -31,5 +32,10 @@ public class PostService {
     );
 
     return new PostResponseDto(savedPost);
+  }
+
+  @Transactional
+  public void deletePost(long postId) {
+    postRepository.deleteById(postId);
   }
 }

@@ -17,6 +17,7 @@ public enum ResponseEnum implements Response {
 
   //post
   CREATE_POST("글 생성 완료", HttpStatus.CREATED),
+  DELETE_POST("글 삭제 완료", HttpStatus.OK),
 
   //comment
 
