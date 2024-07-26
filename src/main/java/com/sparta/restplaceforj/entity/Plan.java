@@ -27,10 +27,7 @@ public class Plan {
   private Long id;
 
   private String title;
-
-  @OneToMany(mappedBy = "plan")
-  private List<Coworker> coworkers;
-
+  
   @Builder
   public Plan(String title) {
     this.title = title;

@@ -1,13 +1,18 @@
 package com.sparta.restplaceforj.dto;
 
+import com.sparta.restplaceforj.entity.Plan;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-@AllArgsConstructor
-@Builder
+
 @Getter
 public class PlanResponseDto {
 
-  private String title;
+  private final String title;
+
+  @Builder
+  public PlanResponseDto(Plan plan) {
+    this.title = plan.getTitle();
+  }
 }

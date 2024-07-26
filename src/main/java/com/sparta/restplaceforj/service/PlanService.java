@@ -44,7 +44,7 @@ public class PlanService {
        .build());
       */
     return PlanResponseDto.builder()
-        .title(plan.getTitle())
+        .plan(plan)
         .build();
   }
 }

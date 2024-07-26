@@ -43,8 +43,7 @@ public class ColumnService {
     columnRepository.save(columns);
 
     return ColumnResponseDto.builder()
-        .title(columns.getTitle())
-        .date(columns.getDate())
+        .column(columns)
         .build();
   }
 
@@ -69,8 +68,7 @@ public class ColumnService {
     columnRepository.save(column);
 
     return ColumnResponseDto.builder()
-        .title(column.getTitle())
-        .date(column.getDate())
+        .column(column)
         .build();
   }
 
