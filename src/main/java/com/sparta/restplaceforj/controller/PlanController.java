@@ -30,7 +30,7 @@ public class PlanController {
    * @return CommonResponse
    */
   @PostMapping
-  public ResponseEntity<CommonResponse<PlanResponseDto>> createColumn(
+  public ResponseEntity<CommonResponse<PlanResponseDto>> createPlan(
       @RequestBody @Valid PlanRequestDto planRequestDto) {
     PlanResponseDto responseDto = planService.createPlan(planRequestDto);
     return ResponseEntity.ok(
