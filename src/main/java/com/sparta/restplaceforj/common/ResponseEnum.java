@@ -12,6 +12,8 @@ public enum ResponseEnum implements Response {
   CREATE_CARD("카드 생성 완료", HttpStatus.CREATED),
 
   //user
+  CREATE_USER("유저 생성 완료", HttpStatus.CREATED),
+
 
   //post
   CREATE_POST("글 생성 완료", HttpStatus.CREATED),

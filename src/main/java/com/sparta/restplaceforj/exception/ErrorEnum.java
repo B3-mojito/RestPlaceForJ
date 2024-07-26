@@ -13,7 +13,8 @@ public enum ErrorEnum implements Response {
 
   //user error
   USER_NOT_FOUND("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
-
+  DUPLICATED_EMAIL("해당 이메일로 가입한 유저가 존재합니다.", HttpStatus.CONFLICT),
+  DUPLICATED_NICKNAME("해당 닉네임을 가진 유저가 존재합니다.", HttpStatus.CONFLICT),
   //auth error
 
   //Post error
