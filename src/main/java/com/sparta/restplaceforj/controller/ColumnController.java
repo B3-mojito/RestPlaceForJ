@@ -29,14 +29,14 @@ public class ColumnController {
    * 컬럼 생성 controller
    *
    * @param planId
-   * @param requestDto
+   * @param columnRequestDto
    * @return CommonResponse
    */
   @PostMapping
   public ResponseEntity<CommonResponse<ColumnResponseDto>> createColumn(
       @PathVariable("plan-id") Long planId,
-      @RequestBody @Valid ColumnRequestDto requestDto) {
-    ColumnResponseDto responseDto = columnService.createColumn(planId, requestDto);
+      @RequestBody @Valid ColumnRequestDto columnRequestDto) {
+    ColumnResponseDto responseDto = columnService.createColumn(planId, columnRequestDto);
     return ResponseEntity.ok(
         CommonResponse.<ColumnResponseDto>builder()
             .response(ResponseEnum.CREATE_COLUMN)
@@ -50,15 +50,15 @@ public class ColumnController {
    *
    * @param planId
    * @param columnId
-   * @param requestDto
+   * @param columnRequestDto
    * @return CommonResponse
    */
   @PatchMapping("/{column-id}")
   public ResponseEntity<CommonResponse<ColumnResponseDto>> updateColumn(
       @PathVariable("plan-id") Long planId, @PathVariable("column-id") Long columnId,
-      @RequestBody @Valid ColumnRequestDto requestDto) {
+      @RequestBody @Valid ColumnRequestDto columnRequestDto) {
     ColumnResponseDto responseDto = columnService.updateColumn(planId, columnId,
-        requestDto);
+        columnRequestDto);
     return ResponseEntity.ok(
         CommonResponse.<ColumnResponseDto>builder()
             .response(ResponseEnum.UPDATE_COLUMN)

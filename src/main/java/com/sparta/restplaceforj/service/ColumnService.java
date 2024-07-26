@@ -31,13 +31,17 @@ public class ColumnService {
   @Transactional
   public ColumnResponseDto createColumn(Long planId, ColumnRequestDto requestDto)
       throws CommonException {
-    Plan plan = planRepository.findPlanById(planId);
+
+    Plan plan = planRepository.findByIdOrThrow(planId);
+
     Column columns = Column.builder()
         .title(requestDto.getTitle())
         .date(requestDto.getDate())
         .plan(plan)
         .build();
+
     columnRepository.save(columns);
+
     return ColumnResponseDto.builder()
         .title(columns.getTitle())
         .date(columns.getDate())
@@ -55,12 +59,15 @@ public class ColumnService {
   @Transactional
   public ColumnResponseDto updateColumn(Long planId, Long columnId,
       ColumnRequestDto requestDto) {
-    Column column = columnRepository.findColumnById(columnId);
-    if (!column.getPlan().equals(planRepository.findPlanById(planId))) {
+    Column column = columnRepository.findByIdOrThrow(columnId);
+
+    if (!column.getPlan().equals(planRepository.findByIdOrThrow(planId))) {
       throw new CommonException(ErrorEnum.BAD_REQUEST);
     }
+
     column.updateColumn(requestDto);
     columnRepository.save(column);
+
     return ColumnResponseDto.builder()
         .title(column.getTitle())
         .date(column.getDate())
@@ -75,10 +82,12 @@ public class ColumnService {
    */
   @Transactional
   public void deleteColumn(Long planId, Long columnId) {
-    Column column = columnRepository.findColumnById(columnId);
-    if (!column.getPlan().equals(planRepository.findPlanById(planId))) {
+    Column column = columnRepository.findByIdOrThrow(columnId);
+
+    if (!column.getPlan().equals(planRepository.findByIdOrThrow(planId))) {
       throw new CommonException(ErrorEnum.BAD_REQUEST);
     }
+
     columnRepository.delete(column);
   }
 }
