@@ -25,6 +25,7 @@ public enum ResponseEnum implements Response {
 
   //plan
   CREATE_PLAN("플랜 생성 완료", HttpStatus.CREATED),
+  UPDATE_PLAN("플랜 수정 완료", HttpStatus.OK),
 
   //column
   CREATE_COLUMN("컬럼 생성 완료", HttpStatus.CREATED),
