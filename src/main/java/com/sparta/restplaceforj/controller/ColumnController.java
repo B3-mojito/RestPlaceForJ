@@ -57,8 +57,8 @@ public class ColumnController {
   public ResponseEntity<CommonResponse<ColumnResponseDto>> updateColumn(
       @PathVariable("plan-id") Long planId, @PathVariable("column-id") Long columnId,
       @RequestBody @Valid ColumnRequestDto columnRequestDto) {
-    ColumnResponseDto responseDto = columnService.updateColumn(planId, columnId,
-        columnRequestDto);
+    ColumnResponseDto responseDto = columnService
+        .updateColumn(planId, columnId, columnRequestDto);
     return ResponseEntity.ok(
         CommonResponse.<ColumnResponseDto>builder()
             .response(ResponseEnum.UPDATE_COLUMN)
