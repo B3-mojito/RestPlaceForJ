@@ -1,0 +1,13 @@
+## Variables
+# @no-cookie-jar
+
+@title = 하이요
+
+
+### 플랜 생성
+POST http://localhost:8080/v1/plans
+Content-Type: application/json
+
+{
+  "title": "{{title}}"
+}
