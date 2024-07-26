@@ -24,7 +24,9 @@ public enum ResponseEnum implements Response {
 
   //column
   CREATE_COLUMN("컬럼 생성 완료", HttpStatus.CREATED),
-  UPDATE_COLUMN("컬럼 수정 완료", HttpStatus.OK);
+  UPDATE_COLUMN("컬럼 수정 완료", HttpStatus.OK),
+  DELETE_COLUMN("컬럼 삭제 완료", HttpStatus.OK);
+
   private final String message;
   private final HttpStatus httpStatus;
 

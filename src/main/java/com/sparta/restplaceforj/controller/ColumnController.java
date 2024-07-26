@@ -5,8 +5,11 @@ import com.sparta.restplaceforj.common.ResponseEnum;
 import com.sparta.restplaceforj.dto.ColumnRequestDto;
 import com.sparta.restplaceforj.dto.ColumnResponseDto;
 import com.sparta.restplaceforj.service.ColumnService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/v1/columns")
+@RequestMapping("/v1/plans/{plan-id}/columns")
 public class ColumnController {
 
   private final ColumnService columnService;
@@ -31,9 +34,9 @@ public class ColumnController {
    */
   @PostMapping
   public ResponseEntity<CommonResponse<ColumnResponseDto>> createColumn(
-      @RequestParam(value = "plan-id") Long planId,
-      @RequestBody ColumnRequestDto columnRequestDto) {
-    ColumnResponseDto responseDto = columnService.createColumn(planId, columnRequestDto.getTitle());
+      @PathVariable("plan-id") Long planId,
+      @RequestBody @Valid ColumnRequestDto columnRequestDto) {
+    ColumnResponseDto responseDto = columnService.createColumn(planId, columnRequestDto);
     return ResponseEntity.ok(
         CommonResponse.<ColumnResponseDto>builder()
             .response(ResponseEnum.CREATE_COLUMN)
@@ -52,14 +55,33 @@ public class ColumnController {
    */
   @PatchMapping("/{column-id}")
   public ResponseEntity<CommonResponse<ColumnResponseDto>> updateColumn(
-      @RequestParam(value = "plan-id") Long planId, @PathVariable("column-id") Long columnId,
-      @RequestBody ColumnRequestDto columnRequestDto) {
-    ColumnResponseDto responseDto = columnService.updateColumn(planId, columnId,
-        columnRequestDto.getTitle());
+      @PathVariable("plan-id") Long planId, @PathVariable("column-id") Long columnId,
+      @RequestBody @Valid ColumnRequestDto columnRequestDto) {
+    ColumnResponseDto responseDto = columnService
+        .updateColumn(planId, columnId, columnRequestDto);
     return ResponseEntity.ok(
         CommonResponse.<ColumnResponseDto>builder()
             .response(ResponseEnum.UPDATE_COLUMN)
             .data(responseDto)
+            .build()
+    );
+  }
+
+  /**
+   * 컬럼 삭제 controller
+   *
+   * @param planId
+   * @param columnId
+   * @return CommonResponse
+   */
+  @DeleteMapping("/{column-id}")
+  public ResponseEntity<CommonResponse<ColumnResponseDto>> deleteColumn(
+      @PathVariable("plan-id") Long planId, @PathVariable("column-id") Long columnId) {
+    columnService.deleteColumn(planId, columnId);
+    return ResponseEntity.ok(
+        CommonResponse.<ColumnResponseDto>builder()
+            .response(ResponseEnum.DELETE_COLUMN)
+            .data(null)
             .build()
     );
   }
