@@ -2,12 +2,14 @@ package com.sparta.restplaceforj.controller;
 
 import com.sparta.restplaceforj.common.CommonResponse;
 import com.sparta.restplaceforj.common.ResponseEnum;
+import com.sparta.restplaceforj.dto.ColumnResponseDto;
 import com.sparta.restplaceforj.dto.PlanRequestDto;
 import com.sparta.restplaceforj.dto.PlanResponseDto;
 import com.sparta.restplaceforj.service.PlanService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,6 +60,25 @@ public class PlanController {
         CommonResponse.<PlanResponseDto>builder()
             .response(ResponseEnum.UPDATE_PLAN)
             .data(planResponseDto)
+            .build()
+    );
+  }
+
+  /**
+   * 컬럼 삭제 controller
+   *
+   * @param planId
+   * @return CommonResponse
+   */
+  @DeleteMapping("/{plan-id}")
+  public ResponseEntity<CommonResponse<ColumnResponseDto>> deletePlan(
+      @PathVariable("plan-id") Long planId) {
+    planService.deleteColumn(planId);
+
+    return ResponseEntity.ok(
+        CommonResponse.<ColumnResponseDto>builder()
+            .response(ResponseEnum.DELETE_PLAN)
+            .data(null)
             .build()
     );
   }

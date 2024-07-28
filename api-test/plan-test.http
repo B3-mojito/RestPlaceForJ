@@ -20,3 +20,7 @@ Content-Type: application/json
 {
   "title": "{{title}}"
 }
+
+### 플랜 삭제
+DELETE http://localhost:8080/v1/plans/1
+Content-Type: application/json
