@@ -2,14 +2,21 @@
 @username = test
 @password = test
 
+@post-id = 6
+
 @title = title12
 @content = content
-@edit_content = edit content
-@post-id = 1
 @theme = THRILL
 @address = 서울 동작구 사당동 134-1
-@short-address = 서울 동작구
 @place-name = 이수역꼬치거리
+
+@edit_title = title12 edit
+@edit_content = content edit
+@edit_theme = CAMPING
+@edit_address = 서울 동작구 사당동 134-1 edit
+@edit_place-name = 이수역꼬치거리 edit
+
+@short-address = 서울 동작구
 @sort-by = viewsCount
 @q =
 
@@ -59,3 +66,12 @@ GET localhost:8080/v1/posts/place-name
 GET localhost:8080/v1/posts
     ?place-name={{place-name}}&page=1&q={{q}}&sort-by={{sort-by}}
 
+
+### 글 수정
+PATCH localhost:8080/v1/posts/{{post-id}}
+Content-Type: application/json
+
+{
+  "title": "{{edit_title}}",
+  "content": "{{edit_content}}"
+}

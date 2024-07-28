@@ -95,4 +95,16 @@ public class PostService {
         .page(postIdTitleList)
         .build();
   }
+
+  /**
+   * 글 수정.
+   */
+  @Transactional
+  public PostResponseDto updatePost(long postId, PostRequestDto postRequestDto) {
+    Post post = postRepository.findByIdOrThrow(postId);
+    post.update(postRequestDto);
+    return PostResponseDto.builder()
+        .post(post)
+        .build();
+  }
 }
