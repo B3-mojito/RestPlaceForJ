@@ -2,7 +2,10 @@ package com.sparta.restplaceforj.service;
 
 import com.sparta.restplaceforj.dto.PlanRequestDto;
 import com.sparta.restplaceforj.dto.PlanResponseDto;
+import com.sparta.restplaceforj.entity.Column;
 import com.sparta.restplaceforj.entity.Plan;
+import com.sparta.restplaceforj.exception.CommonException;
+import com.sparta.restplaceforj.exception.ErrorEnum;
 import com.sparta.restplaceforj.repository.CoworkerRepository;
 import com.sparta.restplaceforj.repository.PlanRepository;
 import com.sparta.restplaceforj.repository.UserRepository;
@@ -64,5 +67,19 @@ public class PlanService {
         .plan(plan)
         .build();
   }
+
+  /**
+   * 플랜 삭제 로직
+   *
+   * @param planId
+   */
+  @Transactional
+  public void deleteColumn(Long planId) {
+    if (!planRepository.existsById(planId)) {
+      throw new CommonException(ErrorEnum.PLAN_NOT_FOUND);
+    }
+    planRepository.deleteById(planId);
+  }
 }
+
 
