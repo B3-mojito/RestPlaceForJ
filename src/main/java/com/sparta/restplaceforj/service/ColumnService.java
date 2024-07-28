@@ -8,6 +8,7 @@ import com.sparta.restplaceforj.exception.CommonException;
 import com.sparta.restplaceforj.exception.ErrorEnum;
 import com.sparta.restplaceforj.repository.ColumnRepository;
 import com.sparta.restplaceforj.repository.PlanRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,5 +88,17 @@ public class ColumnService {
     }
 
     columnRepository.delete(column);
+  }
+
+  /**
+   * 컬럼 다건 조회 로직
+   *
+   * @param planId
+   */
+  @Transactional
+  public List<Column> getColumnList(Long planId) {
+    Plan plan = planRepository.findByIdOrThrow(planId);
+
+    return columnRepository.findByPlanId(plan.getId());
   }
 }
