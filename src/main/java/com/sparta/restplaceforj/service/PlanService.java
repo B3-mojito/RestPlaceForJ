@@ -2,12 +2,10 @@ package com.sparta.restplaceforj.service;
 
 import com.sparta.restplaceforj.dto.PlanRequestDto;
 import com.sparta.restplaceforj.dto.PlanResponseDto;
-import com.sparta.restplaceforj.entity.Coworker;
 import com.sparta.restplaceforj.entity.Plan;
 import com.sparta.restplaceforj.repository.CoworkerRepository;
 import com.sparta.restplaceforj.repository.PlanRepository;
 import com.sparta.restplaceforj.repository.UserRepository;
-import com.sparta.restplaceforj.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +41,25 @@ public class PlanService {
        .user()
        .build());
       */
+    return PlanResponseDto.builder()
+        .plan(plan)
+        .build();
+  }
+
+  /**
+   * 플랜 수정 로직
+   *
+   * @param planId
+   * @param planRequestDto
+   * @return ColumnResponseDto
+   */
+  @Transactional
+  public PlanResponseDto updateColumn(Long planId, PlanRequestDto planRequestDto) {
+
+    Plan plan = planRepository.findByIdOrThrow(planId);
+
+    plan.updatePlan(planRequestDto);
+
     return PlanResponseDto.builder()
         .plan(plan)
         .build();

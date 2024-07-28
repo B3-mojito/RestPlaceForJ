@@ -2,10 +2,19 @@
 # @no-cookie-jar
 
 @title = 하이요
+@title2 = 하이요2
 
 
 ### 플랜 생성
 POST http://localhost:8080/v1/plans
+Content-Type: application/json
+
+{
+  "title": "{{title}}"
+}
+
+### 플랜 수정
+PATCH http://localhost:8080/v1/plans/1
 Content-Type: application/json
 
 {

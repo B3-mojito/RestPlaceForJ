@@ -2,14 +2,13 @@ package com.sparta.restplaceforj.controller;
 
 import com.sparta.restplaceforj.common.CommonResponse;
 import com.sparta.restplaceforj.common.ResponseEnum;
-import com.sparta.restplaceforj.dto.ColumnRequestDto;
-import com.sparta.restplaceforj.dto.ColumnResponseDto;
 import com.sparta.restplaceforj.dto.PlanRequestDto;
 import com.sparta.restplaceforj.dto.PlanResponseDto;
 import com.sparta.restplaceforj.service.PlanService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +36,28 @@ public class PlanController {
         CommonResponse.<PlanResponseDto>builder()
             .response(ResponseEnum.CREATE_PLAN)
             .data(responseDto)
+            .build()
+    );
+  }
+
+  /**
+   * 플랜 수정 controller
+   *
+   * @param planId
+   * @param planRequestDto
+   * @return CommonResponse
+   */
+  @PatchMapping("/{plan-id}")
+  public ResponseEntity<CommonResponse<PlanResponseDto>> updateColumn(
+      @PathVariable("plan-id") Long planId,
+      @RequestBody @Valid PlanRequestDto planRequestDto) {
+    PlanResponseDto planResponseDto = planService
+        .updateColumn(planId, planRequestDto);
+
+    return ResponseEntity.ok(
+        CommonResponse.<PlanResponseDto>builder()
+            .response(ResponseEnum.UPDATE_PLAN)
+            .data(planResponseDto)
             .build()
     );
   }
