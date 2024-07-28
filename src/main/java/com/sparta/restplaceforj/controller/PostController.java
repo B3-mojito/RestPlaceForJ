@@ -63,13 +63,13 @@ public class PostController {
       @RequestParam int page, @RequestParam(defaultValue = "5") int size,
       @RequestParam("sort-address") String sortAddress, @RequestParam String theme) {
 
-    PostPageResponseDto postResponseDtoList = postService
+    PostPageResponseDto postPageResponseDto = postService
         .getPostList(page, size, sortAddress, theme);
 
     return ResponseEntity.ok(
         CommonResponse.<PostPageResponseDto>builder()
             .response(ResponseEnum.GET_POST_LIST)
-            .data(postResponseDtoList)
+            .data(postPageResponseDto)
             .build()
     );
   }
