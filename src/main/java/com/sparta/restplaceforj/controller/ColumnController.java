@@ -96,13 +96,13 @@ public class ColumnController {
    * @return CommonResponse
    */
   @GetMapping
-  public ResponseEntity<CommonResponse<List<Column>>> getColumnList(
+  public ResponseEntity<CommonResponse<List<ColumnResponseDto>>> getColumnList(
       @PathVariable("plan-id") Long planId) {
-    List<Column> columnResponseDto = columnService
+    List<ColumnResponseDto> columnResponseDto = columnService
         .getColumnList(planId);
 
     return ResponseEntity.ok(
-        CommonResponse.<List<Column>>builder()
+        CommonResponse.<List<ColumnResponseDto>>builder()
             .response(ResponseEnum.GET_COLUMN)
             .data(columnResponseDto)
             .build()

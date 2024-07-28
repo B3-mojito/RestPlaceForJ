@@ -14,5 +14,5 @@ public interface ColumnRepository extends JpaRepository<Column, Long> {
     return findById(columnId).orElseThrow(() -> new CommonException(ErrorEnum.COLUMN_NOT_FOUND));
   }
 
-  List<Column> findByPlanId(Long planId);
+  List<ColumnResponseDto> findByPlanId(Long planId);
 }

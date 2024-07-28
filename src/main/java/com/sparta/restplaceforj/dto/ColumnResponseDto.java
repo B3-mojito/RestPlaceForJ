@@ -1,9 +1,7 @@
 package com.sparta.restplaceforj.dto;
 
-import com.sparta.restplaceforj.entity.Column;
+
 import java.time.LocalDate;
-import java.util.Date;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -11,12 +9,14 @@ import lombok.Getter;
 @Getter
 public class ColumnResponseDto {
 
+  private final Long id;
   private final String title;
   private final LocalDate date;
 
   @Builder
-  public ColumnResponseDto(Column column) {
-    this.title = column.getTitle();
-    this.date = column.getDate();
+  public ColumnResponseDto(Long id, String title, LocalDate date) {
+    this.id = id;
+    this.title = title;
+    this.date = date;
   }
 }

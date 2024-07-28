@@ -44,7 +44,9 @@ public class ColumnService {
     columnRepository.save(columns);
 
     return ColumnResponseDto.builder()
-        .column(columns)
+        .id(columns.getId())
+        .title(columns.getTitle())
+        .date(columns.getDate())
         .build();
   }
 
@@ -69,7 +71,9 @@ public class ColumnService {
     columnRepository.save(column);
 
     return ColumnResponseDto.builder()
-        .column(column)
+        .id(columnId)
+        .title(column.getTitle())
+        .date(column.getDate())
         .build();
   }
 
@@ -96,7 +100,7 @@ public class ColumnService {
    * @param planId
    */
   @Transactional
-  public List<Column> getColumnList(Long planId) {
+  public List<ColumnResponseDto> getColumnList(Long planId) {
     Plan plan = planRepository.findByIdOrThrow(planId);
 
     return columnRepository.findByPlanId(plan.getId());

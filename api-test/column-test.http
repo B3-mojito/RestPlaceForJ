@@ -1,6 +1,6 @@
 ## Variables
 # @no-cookie-jar
-@plan_id = 1
+@plan_id = 2
 @column_id = 1
 @title = 하이요s5
 @title2 = 수정ㅎ
