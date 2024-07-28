@@ -2,11 +2,10 @@ package com.sparta.restplaceforj.controller;
 
 import com.sparta.restplaceforj.common.CommonResponse;
 import com.sparta.restplaceforj.common.ResponseEnum;
-import com.sparta.restplaceforj.dto.PostPlaceNameResponseDto;
+import com.sparta.restplaceforj.dto.PostPageResponseDto;
 import com.sparta.restplaceforj.dto.PostRequestDto;
 import com.sparta.restplaceforj.dto.PostResponseDto;
 import com.sparta.restplaceforj.service.PostService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -60,15 +59,15 @@ public class PostController {
   }
 
   @GetMapping("/place-name")
-  public ResponseEntity<CommonResponse<List<PostPlaceNameResponseDto>>> getPostList(
+  public ResponseEntity<CommonResponse<PostPageResponseDto>> getPostList(
       @RequestParam int page, @RequestParam(defaultValue = "5") int size,
       @RequestParam("sort-address") String sortAddress, @RequestParam String theme) {
 
-    List<PostPlaceNameResponseDto> postResponseDtoList = postService
+    PostPageResponseDto postResponseDtoList = postService
         .getPostList(page, size, sortAddress, theme);
 
     return ResponseEntity.ok(
-        CommonResponse.<List<PostPlaceNameResponseDto>>builder()
+        CommonResponse.<PostPageResponseDto>builder()
             .response(ResponseEnum.GET_POST_LIST)
             .data(postResponseDtoList)
             .build()
