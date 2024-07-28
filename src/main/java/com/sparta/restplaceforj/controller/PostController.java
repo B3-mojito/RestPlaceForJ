@@ -61,10 +61,10 @@ public class PostController {
   @GetMapping("/place-name")
   public ResponseEntity<CommonResponse<PostPageResponseDto>> getPostList(
       @RequestParam int page, @RequestParam(defaultValue = "5") int size,
-      @RequestParam("sort-address") String sortAddress, @RequestParam String theme) {
+      @RequestParam("short-address") String shortAddress, @RequestParam String theme) {
 
     PostPageResponseDto postPageResponseDto = postService
-        .getPostList(page, size, sortAddress, theme);
+        .getPostList(page, size, shortAddress, theme);
 
     return ResponseEntity.ok(
         CommonResponse.<PostPageResponseDto>builder()

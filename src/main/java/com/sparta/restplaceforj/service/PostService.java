@@ -57,13 +57,13 @@ public class PostService {
   }
 
   public PostPageResponseDto getPostList(
-      int page, int size, String sortAddress, String theme) {
+      int page, int size, String shortAddress, String theme) {
 
     ThemeEnum themeEnum = ThemeEnum.valueOf(theme);
     Pageable pageRequest = PageRequest.of(page, size);
 
     PageImpl<String> placeNameList = postDslRepository
-        .getPostListGroupByPlaceName(pageRequest, sortAddress, themeEnum);
+        .getPostListGroupByPlaceName(pageRequest, shortAddress, themeEnum);
 
     return PostPageResponseDto.builder()
         .page(placeNameList)

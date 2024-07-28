@@ -20,13 +20,13 @@ public class PostDslRepository {
   private final QPost post = QPost.post;
 
   public PageImpl<String> getPostListGroupByPlaceName(
-      Pageable pageable, String address, ThemeEnum themeEnum) {
+      Pageable pageable, String shortAddress, ThemeEnum themeEnum) {
 
     log.info("getPostListGroupByPlaceName called " + pageable);
 
     JPQLQuery<String> query = jpaQueryFactory.select(post.placeName)
         .from(post)
-        .where(post.address.contains(address)
+        .where(post.address.contains(shortAddress)
             .and(post.themeEnum.eq(themeEnum)))
         .orderBy(post.count().desc())
         .groupBy(post.placeName)

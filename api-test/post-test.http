@@ -8,7 +8,7 @@
 @post-id = 1
 @theme = THRILL
 @address = 서울 동작구 사당동 134-1
-@sort-address = 서울 동작구
+@short-address = 서울 동작구
 @place-name = 이수역꼬치거리
 
 
@@ -49,4 +49,4 @@ DELETE localhost:8080/v1/posts/{{post-id}}
 
 
 ### 글 조회
-GET localhost:8080/v1/posts/place-name?page=1&theme={{theme}}&sort-address={{sort-address}}
+GET localhost:8080/v1/posts/place-name?page=1&theme={{theme}}&short-address={{short-address}}
