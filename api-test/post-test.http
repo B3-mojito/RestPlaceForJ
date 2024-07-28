@@ -2,7 +2,7 @@
 @username = test
 @password = test
 
-@title = title
+@title = title12
 @content = content
 @edit_content = edit content
 @post-id = 1
@@ -10,6 +10,8 @@
 @address = 서울 동작구 사당동 134-1
 @short-address = 서울 동작구
 @place-name = 이수역꼬치거리
+@sort-by = viewsCount
+@q =
 
 
 #
@@ -49,4 +51,11 @@ DELETE localhost:8080/v1/posts/{{post-id}}
 
 
 ### 글 조회
-GET localhost:8080/v1/posts/place-name?page=1&theme={{theme}}&short-address={{short-address}}
+GET localhost:8080/v1/posts/place-name
+    ?page=1&theme={{theme}}&short-address={{short-address}}
+
+
+### 글 아이디 제목 조회
+GET localhost:8080/v1/posts
+    ?place-name={{place-name}}&page=1&q={{q}}&sort-by={{sort-by}}
+

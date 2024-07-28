@@ -19,6 +19,7 @@ public enum ResponseEnum implements Response {
   CREATE_POST("글 생성 완료", HttpStatus.CREATED),
   DELETE_POST("글 삭제 완료", HttpStatus.OK),
   GET_POST_LIST("글 전체 조회 완료", HttpStatus.OK),
+  GET_POST_ID_TITLE_LIST("글 아이디 제목 조회 완료", HttpStatus.OK),
 
   //comment
 
