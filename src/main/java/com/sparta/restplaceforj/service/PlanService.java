@@ -59,7 +59,6 @@ public class PlanService {
     Plan plan = planRepository.findByIdOrThrow(planId);
 
     plan.updatePlan(planRequestDto);
-    planRepository.save(plan);
 
     return PlanResponseDto.builder()
         .plan(plan)
