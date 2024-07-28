@@ -75,3 +75,8 @@ Content-Type: application/json
   "title": "{{edit_title}}",
   "content": "{{edit_content}}"
 }
+
+
+
+### 글 단권 조회
+GET localhost:8080/v1/posts/{{post-id}}

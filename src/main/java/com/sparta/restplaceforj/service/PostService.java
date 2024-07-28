@@ -107,4 +107,15 @@ public class PostService {
         .post(post)
         .build();
   }
+
+  /**
+   * 글 단권 조회.
+   */
+  public PostResponseDto getPost(long postId) {
+    Post post = postRepository.findByIdOrThrow(postId);
+
+    return PostResponseDto.builder()
+        .post(post)
+        .build();
+  }
 }

@@ -110,6 +110,21 @@ public class PostController {
             .data(postResponseDto)
             .build()
     );
+  }
 
+  /**
+   * 글 단권 조회.
+   */
+  @GetMapping("/{post-id}")
+  public ResponseEntity<CommonResponse<PostResponseDto>> getPost(
+      @PathVariable("post-id") long postId) {
+    PostResponseDto postResponseDto = postService.getPost(postId);
+
+    return ResponseEntity.ok(
+        CommonResponse.<PostResponseDto>builder()
+            .response(ResponseEnum.GET_POST)
+            .data(postResponseDto)
+            .build()
+    );
   }
 }
