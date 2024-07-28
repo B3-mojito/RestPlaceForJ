@@ -58,6 +58,9 @@ public class PostController {
     );
   }
 
+  /**
+   * 글의 placeName 의로 그룹화하여 갯수가 많은순으로 정렬 api.
+   */
   @GetMapping("/place-name")
   public ResponseEntity<CommonResponse<PostPageResponseDto>> getPostList(
       @RequestParam int page, @RequestParam(defaultValue = "5") int size,

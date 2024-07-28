@@ -56,6 +56,9 @@ public class PostService {
     postRepository.deleteById(postId);
   }
 
+  /**
+   * 글의 placeName 의로 그룹화하여 갯수가 많은순으로 정렬 api.
+   */
   public PostPageResponseDto getPostList(
       int page, int size, String shortAddress, String theme) {
 
