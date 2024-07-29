@@ -9,6 +9,7 @@ import com.sparta.restplaceforj.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,8 +55,27 @@ public class CommentController {
 
     return ResponseEntity.ok(
         CommonResponse.<PageResponseDto<CommentResponseDto>>builder()
-            .response(ResponseEnum.CREATE_COMMENT)
+            .response(ResponseEnum.GET_COMMENT_LIST)
             .data(commentResponseDtoList)
             .build());
+  }
+
+  /**
+   * 댓글 수정.
+   */
+  @PatchMapping("/{comment-id}")
+  public ResponseEntity<CommonResponse<CommentResponseDto>> updateComment(
+      @PathVariable("comment-id") long commentId,
+      @RequestBody CommentRequestDto commentRequestDto) {
+
+    CommentResponseDto commentResponseDto = commentService
+        .updateComment(commentId, commentRequestDto.getContent());
+
+    return ResponseEntity.ok(
+        CommonResponse.<CommentResponseDto>builder()
+            .response(ResponseEnum.UPDATE_COMMENT)
+            .data(commentResponseDto)
+            .build()
+    );
   }
 }

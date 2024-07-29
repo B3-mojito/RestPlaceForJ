@@ -63,4 +63,18 @@ public class CommentService {
         .page(commentPage)
         .build();
   }
+
+  /**
+   * 댓글 수정.
+   */
+  @Transactional
+  public CommentResponseDto updateComment(long commentId, String content) {
+    Comment comment = commentRepository.findByIdOrThrow(commentId);
+    comment.updateContent(content);
+
+    return CommentResponseDto.builder()
+        .comment(comment)
+        .build();
+  }
+
 }
