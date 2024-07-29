@@ -44,7 +44,4 @@ public class User extends Timestamped {
 
     }
 
-    public boolean validateRefreshToken(String refreshToken) {
-        return this.refreshToken != null && this.refreshToken.equals(refreshToken);
-    }
 }

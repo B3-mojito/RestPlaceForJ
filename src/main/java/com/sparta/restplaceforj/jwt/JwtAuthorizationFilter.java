@@ -76,12 +76,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     info.getSubject());
             User user = userDetails.getUser();
 
-            // 유저의 리프레시 토큰 검증
-            if (user.validateRefreshToken(refreshToken)) {
-                // accessToken 생성
-                UserRole role = user.getUserRole();
-                String newAccessToken = jwtUtil.createAccessToken(info.getSubject(), role);
-                jwtUtil.setHeaderAccessToken(response, newAccessToken);
+      // 유저의 리프레시 토큰 검증
+      if (user.getRefreshToken() != null && user.getRefreshToken().equals(refreshToken)) {
+        // accessToken 생성
+        UserRole role = user.getUserRole();
+        String newAccessToken = jwtUtil.createAccessToken(info.getSubject(), role);
+        jwtUtil.setHeaderAccessToken(response, newAccessToken);
 
                 try {
                     //Athentication 설정
