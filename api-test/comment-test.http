@@ -2,34 +2,33 @@
 @username = fltnsah121
 @password = test@1231
 
-@content = 언제나 당신을 응원해요. 힘내세요!
-@edit_content = edit 언제나 당신을 응원해요. 힘내세요!dd
+@content = 힘내세요!
+@edit_content = edit 힘내세요!dd
 
 @post_id = 24
 
-###  로그인
-POST http://localhost:8080/v1/login
-Content-Type: application/json
-
-{
-  "username": "{{username}}",
-  "password": "{{password}}"
-}
-
-> {%
-  client.global.set("Authorization", response.headers.valueOf("Authorization"));
-%}
+####  로그인
+#POST http://localhost:8080/v1/login
+#Content-Type: application/json
+#
+#{
+#  "username": "{{username}}",
+#  "password": "{{password}}"
+#}
+#
+#> {%
+#  client.global.set("Authorization", response.headers.valueOf("Authorization"));
+#%}
 
 
 
 
 ### 댓글 작성
-POST http://localhost:8080/posts/4/comment
-Authorization:{{Authorization}}
+POST http://localhost:8080/posts/{{post_id}}/comments
+#Authorization:{{Authorization}}
 Content-Type: application/json
 
 {
-  "postId": {{post_id}},
   "content": "{{content}}"
 }
 

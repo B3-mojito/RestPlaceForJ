@@ -24,6 +24,7 @@ public enum ResponseEnum implements Response {
   UPDATE_POST("글 수정 완료", HttpStatus.OK),
 
   //comment
+  CREATE_COMMENT("댓글 생성 완료", HttpStatus.CREATED),
 
   //like
 
