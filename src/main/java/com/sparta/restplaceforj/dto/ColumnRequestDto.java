@@ -1,7 +1,6 @@
 package com.sparta.restplaceforj.dto;
 
 import java.time.LocalDate;
-import java.util.Date;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 

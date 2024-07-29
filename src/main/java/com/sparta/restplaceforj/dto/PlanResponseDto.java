@@ -1,7 +1,6 @@
 package com.sparta.restplaceforj.dto;
 
 import com.sparta.restplaceforj.entity.Plan;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
