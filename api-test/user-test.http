@@ -9,3 +9,31 @@ Content-Type: application/json
   "name": "{{name}}",
   "nickname": "{{nickname}}"
 }
+
+### 로그인
+POST http://localhost:8080/v1/users/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+> {%
+  client.global.set("Authorization", response.headers.valueOf("Authorization"));
+  client.log("Authorization: " + response.headers.valueOf("Authorization"));
+
+  client.global.set("RefreshToken", response.headers.valueOf("RefreshToken"));
+  client.log("RefreshToken: " + response.headers.valueOf("RefreshToken"));
+%}
+
+### 로그아웃
+POST http://localhost:8080/v1/users/logout
+Authorization: {{Authorization}}
+RefreshToekn: {{RefreshToken}}
+
+
+> {%
+  client.global.clear("Authorization");
+  client.global.clear("RefreshToken");
+%}
