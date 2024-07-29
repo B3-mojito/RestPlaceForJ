@@ -1,7 +1,7 @@
 package com.sparta.restplaceforj.service;
 
 import com.sparta.restplaceforj.dto.PostIdTitleDto;
-import com.sparta.restplaceforj.dto.PostPageResponseDto;
+import com.sparta.restplaceforj.dto.PostPlaceResponseDto;
 import com.sparta.restplaceforj.dto.PostRequestDto;
 import com.sparta.restplaceforj.dto.PostResponseDto;
 import com.sparta.restplaceforj.entity.Post;
@@ -59,19 +59,16 @@ public class PostService {
     postRepository.deleteById(postId);
   }
 
-  /**
-   * 글의 placeName 의로 그룹화하여 갯수가 많은순으로 정렬 api.
-   */
-  public PostPageResponseDto getPostList(
-      int page, int size, String shortAddress, String theme) {
+  public PostPlaceResponseDto getPlaceList(
+      int page, int size, String region, String theme) {
 
     ThemeEnum themeEnum = ThemeEnum.valueOf(theme);
     Pageable pageRequest = PageRequest.of(page, size);
 
     PageImpl<String> placeNameList = postDslRepository
-        .getPostListGroupByPlaceName(pageRequest, shortAddress, themeEnum);
+        .getPostListGroupByPlaceName(pageRequest, region, themeEnum);
 
-    return PostPageResponseDto.<String>builder()
+    return PostPlaceResponseDto.<String>builder()
         .page(placeNameList)
         .build();
   }
@@ -79,7 +76,7 @@ public class PostService {
   /**
    * 글 아이디와 제목만 조회.
    */
-  public PostPageResponseDto getPostTitleList(
+  public PostPlaceResponseDto getPostTitleList(
       int page, int size, String placeName, String sortBy, String q) {
 
     if (!(sortBy.equals("createAt") || sortBy.equals("viewsCount") ||
@@ -94,7 +91,7 @@ public class PostService {
     PageImpl<PostIdTitleDto> postIdTitleList = postDslRepository
         .getPostTitleList(pageRequest, placeName, q);
 
-    return PostPageResponseDto.<PostIdTitleDto>builder()
+    return PostPlaceResponseDto.<PostIdTitleDto>builder()
         .page(postIdTitleList)
         .build();
   }
@@ -106,6 +103,17 @@ public class PostService {
   public PostResponseDto updatePost(long postId, PostRequestDto postRequestDto) {
     Post post = postRepository.findByIdOrThrow(postId);
     post.update(postRequestDto);
+    return PostResponseDto.builder()
+        .post(post)
+        .build();
+  }
+
+  /**
+   * 글 단권 조회.
+   */
+  public PostResponseDto getPost(long postId) {
+    Post post = postRepository.findByIdOrThrow(postId);
+
     return PostResponseDto.builder()
         .post(post)
         .build();

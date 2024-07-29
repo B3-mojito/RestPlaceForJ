@@ -16,7 +16,7 @@
 @edit_address = 서울 동작구 사당동 134-1 edit
 @edit_place-name = 이수역꼬치거리 edit
 
-@short-address = 서울 동작구
+@region = 서울 동작구
 @sort-by = viewsCount
 @q =
 
@@ -59,7 +59,7 @@ DELETE localhost:8080/v1/posts/{{post-id}}
 
 ### 글 조회
 GET localhost:8080/v1/posts/place-name
-    ?page=1&theme={{theme}}&short-address={{short-address}}
+    ?page=1&theme={{theme}}&region={{region}}
 
 
 ### 글 아이디 제목 조회
@@ -75,3 +75,8 @@ Content-Type: application/json
   "title": "{{edit_title}}",
   "content": "{{edit_content}}"
 }
+
+
+
+### 글 단권 조회
+GET localhost:8080/v1/posts/{{post-id}}
