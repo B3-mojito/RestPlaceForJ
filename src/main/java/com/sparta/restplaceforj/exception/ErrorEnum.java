@@ -19,6 +19,7 @@ public enum ErrorEnum implements Response {
 
   //Post error
   POST_NOT_FOUND("포스트를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+  THEME_NOT_FOUND("테마를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
   //Plan error
   PLAN_NOT_FOUND("플랜을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
