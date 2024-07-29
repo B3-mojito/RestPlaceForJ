@@ -96,14 +96,14 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
     }
 
-    // 인증 처리
-    public void setAuthentication(String email) {
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
-        Authentication authentication = createAuthentication(email);
-        context.setAuthentication(authentication);
+  // 인증 처리
+  public void setAuthentication(String email) {
+    SecurityContext context = SecurityContextHolder.createEmptyContext();
+    Authentication authentication = createAuthentication(email);
+    context.setAuthentication(authentication);
 
-        SecurityContextHolder.setContext(context);
-    }
+    SecurityContextHolder.setContext(context);
+  }
 
     // 인증 객체 생성
     private Authentication createAuthentication(String email) {

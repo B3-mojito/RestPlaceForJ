@@ -46,6 +46,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
       List<GrantedAuthority> authorities = Collections.singletonList(
           new SimpleGrantedAuthority(UserRole.USER.toString()));
+
       return getAuthenticationManager().authenticate(
           new UsernamePasswordAuthenticationToken(
               requestDto.getEmail(),
