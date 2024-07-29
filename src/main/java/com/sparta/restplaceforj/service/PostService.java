@@ -1,5 +1,6 @@
 package com.sparta.restplaceforj.service;
 
+import com.sparta.restplaceforj.dto.PostIdTitleDto;
 import com.sparta.restplaceforj.dto.PostPageResponseDto;
 import com.sparta.restplaceforj.dto.PostRequestDto;
 import com.sparta.restplaceforj.dto.PostResponseDto;
@@ -13,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,8 +71,31 @@ public class PostService {
     PageImpl<String> placeNameList = postDslRepository
         .getPostListGroupByPlaceName(pageRequest, shortAddress, themeEnum);
 
-    return PostPageResponseDto.builder()
+    return PostPageResponseDto.<String>builder()
         .page(placeNameList)
+        .build();
+  }
+
+  /**
+   * 글 아이디와 제목만 조회.
+   */
+  public PostPageResponseDto getPostTitleList(
+      int page, int size, String placeName, String sortBy, String q) {
+
+    if (!(sortBy.equals("createAt") || sortBy.equals("viewsCount") ||
+        sortBy.equals("likesCount"))) {
+      throw new CommonException(ErrorEnum.SORT_NOT_FOUND);
+    }
+
+    Sort sort = Sort.by(Direction.DESC, sortBy);
+
+    Pageable pageRequest = PageRequest.of(page, size, sort);
+
+    PageImpl<PostIdTitleDto> postIdTitleList = postDslRepository
+        .getPostTitleList(pageRequest, placeName, q);
+
+    return PostPageResponseDto.<PostIdTitleDto>builder()
+        .page(postIdTitleList)
         .build();
   }
 }

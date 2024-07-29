@@ -76,4 +76,24 @@ public class PostController {
             .build()
     );
   }
+
+  /**
+   * 글을 조회하면 제목과 아이디만 반환.
+   */
+  @GetMapping
+  public ResponseEntity<CommonResponse<PostPageResponseDto>> getPostTitleList(
+      @RequestParam int page, @RequestParam(defaultValue = "5") int size,
+      @RequestParam("place-name") String placeName, @RequestParam(required = false) String q,
+      @RequestParam(value = "sort-by", defaultValue = "createAt") String sortBy) {
+
+    PostPageResponseDto postPageResponseDto = postService
+        .getPostTitleList(page, size, placeName, sortBy, q);
+
+    return ResponseEntity.ok(
+        CommonResponse.<PostPageResponseDto>builder()
+            .response(ResponseEnum.GET_POST_ID_TITLE_LIST)
+            .data(postPageResponseDto)
+            .build()
+    );
+  }
 }
