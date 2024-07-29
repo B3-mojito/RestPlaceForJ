@@ -1,12 +1,19 @@
 package com.sparta.restplaceforj.service;
 
 import com.sparta.restplaceforj.dto.CommentResponseDto;
+import com.sparta.restplaceforj.dto.PageResponseDto;
 import com.sparta.restplaceforj.entity.Comment;
 import com.sparta.restplaceforj.entity.Post;
+import com.sparta.restplaceforj.exception.CommonException;
+import com.sparta.restplaceforj.exception.ErrorEnum;
+import com.sparta.restplaceforj.repository.CommentDslRepository;
 import com.sparta.restplaceforj.repository.CommentRepository;
 import com.sparta.restplaceforj.repository.PostRepository;
 import com.sparta.restplaceforj.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentService {
 
   private final CommentRepository commentRepository;
+  private final CommentDslRepository commentDslRepository;
   private final PostRepository postRepository;
   private final UserRepository userRepository;
 
@@ -38,4 +46,21 @@ public class CommentService {
         .build();
   }
 
+  /**
+   * 댓글 조회.
+   */
+  public PageResponseDto<CommentResponseDto> getCommentList(int page, int size, long postId) {
+
+    if (!postRepository.existsById(postId)) {
+      throw new CommonException(ErrorEnum.POST_NOT_FOUND);
+    }
+
+    Pageable pageRequest = PageRequest.of(page, size);
+    PageImpl<CommentResponseDto> commentPage = commentDslRepository
+        .getCommentList(pageRequest, postId);
+
+    return PageResponseDto.<CommentResponseDto>builder()
+        .page(commentPage)
+        .build();
+  }
 }

@@ -5,7 +5,7 @@
 @content = 힘내세요!
 @edit_content = edit 힘내세요!dd
 
-@post_id = 24
+@post-id = 24
 
 ####  로그인
 #POST http://localhost:8080/v1/login
@@ -24,7 +24,7 @@
 
 
 ### 댓글 작성
-POST http://localhost:8080/posts/{{post_id}}/comments
+POST http://localhost:8080/posts/{{post-id}}/comments
 #Authorization:{{Authorization}}
 Content-Type: application/json
 
@@ -35,7 +35,7 @@ Content-Type: application/json
 
 
 ### 댓글 수정
-PUT http://localhost:8080/posts/1/comment/2
+PUT http://localhost:8080/posts/{{post-id}}}/comments/2
 Authorization:{{Authorization}}
 Content-Type: application/json
 
@@ -45,25 +45,17 @@ Content-Type: application/json
 
 
 ### 댓글 삭제
-DELETE http://localhost:8080/posts/1/comment/2
+DELETE http://localhost:8080/posts/{{post-id}}/comments/2
 Authorization:{{Authorization}}
 Content-Type: application/json
 
 
 
-### 단권 댓글 조회
-GET http://localhost:8080/posts/1/comment/2
+### 댓글 조회
+GET http://localhost:8080/posts/{{post-id}}/comments?page=0
 
 
 
 
 
-### 특정 글에 있는 댓글 조회(페이징, 생성 내림차순)
-GET http://localhost:8080/posts/1/comment?page=1
 
-
-
-
-### 특정 글에 있는 댓글 조회(페이징, 생성 내림차순)
-GET http://localhost:8080/posts/1/comment/likes?page=0&size=3
-Authorization:{{Authorization}}
