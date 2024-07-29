@@ -4,6 +4,7 @@ import com.sparta.restplaceforj.common.CommonResponse;
 import com.sparta.restplaceforj.common.ResponseEnum;
 import com.sparta.restplaceforj.dto.ColumnRequestDto;
 import com.sparta.restplaceforj.dto.ColumnResponseDto;
+import com.sparta.restplaceforj.dto.PlanResponseDto;
 import com.sparta.restplaceforj.entity.Column;
 import com.sparta.restplaceforj.service.ColumnService;
 import jakarta.validation.Valid;
