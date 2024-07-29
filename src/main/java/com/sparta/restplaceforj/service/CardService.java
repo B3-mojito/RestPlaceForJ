@@ -8,6 +8,7 @@ import com.sparta.restplaceforj.entity.Column;
 import com.sparta.restplaceforj.repository.CardRepository;
 import com.sparta.restplaceforj.repository.ColumnRepository;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -70,11 +71,11 @@ public class CardService {
     if (cardUpdateRequestDto.getPlaceName() != null) {
       placeName = cardUpdateRequestDto.getPlaceName();
     }
-    LocalDateTime startedAt = card.getStartedAt();
+    LocalTime startedAt = card.getStartedAt();
     if (cardUpdateRequestDto.getStartedAt() != null) {
       startedAt = cardUpdateRequestDto.getStartedAt();
     }
-    LocalDateTime endedAt = card.getEndedAt();
+    LocalTime endedAt = card.getEndedAt();
     if (cardUpdateRequestDto.getEndedAt() != null) {
       endedAt = cardUpdateRequestDto.getEndedAt();
     }
