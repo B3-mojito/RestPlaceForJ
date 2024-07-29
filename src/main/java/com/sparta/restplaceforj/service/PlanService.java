@@ -2,7 +2,6 @@ package com.sparta.restplaceforj.service;
 
 import com.sparta.restplaceforj.dto.PlanRequestDto;
 import com.sparta.restplaceforj.dto.PlanResponseDto;
-import com.sparta.restplaceforj.entity.Column;
 import com.sparta.restplaceforj.entity.Plan;
 import com.sparta.restplaceforj.exception.CommonException;
 import com.sparta.restplaceforj.exception.ErrorEnum;
