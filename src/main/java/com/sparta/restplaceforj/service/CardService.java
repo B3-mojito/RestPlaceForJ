@@ -105,21 +105,6 @@ public class CardService {
    */
   public List<CardResponseDto> getCardList(Long columId) {
     Column column = columnRepository.findByIdOrThrow(columId);
-//    List<Card> cards = cardRepository.findAllByColumn(column);
-//
-//    List<CardResponseDto> items = new ArrayList<>(cards.size());
-//    for (Card card : cards) {
-//      CardResponseDto item = CardResponseDto.builder()
-//          .title(card.getTitle())
-//          .address(card.getAddress())
-//          .placeName(card.getPlaceName())
-//          .memo(card.getMemo())
-//          .build();
-//
-//      items.add(item);
-//    }
-//
-//    return items;
 
     return cardRepository.findAllByColumn(column);
   }
