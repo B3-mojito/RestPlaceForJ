@@ -11,6 +11,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Entity
@@ -29,6 +30,10 @@ public class User {
   private String picture;
   @Enumerated(value = EnumType.STRING)
   private UserStatus userStatus;
+  @Enumerated(EnumType.STRING)
+  private UserRole userRole;
+  @Setter
+  private String refreshToken;
 
   @Builder
   public User(String nickname, String name, String email, String password) {
@@ -36,5 +41,10 @@ public class User {
     this.name = name;
     this.email = email;
     this.password = password;
+    this.userRole = UserRole.USER;
+  }
+
+  public boolean validateRefreshToken(String refreshToken) {
+    return this.refreshToken != null && this.refreshToken.equals(refreshToken);
   }
 }
