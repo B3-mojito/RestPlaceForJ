@@ -8,6 +8,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CommonException extends RuntimeException {
 
-  private final Response response;
+    private final Response response;
 
 }

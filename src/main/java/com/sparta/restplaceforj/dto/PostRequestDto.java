@@ -6,11 +6,11 @@ import lombok.Getter;
 @Getter
 public class PostRequestDto {
 
-  private String title;
+    private String title;
 
-  private String content;
+    private String content;
 
-  private String address;
+    private String address;
 
-  private ThemaEnum themaEnum;
+    private ThemaEnum themaEnum;
 }

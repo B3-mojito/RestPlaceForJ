@@ -15,27 +15,27 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class PostService {
 
-  private final PostRepository postRepository;
+    private final PostRepository postRepository;
 
-  @Transactional
-  public PostResponseDto createPost(PostRequestDto postRequestDto) {
+    @Transactional
+    public PostResponseDto createPost(PostRequestDto postRequestDto) {
 
-    Post post = postRepository.save(
-        Post.builder()
-            .requestDto(postRequestDto)
-            .build());
+        Post post = postRepository.save(
+                Post.builder()
+                        .requestDto(postRequestDto)
+                        .build());
 
-    Post savedPost = postRepository.save(post);
+        Post savedPost = postRepository.save(post);
 
-    postRepository.findById(6L).orElseThrow(
-        () -> new CommonException(ErrorEnum.POST_NOT_FOUND)
-    );
+        postRepository.findById(6L).orElseThrow(
+                () -> new CommonException(ErrorEnum.POST_NOT_FOUND)
+        );
 
-    return new PostResponseDto(savedPost);
-  }
+        return new PostResponseDto(savedPost);
+    }
 
-  @Transactional
-  public void deletePost(long postId) {
-    postRepository.deleteById(postId);
-  }
+    @Transactional
+    public void deletePost(long postId) {
+        postRepository.deleteById(postId);
+    }
 }

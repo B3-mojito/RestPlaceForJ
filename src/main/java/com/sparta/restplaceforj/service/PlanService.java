@@ -17,24 +17,24 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class PlanService {
 
-  private final PlanRepository planRepository;
-  private final CoworkerRepository coworkerRepository;
-  private final UserRepository userRepository;
+    private final PlanRepository planRepository;
+    private final CoworkerRepository coworkerRepository;
+    private final UserRepository userRepository;
 
-  /**
-   * 플랜 생성 메서드
-   *
-   * @param planRequestDto
-   * @return PlanResponseDto
-   */
+    /**
+     * 플랜 생성 메서드
+     *
+     * @param planRequestDto
+     * @return PlanResponseDto
+     */
 
-  @Transactional
-  public PlanResponseDto createPlan(PlanRequestDto planRequestDto) {
+    @Transactional
+    public PlanResponseDto createPlan(PlanRequestDto planRequestDto) {
 
-    Plan plan = Plan.builder()
-        .title(planRequestDto.getTitle())
-        .build();
-    planRepository.save(plan);
+        Plan plan = Plan.builder()
+                .title(planRequestDto.getTitle())
+                .build();
+        planRepository.save(plan);
 
       /*
        * 추후 유저 완성시 사용
@@ -43,42 +43,42 @@ public class PlanService {
        .user()
        .build());
       */
-    return PlanResponseDto.builder()
-        .plan(plan)
-        .build();
-  }
-
-  /**
-   * 플랜 수정 로직
-   *
-   * @param planId
-   * @param planRequestDto
-   * @return ColumnResponseDto
-   */
-  @Transactional
-  public PlanResponseDto updateColumn(Long planId, PlanRequestDto planRequestDto) {
-
-    Plan plan = planRepository.findByIdOrThrow(planId);
-
-    plan.updatePlan(planRequestDto);
-
-    return PlanResponseDto.builder()
-        .plan(plan)
-        .build();
-  }
-
-  /**
-   * 플랜 삭제 로직
-   *
-   * @param planId
-   */
-  @Transactional
-  public void deleteColumn(Long planId) {
-    if (!planRepository.existsById(planId)) {
-      throw new CommonException(ErrorEnum.PLAN_NOT_FOUND);
+        return PlanResponseDto.builder()
+                .plan(plan)
+                .build();
     }
-    planRepository.deleteById(planId);
-  }
+
+    /**
+     * 플랜 수정 로직
+     *
+     * @param planId
+     * @param planRequestDto
+     * @return ColumnResponseDto
+     */
+    @Transactional
+    public PlanResponseDto updateColumn(Long planId, PlanRequestDto planRequestDto) {
+
+        Plan plan = planRepository.findByIdOrThrow(planId);
+
+        plan.updatePlan(planRequestDto);
+
+        return PlanResponseDto.builder()
+                .plan(plan)
+                .build();
+    }
+
+    /**
+     * 플랜 삭제 로직
+     *
+     * @param planId
+     */
+    @Transactional
+    public void deleteColumn(Long planId) {
+        if (!planRepository.existsById(planId)) {
+            throw new CommonException(ErrorEnum.PLAN_NOT_FOUND);
+        }
+        planRepository.deleteById(planId);
+    }
 }
 
 

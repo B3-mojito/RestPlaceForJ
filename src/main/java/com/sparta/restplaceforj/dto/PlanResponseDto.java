@@ -8,10 +8,10 @@ import lombok.Getter;
 @Getter
 public class PlanResponseDto {
 
-  private final String title;
+    private final String title;
 
-  @Builder
-  public PlanResponseDto(Plan plan) {
-    this.title = plan.getTitle();
-  }
+    @Builder
+    public PlanResponseDto(Plan plan) {
+        this.title = plan.getTitle();
+    }
 }

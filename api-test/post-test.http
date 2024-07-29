@@ -18,7 +18,7 @@ Content-Type: application/json
 }
 
 > {%
-  client.global.set("Authorization", response.headers.valueOf("Authorization"));
+    client.global.set("Authorization", response.headers.valueOf("Authorization"));
 %}
 
 

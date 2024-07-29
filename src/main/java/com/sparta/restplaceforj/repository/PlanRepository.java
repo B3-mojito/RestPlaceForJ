@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PlanRepository extends JpaRepository<Plan, Long> {
 
-  default Plan findByIdOrThrow(Long id) {
-    return findById(id).orElseThrow(() -> new CommonException(ErrorEnum.PLAN_NOT_FOUND));
-  }
+    default Plan findByIdOrThrow(Long id) {
+        return findById(id).orElseThrow(() -> new CommonException(ErrorEnum.PLAN_NOT_FOUND));
+    }
 }

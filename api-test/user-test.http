@@ -20,11 +20,11 @@ Content-Type: application/json
 }
 
 > {%
-  client.global.set("Authorization", response.headers.valueOf("Authorization"));
-  client.log("Authorization: " + response.headers.valueOf("Authorization"));
+    client.global.set("Authorization", response.headers.valueOf("Authorization"));
+    client.log("Authorization: " + response.headers.valueOf("Authorization"));
 
-  client.global.set("RefreshToken", response.headers.valueOf("RefreshToken"));
-  client.log("RefreshToken: " + response.headers.valueOf("RefreshToken"));
+    client.global.set("RefreshToken", response.headers.valueOf("RefreshToken"));
+    client.log("RefreshToken: " + response.headers.valueOf("RefreshToken"));
 %}
 
 ### 로그아웃
@@ -34,6 +34,6 @@ RefreshToekn: {{RefreshToken}}
 
 
 > {%
-  client.global.clear("Authorization");
-  client.global.clear("RefreshToken");
+    client.global.clear("Authorization");
+    client.global.clear("RefreshToken");
 %}
