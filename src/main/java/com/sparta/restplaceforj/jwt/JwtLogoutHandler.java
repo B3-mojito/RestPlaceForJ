@@ -31,11 +31,11 @@ public class JwtLogoutHandler implements LogoutHandler, LogoutSuccessHandler {
     String accessTokenValue = jwtUtil.getAccessTokenFromHeader(request);
     String refreshTokenValue = jwtUtil.getRefreshTokenFromHeader(request);
 
-        // 유저를 찾고, 유저의 refreshToken을 null로 set
-        String email = jwtUtil.getUserInfoFromToken(refreshTokenValue).getSubject();
-        User findUser = userRepository.findByEmailOrThrow(email);
-        findUser.setRefreshToken(null);
-        userRepository.save(findUser);
+    // 유저를 찾고, 유저의 refreshToken을 null로 set
+    String email = jwtUtil.getUserInfoFromToken(refreshTokenValue).getSubject();
+    User findUser = userRepository.findByEmailOrThrow(email);
+    findUser.setRefreshToken(null);
+    userRepository.save(findUser);
 
     // SecurityContextHolder 초기화
     SecurityContextHolder.clearContext();
