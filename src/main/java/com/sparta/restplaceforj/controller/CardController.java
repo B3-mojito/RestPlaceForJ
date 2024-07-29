@@ -5,10 +5,9 @@ import com.sparta.restplaceforj.common.ResponseEnum;
 import com.sparta.restplaceforj.dto.CardRequestDto;
 import com.sparta.restplaceforj.dto.CardResponseDto;
 import com.sparta.restplaceforj.dto.CardUpdateRequestDto;
-import com.sparta.restplaceforj.repository.CardRepository;
 import com.sparta.restplaceforj.service.CardService;
+import jakarta.validation.Valid;
 import java.util.List;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,24 +26,21 @@ public class CardController {
    * @param cardRequestDto
    * @return CommonResponse
    */
-  @PostMapping("")
+  @PostMapping
   public ResponseEntity<CommonResponse<CardResponseDto>> createCard(
 
-      @RequestParam(value = "column-id") Long columnId,
-      @RequestBody CardRequestDto cardRequestDto) {
+      @RequestParam("column-id") Long columnId,
+      @RequestBody @Valid CardRequestDto cardRequestDto) {
 
-    CardResponseDto responseDto = cardService.createCard(
+    CardResponseDto cardResponseDto = cardService.createCard(
         columnId,
-        cardRequestDto.getTitle(),
-        cardRequestDto.getAddress(),
-        cardRequestDto.getPlaceName(),
-        cardRequestDto.getMemo()
+        cardRequestDto
     );
 
     return ResponseEntity.ok(
         CommonResponse.<CardResponseDto>builder()
             .response(ResponseEnum.CREATE_CARD)
-            .data(responseDto)
+            .data(cardResponseDto)
             .build()
     );
   }
@@ -58,13 +54,15 @@ public class CardController {
    */
   @PatchMapping("/{card-id}")
   public ResponseEntity<CommonResponse<CardResponseDto>> updateCard(
-      @RequestParam(value = "card-id") Long cardId,
-      @RequestBody CardUpdateRequestDto cardUpdateRequestDto) {
+      @RequestParam("card-id") Long cardId,
+      @RequestBody @Valid CardUpdateRequestDto cardUpdateRequestDto) {
+
+    CardResponseDto cardResponseDto = cardService.updateCard(cardId, cardUpdateRequestDto);
 
     return ResponseEntity.ok(
         CommonResponse.<CardResponseDto>builder()
             .response(ResponseEnum.UPDATE_CARD)
-            .data(cardService.updateCard(cardId, cardUpdateRequestDto))
+            .data(cardResponseDto)
             .build()
     );
   }
@@ -75,14 +73,14 @@ public class CardController {
    * @param columnId
    * @return ResponseEntity
    */
-  @GetMapping("")
-  public ResponseEntity<CommonResponse<List<CardResponseDto>>> findAllCards(
-      @RequestParam(value = "column-id") Long columnId) {
+  @GetMapping
+  public ResponseEntity<CommonResponse<List<CardResponseDto>>> getCardList(
+      @RequestParam("column-id") Long columnId) {
 
     return ResponseEntity.ok(
         CommonResponse.<List<CardResponseDto>>builder()
             .response(ResponseEnum.FIND_CARD)
-            .data(cardService.findAllCards(columnId))
+            .data(cardService.getCardList(columnId))
             .build());
 
   }
@@ -94,13 +92,13 @@ public class CardController {
    * @return ResponseEntity
    */
   @GetMapping("/{card-id}")
-  public ResponseEntity<CommonResponse<CardResponseDto>> findOneCard(
-      @PathVariable(value = "card-id") Long cardId) {
+  public ResponseEntity<CommonResponse<CardResponseDto>> getCard(
+      @PathVariable("card-id") Long cardId) {
 
     return ResponseEntity.ok(
         CommonResponse.<CardResponseDto>builder()
             .response(ResponseEnum.FIND_CARD)
-            .data(cardService.findOneCard(cardId))
+            .data(cardService.getCard(cardId))
             .build());
   }
 
@@ -112,7 +110,7 @@ public class CardController {
    */
   @DeleteMapping("/{card-id}")
   public ResponseEntity<CommonResponse<CardResponseDto>> deleteCard(
-      @PathVariable(value = "card-id") Long cardId) {
+      @PathVariable("card-id") Long cardId) {
 
     cardService.deleteCard(cardId);
 

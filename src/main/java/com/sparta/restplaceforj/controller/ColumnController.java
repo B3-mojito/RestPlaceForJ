@@ -18,20 +18,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/v1/plans/{plan-id}/columns")
 public class ColumnController {
-    private final ColumnService columnService;
 
-    /**
-     * 컬럼 생성 controller
-     *
-     * @param planId
-     * @param columnRequestDto
-     * @return CommonResponse
-     */
-    @PostMapping
-    public ResponseEntity<CommonResponse<ColumnResponseDto>> createColumn(@PathVariable("plan-id") Long planId, @RequestBody ColumnRequestDto columnRequestDto) {
-        ColumnResponseDto responseDto = columnService.createColumn(planId, columnRequestDto.getTitle());
-        return ResponseEntity.ok(
-                CommonResponse.<ColumnResponseDto>builder().response(ResponseEnum.CREATE_COLUMN).data(responseDto).build()
-        );
-    }
+  private final ColumnService columnService;
+
+  /**
+   * 컬럼 생성 controller
+   *
+   * @param planId
+   * @param columnRequestDto
+   * @return CommonResponse
+   */
+  @PostMapping
+  public ResponseEntity<CommonResponse<ColumnResponseDto>> createColumn(
+      @PathVariable("plan-id") Long planId, @RequestBody ColumnRequestDto columnRequestDto) {
+    ColumnResponseDto responseDto = columnService.createColumn(planId, columnRequestDto.getTitle());
+    return ResponseEntity.ok(
+        CommonResponse.<ColumnResponseDto>builder().response(ResponseEnum.CREATE_COLUMN)
+            .data(responseDto).build()
+    );
+  }
 }

@@ -17,17 +17,12 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-/**
- * entity
- *
- * @param
- */
 @Getter
 @Entity
 @Table(name = "cards")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
-public class Card extends Timestamped {
+public class Card extends CardTimestamped {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,15 +38,22 @@ public class Card extends Timestamped {
 
   private String placeName;
 
+  private LocalDateTime startedAt;
+
+  private LocalDateTime endedAt;
+
   private String memo;
 
 
   @Builder
-  public Card(String title, String address, Column column, String placeName, String memo) {
+  public Card(String title, String address, Column column, String placeName,
+      LocalDateTime startedAt, LocalDateTime endedAt, String memo) {
     this.title = title;
     this.address = address;
     this.column = column;
     this.placeName = placeName;
+    this.startedAt = startedAt;
+    this.endedAt = endedAt;
     this.memo = memo;
   }
 
