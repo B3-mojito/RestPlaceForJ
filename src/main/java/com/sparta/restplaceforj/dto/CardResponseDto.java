@@ -1,12 +1,9 @@
 package com.sparta.restplaceforj.dto;
 
-import com.sparta.restplaceforj.entity.CardTimestamped;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-
-import java.time.LocalDate;
 
 @AllArgsConstructor
 @Getter

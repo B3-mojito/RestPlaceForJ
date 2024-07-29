@@ -7,7 +7,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.sql.Time;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,7 +24,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name = "cards")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
-public class Card extends CardTimestamped {
+public class Card {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,16 +40,16 @@ public class Card extends CardTimestamped {
 
   private String placeName;
 
-  private LocalDateTime startedAt;
+  private LocalTime startedAt;
 
-  private LocalDateTime endedAt;
+  private LocalTime endedAt;
 
   private String memo;
 
 
   @Builder
   public Card(String title, String address, Column column, String placeName,
-      LocalDateTime startedAt, LocalDateTime endedAt, String memo) {
+      LocalTime startedAt, LocalTime endedAt, String memo) {
     this.title = title;
     this.address = address;
     this.column = column;
@@ -56,5 +58,4 @@ public class Card extends CardTimestamped {
     this.endedAt = endedAt;
     this.memo = memo;
   }
-
 }
