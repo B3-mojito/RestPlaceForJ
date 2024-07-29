@@ -22,14 +22,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtUtil jwtUtil;
-    private final UserDetailsServiceImpl userDetailsService;
-    private final AuthenticationConfiguration authenticationConfiguration;
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-    private final JwtLogoutSuccessHandler jwtLogoutSuccessHandler;
-    private final JwtLogoutHandler jwtLogoutHandler;
-    private final UserRepository userRepository;
+  private final JwtUtil jwtUtil;
+  private final UserDetailsServiceImpl userDetailsService;
+  private final AuthenticationConfiguration authenticationConfiguration;
+  private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+  private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+  private final JwtLogoutHandler jwtLogoutHandler;
+  private final UserRepository userRepository;
 
     // 인증처리를 위한 authenticationManager 처리 : username~Token 설정
     @Bean
@@ -78,15 +77,15 @@ public class SecurityConfig {
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 
-        // 로그아웃
-        // Spring Security 자체의 Logout 기능: 세션 무효화, 쿠키 삭제, SecurityContextHolder 클리어
-        http.logout(logout ->
-                logout.logoutUrl("/v1/users/logout")
-                        //세션 무효화, 인증 토큰 삭제
-                        .addLogoutHandler(jwtLogoutHandler)
-                        //로그아웃 성공
-                        .logoutSuccessHandler(jwtLogoutSuccessHandler)
-        );
+    // 로그아웃
+    // Spring Security 자체의 Logout 기능: 세션 무효화, 쿠키 삭제, SecurityContextHolder 클리어
+    http.logout(logout ->
+        logout.logoutUrl("/v1/users/logout")
+            //세션 무효화, 인증 토큰 삭제
+            .addLogoutHandler(jwtLogoutHandler)
+            //로그아웃 성공
+            .logoutSuccessHandler(jwtLogoutHandler)
+    );
 
         // 필터 순서 설정 : 인가 필터 > 인증 필터 > Username ~ 필터
         http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
