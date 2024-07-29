@@ -2,7 +2,7 @@ package com.sparta.restplaceforj.controller;
 
 import com.sparta.restplaceforj.common.CommonResponse;
 import com.sparta.restplaceforj.common.ResponseEnum;
-import com.sparta.restplaceforj.dto.PostPageResponseDto;
+import com.sparta.restplaceforj.dto.PostPlaceResponseDto;
 import com.sparta.restplaceforj.dto.PostRequestDto;
 import com.sparta.restplaceforj.dto.PostResponseDto;
 import com.sparta.restplaceforj.service.PostService;
@@ -59,16 +59,19 @@ public class PostController {
     );
   }
 
+  /**
+   * 글의 placeName 의로 그룹화하여 갯수가 많은순으로 정렬 api.
+   */
   @GetMapping("/place-name")
-  public ResponseEntity<CommonResponse<PostPageResponseDto>> getPostList(
+  public ResponseEntity<CommonResponse<PostPlaceResponseDto>> getPlaceList(
       @RequestParam int page, @RequestParam(defaultValue = "5") int size,
-      @RequestParam("short-address") String shortAddress, @RequestParam String theme) {
+      @RequestParam String region, @RequestParam String theme) {
 
-    PostPageResponseDto postPageResponseDto = postService
-        .getPostList(page, size, shortAddress, theme);
+    PostPlaceResponseDto postPageResponseDto = postService
+        .getPlaceList(page, size, region, theme);
 
     return ResponseEntity.ok(
-        CommonResponse.<PostPageResponseDto>builder()
+        CommonResponse.<PostPlaceResponseDto>builder()
             .response(ResponseEnum.GET_POST_LIST)
             .data(postPageResponseDto)
             .build()
@@ -79,16 +82,16 @@ public class PostController {
    * 글을 조회하면 제목과 아이디만 반환.
    */
   @GetMapping
-  public ResponseEntity<CommonResponse<PostPageResponseDto>> getPostTitleList(
+  public ResponseEntity<CommonResponse<PostPlaceResponseDto>> getPostTitleList(
       @RequestParam int page, @RequestParam(defaultValue = "5") int size,
       @RequestParam("place-name") String placeName, @RequestParam(required = false) String q,
       @RequestParam(value = "sort-by", defaultValue = "createAt") String sortBy) {
 
-    PostPageResponseDto postPageResponseDto = postService
+    PostPlaceResponseDto postPageResponseDto = postService
         .getPostTitleList(page, size, placeName, sortBy, q);
 
     return ResponseEntity.ok(
-        CommonResponse.<PostPageResponseDto>builder()
+        CommonResponse.<PostPlaceResponseDto>builder()
             .response(ResponseEnum.GET_POST_ID_TITLE_LIST)
             .data(postPageResponseDto)
             .build()
