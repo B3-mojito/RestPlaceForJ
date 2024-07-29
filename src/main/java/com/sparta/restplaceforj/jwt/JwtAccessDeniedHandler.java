@@ -21,7 +21,8 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
                        HttpServletResponse response,
                        AccessDeniedException accessDeniedException) throws IOException {
 
-        response.setCharacterEncoding("utf-8");
-        response.sendError(ErrorEnum.INVALID_ACCESS.getHttpStatus().value(), ErrorEnum.INVALID_ACCESS.getMessage());
-    }
+    response.setCharacterEncoding("utf-8");
+    response.sendError(ErrorEnum.INVALID_ACCESS.getHttpStatus().value(),
+        ErrorEnum.INVALID_ACCESS.getMessage());
+  }
 }
