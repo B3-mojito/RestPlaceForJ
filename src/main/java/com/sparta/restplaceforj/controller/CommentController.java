@@ -8,6 +8,7 @@ import com.sparta.restplaceforj.dto.PageResponseDto;
 import com.sparta.restplaceforj.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,7 +58,8 @@ public class CommentController {
         CommonResponse.<PageResponseDto<CommentResponseDto>>builder()
             .response(ResponseEnum.GET_COMMENT_LIST)
             .data(commentResponseDtoList)
-            .build());
+            .build()
+    );
   }
 
   /**
@@ -75,6 +77,17 @@ public class CommentController {
         CommonResponse.<CommentResponseDto>builder()
             .response(ResponseEnum.UPDATE_COMMENT)
             .data(commentResponseDto)
+            .build()
+    );
+  }
+
+  @DeleteMapping("/{comment-id}")
+  public ResponseEntity<CommonResponse> deleteComment(@PathVariable("comment-id") long commentId) {
+    commentService.deleteComment(commentId);
+
+    return ResponseEntity.ok(
+        CommonResponse.builder()
+            .response(ResponseEnum.DELETE_COMMENT)
             .build()
     );
   }

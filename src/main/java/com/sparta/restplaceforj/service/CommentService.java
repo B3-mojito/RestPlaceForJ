@@ -77,4 +77,13 @@ public class CommentService {
         .build();
   }
 
+  /**
+   * 댓글 삭제.
+   */
+  @Transactional
+  public void deleteComment(long commentId) {
+    Comment comment = commentRepository.findByIdOrThrow(commentId);
+    commentRepository.deleteById(commentId);
+  }
+
 }
