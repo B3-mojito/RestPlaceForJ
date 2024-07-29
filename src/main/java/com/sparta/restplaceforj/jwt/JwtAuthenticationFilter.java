@@ -9,12 +9,16 @@ import com.sparta.restplaceforj.security.UserDetailsImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.transaction.Transactional;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
@@ -40,22 +44,23 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             LoginRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(),
                     LoginRequestDto.class);
 
-            return getAuthenticationManager().authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            requestDto.getEmail(),
-                            requestDto.getPassword(),
-                            null
-                    )
-            );
-        } catch (IOException e) {
-            log.error("로그인 시도(attemptAuthentication) 예외 발생 {}", e.getMessage());
-            throw new RuntimeException(e.getMessage());
-        }
+      List<GrantedAuthority> authorities = Collections.singletonList(
+          new SimpleGrantedAuthority(UserRole.USER.toString()));
+      return getAuthenticationManager().authenticate(
+          new UsernamePasswordAuthenticationToken(
+              requestDto.getEmail(),
+              requestDto.getPassword(),
+              authorities
+          )
+      );
+    } catch (IOException e) {
+      log.error("로그인 시도(attemptAuthentication) 예외 발생 {}", e.getMessage());
+      throw new RuntimeException(e.getMessage());
     }
+  }
 
     // 로그인 성공시 처리
     @Override
-    @Transactional
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                             FilterChain chain, Authentication authResult) throws IOException {
         log.info("로그인 성공 및 jwt 생성");
