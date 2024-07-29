@@ -8,6 +8,7 @@ import com.sparta.restplaceforj.exception.CommonException;
 import com.sparta.restplaceforj.exception.ErrorEnum;
 import com.sparta.restplaceforj.repository.ColumnRepository;
 import com.sparta.restplaceforj.repository.PlanRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +44,7 @@ public class ColumnService {
     columnRepository.save(columns);
 
     return ColumnResponseDto.builder()
+        .id(columns.getId())
         .title(columns.getTitle())
         .date(columns.getDate())
         .build();
@@ -69,6 +71,7 @@ public class ColumnService {
     columnRepository.save(column);
 
     return ColumnResponseDto.builder()
+        .id(columnId)
         .title(column.getTitle())
         .date(column.getDate())
         .build();
@@ -89,5 +92,17 @@ public class ColumnService {
     }
 
     columnRepository.delete(column);
+  }
+
+  /**
+   * 컬럼 다건 조회 로직
+   *
+   * @param planId
+   */
+  @Transactional
+  public List<ColumnResponseDto> getColumnList(Long planId) {
+    Plan plan = planRepository.findByIdOrThrow(planId);
+
+    return columnRepository.findByPlanId(plan.getId());
   }
 }

@@ -1,6 +1,6 @@
 ## Variables
 # @no-cookie-jar
-@plan_id = 1
+@plan_id = 2
 @column_id = 1
 @title = 하이요s5
 @title2 = 수정ㅎ
@@ -30,4 +30,9 @@ Content-Type: application/json
 ### 컬럼 삭제
 # @no-cookie-jar
 DELETE http://localhost:8080/v1/plans/{{plan_id}}/columns/{{column_id}}
+Content-Type: application/json
+
+### 컬럼 전체 조회
+# @no-cookie-jar
+GET http://localhost:8080/v1/plans/{{plan_id}}/columns
 Content-Type: application/json

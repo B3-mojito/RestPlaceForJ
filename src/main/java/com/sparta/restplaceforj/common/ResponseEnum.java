@@ -27,10 +27,16 @@ public enum ResponseEnum implements Response {
 
   //like
 
+  //plan
+  CREATE_PLAN("플랜 생성 완료", HttpStatus.CREATED),
+  UPDATE_PLAN("플랜 수정 완료", HttpStatus.OK),
+  DELETE_PLAN("플랜 삭제 완료", HttpStatus.OK),
+
   //column
   CREATE_COLUMN("컬럼 생성 완료", HttpStatus.CREATED),
   UPDATE_COLUMN("컬럼 수정 완료", HttpStatus.OK),
-  DELETE_COLUMN("컬럼 삭제 완료", HttpStatus.OK);
+  DELETE_COLUMN("컬럼 삭제 완료", HttpStatus.OK),
+  GET_COLUMN("컬럼 조회 성공", HttpStatus.OK);
 
   private final String message;
   private final HttpStatus httpStatus;
