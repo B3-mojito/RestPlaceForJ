@@ -7,7 +7,6 @@ import com.sparta.restplaceforj.dto.PlanRequestDto;
 import com.sparta.restplaceforj.dto.PlanResponseDto;
 import com.sparta.restplaceforj.service.PlanService;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
