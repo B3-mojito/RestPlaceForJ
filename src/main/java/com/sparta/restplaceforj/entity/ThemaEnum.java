@@ -1,9 +1,9 @@
 package com.sparta.restplaceforj.entity;
 
 public enum ThemaEnum {
-    HEALING,
-    ENERGETIC
+  HEALING,
+  ENERGETIC
 
-    // 등 나중에 추가
+  // 등 나중에 추가
 
 }
