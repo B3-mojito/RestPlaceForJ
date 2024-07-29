@@ -1,6 +1,16 @@
 package com.sparta.restplaceforj.entity;
 
-import jakarta.persistence.*;
+import com.sparta.restplaceforj.dto.ColumnRequestDto;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.util.Date;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

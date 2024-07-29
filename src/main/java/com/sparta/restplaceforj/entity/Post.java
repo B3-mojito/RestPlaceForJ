@@ -14,12 +14,14 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
+@DynamicUpdate
 @Getter
 @Table(name = "posts")
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Post {
+public class Post extends Timestamped {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,12 +36,14 @@ public class Post {
 
   private String address;
 
-  private long like_count;
+  private String placeName;
 
-  private long view_count;
+  private long likesCount;
+
+  private long viewsCount;
 
   @Enumerated(EnumType.STRING)
-  private ThemaEnum themeEnum;
+  private ThemeEnum themeEnum;
 
   @Builder
   public Post(PostRequestDto requestDto, User user) {
@@ -47,6 +51,25 @@ public class Post {
     this.title = requestDto.getTitle();
     this.content = requestDto.getContent();
     this.address = requestDto.getAddress();
-    this.themeEnum = requestDto.getThemaEnum();
+    this.themeEnum = ThemeEnum.valueOf(requestDto.getTheme());
+    this.placeName = requestDto.getPlaceName();
+  }
+
+  public void update(PostRequestDto postRequestDto) {
+    if (postRequestDto.getTitle() != null) {
+      title = postRequestDto.getTitle();
+    }
+    if (postRequestDto.getContent() != null) {
+      content = postRequestDto.getContent();
+    }
+    if (postRequestDto.getAddress() != null) {
+      address = postRequestDto.getAddress();
+    }
+    if (postRequestDto.getTheme() != null) {
+      themeEnum = ThemeEnum.valueOf(postRequestDto.getTheme());
+    }
+    if (postRequestDto.getPlaceName() != null) {
+      placeName = postRequestDto.getPlaceName();
+    }
   }
 }

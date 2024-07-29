@@ -10,10 +10,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ColumnRepository extends JpaRepository<Column, Long> {
 
-  default Column findByIdOrThrow(Long id) {
-    return findById(id).orElseThrow(() -> new CommonException(ErrorEnum.CARD_NOT_FOUND));
-  }
-
   default Column findByIdOrThrow(Long columnId) {
     return findById(columnId).orElseThrow(() -> new CommonException(ErrorEnum.COLUMN_NOT_FOUND));
   }

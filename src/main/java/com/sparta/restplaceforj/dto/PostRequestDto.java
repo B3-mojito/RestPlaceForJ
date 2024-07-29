@@ -1,6 +1,5 @@
 package com.sparta.restplaceforj.dto;
 
-import com.sparta.restplaceforj.entity.ThemaEnum;
 import lombok.Getter;
 
 @Getter
@@ -12,5 +11,7 @@ public class PostRequestDto {
 
   private String address;
 
-  private ThemaEnum themaEnum;
+  private String theme;
+
+  private String placeName;
 }

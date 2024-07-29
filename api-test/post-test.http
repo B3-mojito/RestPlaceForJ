@@ -2,35 +2,81 @@
 @username = test
 @password = test
 
-@title = title
+@post-id = 6
+
+@title = title12
 @content = content
-@edit_content = edit content
+@theme = THRILL
+@address = 서울 동작구 사당동 134-1
+@place-name = 이수역꼬치거리
+
+@edit_title = title12 edit
+@edit_content = content edit
+@edit_theme = CAMPING
+@edit_address = 서울 동작구 사당동 134-1 edit
+@edit_place-name = 이수역꼬치거리 edit
+
+@region = 서울 동작구
+@sort-by = viewsCount
+@q =
 
 
-
-###  로그인
-POST http://localhost:8080/v1/login
-Content-Type: application/json
-
-{
-  "username": "{{username}}",
-  "password": "{{password}}"
-}
-
-> {%
-  client.global.set("Authorization", response.headers.valueOf("Authorization"));
-%}
+#
+####  로그인
+#POST http://localhost:8080/v1/login
+#Content-Type: application/json
+#
+#{
+#  "username": "{{username}}",
+#  "password": "{{password}}"
+#}
+#
+#> {%
+#  client.global.set("Authorization", response.headers.valueOf("Authorization"));
+#%}
 
 
 
 
 ### 글 작성
-POST http://localhost:8080/posts
-Authorization:{{Authorization}}
+POST http://localhost:8080/v1/posts
+#Authorization:{{Authorization}}
 Content-Type: application/json
 
 {
   "title": "{{title}}",
-  "content": "{{content}}"
+  "content": "{{content}}",
+  "theme" : "{{theme}}",
+  "address" : "{{address}}",
+  "placeName" : "{{place-name}}"
 }
 
+
+
+### 글 삭제
+DELETE localhost:8080/v1/posts/{{post-id}}
+
+
+### 글 조회
+GET localhost:8080/v1/posts/place-name
+    ?page=1&theme={{theme}}&region={{region}}
+
+
+### 글 아이디 제목 조회
+GET localhost:8080/v1/posts
+    ?place-name={{place-name}}&page=1&q={{q}}&sort-by={{sort-by}}
+
+
+### 글 수정
+PATCH localhost:8080/v1/posts/{{post-id}}
+Content-Type: application/json
+
+{
+  "title": "{{edit_title}}",
+  "content": "{{edit_content}}"
+}
+
+
+
+### 글 단권 조회
+GET localhost:8080/v1/posts/{{post-id}}

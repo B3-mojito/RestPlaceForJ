@@ -1,5 +1,6 @@
 package com.sparta.restplaceforj.service;
 
+import com.sparta.restplaceforj.dto.ColumnResponseDto;
 import com.sparta.restplaceforj.dto.PlanRequestDto;
 import com.sparta.restplaceforj.dto.PlanResponseDto;
 import com.sparta.restplaceforj.entity.Column;
@@ -9,6 +10,7 @@ import com.sparta.restplaceforj.exception.ErrorEnum;
 import com.sparta.restplaceforj.repository.CoworkerRepository;
 import com.sparta.restplaceforj.repository.PlanRepository;
 import com.sparta.restplaceforj.repository.UserRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +47,8 @@ public class PlanService {
        .build());
       */
     return PlanResponseDto.builder()
-        .plan(plan)
+
+        .title(plan.getTitle())
         .build();
   }
 
@@ -64,7 +67,8 @@ public class PlanService {
     plan.updatePlan(planRequestDto);
 
     return PlanResponseDto.builder()
-        .plan(plan)
+        .id(plan.getId())
+        .title(plan.getTitle())
         .build();
   }
 
@@ -80,6 +84,37 @@ public class PlanService {
     }
     planRepository.deleteById(planId);
   }
+
+/*
+  /**
+   * 컬럼 다건 조회 로직
+   *
+   * @param planId
+
+  @Transactional
+  public List<PlanResponseDto> getPlanList(Long planId) {
+    if (!planRepository.existsById(planId)) {
+      throw new CommonException(ErrorEnum.PLAN_NOT_FOUND);
+    }
+    return coworkerRepository.findAllByUserId(planId);
+  }
+*/
+
+
+  /**
+   * 플랜 조회 로직
+   *
+   * @param planId
+   * @return ColumnResponseDto
+   */
+  @Transactional
+  public PlanResponseDto getPlan(Long planId) {
+
+    Plan plan = planRepository.findByIdOrThrow(planId);
+
+    return PlanResponseDto.builder()
+        .id(plan.getId())
+        .title(plan.getTitle())
+        .build();
+  }
 }
-
-
