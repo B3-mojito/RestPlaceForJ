@@ -14,7 +14,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
+@DynamicUpdate
 @Getter
 @Table(name = "posts")
 @Entity
@@ -51,5 +53,23 @@ public class Post extends Timestamped {
     this.address = requestDto.getAddress();
     this.themeEnum = ThemeEnum.valueOf(requestDto.getTheme());
     this.placeName = requestDto.getPlaceName();
+  }
+
+  public void update(PostRequestDto postRequestDto) {
+    if (postRequestDto.getTitle() != null) {
+      title = postRequestDto.getTitle();
+    }
+    if (postRequestDto.getContent() != null) {
+      content = postRequestDto.getContent();
+    }
+    if (postRequestDto.getAddress() != null) {
+      address = postRequestDto.getAddress();
+    }
+    if (postRequestDto.getTheme() != null) {
+      themeEnum = ThemeEnum.valueOf(postRequestDto.getTheme());
+    }
+    if (postRequestDto.getPlaceName() != null) {
+      placeName = postRequestDto.getPlaceName();
+    }
   }
 }
