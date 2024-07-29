@@ -9,10 +9,12 @@ import lombok.Getter;
 @Getter
 public class PlanResponseDto {
 
+  private final Long id;
   private final String title;
 
   @Builder
-  public PlanResponseDto(Plan plan) {
-    this.title = plan.getTitle();
+  public PlanResponseDto(Long id, String title) {
+    this.id = id;
+    this.title = title;
   }
 }
