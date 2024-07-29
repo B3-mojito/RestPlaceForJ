@@ -8,28 +8,34 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.List;
-
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "columns")
 public class Column {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private String title;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Plan plan;
+  private String title;
 
-    @Builder
-    public Column(String title, Plan plan){
-        this.title = title;
-        this.plan = plan;
-    }
+  private LocalDate date;
 
+  @OnDelete(action = OnDeleteAction.CASCADE)
+  @ManyToOne(fetch = FetchType.LAZY)
+  private Plan plan;
+
+  @Builder
+  public Column(String title, LocalDate date, Plan plan) {
+    this.title = title;
+    this.date = date;
+    this.plan = plan;
+  }
+
+  public void updateColumn(ColumnRequestDto columnRequestDto) {
+    this.title = columnRequestDto.getTitle();
+    this.date = columnRequestDto.getDate();
+  }
 }
 

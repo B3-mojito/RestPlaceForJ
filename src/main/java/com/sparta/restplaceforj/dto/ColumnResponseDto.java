@@ -1,12 +1,22 @@
 package com.sparta.restplaceforj.dto;
 
-import lombok.AllArgsConstructor;
+
+import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
 
-@AllArgsConstructor
+
 @Getter
-@Builder
 public class ColumnResponseDto {
-    private String title;
+
+  private final Long id;
+  private final String title;
+  private final LocalDate date;
+
+  @Builder
+  public ColumnResponseDto(Long id, String title, LocalDate date) {
+    this.id = id;
+    this.title = title;
+    this.date = date;
+  }
 }
