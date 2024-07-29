@@ -7,6 +7,7 @@ import com.sparta.restplaceforj.entity.Card;
 import com.sparta.restplaceforj.entity.Column;
 import com.sparta.restplaceforj.repository.CardRepository;
 import com.sparta.restplaceforj.repository.ColumnRepository;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
