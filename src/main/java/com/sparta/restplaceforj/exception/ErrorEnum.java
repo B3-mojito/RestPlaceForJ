@@ -17,6 +17,7 @@ public enum ErrorEnum implements Response {
   DUPLICATED_NICKNAME("해당 닉네임을 가진 유저가 존재합니다.", HttpStatus.CONFLICT),
   INVALID_ACCESS("권한이 없습니다.", HttpStatus.UNAUTHORIZED),
   FORBIDDEN_ACCESS("접근할 수 없습니다.", HttpStatus.FORBIDDEN),
+  BAD_PASSWORD("잘못된 비밀번호입니다.", HttpStatus.BAD_REQUEST),
 
   //auth error
   INVALID_JWT("유효하지 않는 JWT 입니다.", HttpStatus.UNAUTHORIZED),

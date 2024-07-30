@@ -45,4 +45,10 @@ public class User extends Timestamped {
 
     }
 
+    public void updateProfile(String nickname, String bio, String profilePicture, String password) {
+        this.nickname = nickname;
+        this.bio = bio;
+        this.profilePicture = profilePicture;
+        this.password = password;
+    }
 }

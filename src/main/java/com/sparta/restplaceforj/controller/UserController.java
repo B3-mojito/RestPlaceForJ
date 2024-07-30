@@ -5,10 +5,13 @@ import com.sparta.restplaceforj.common.ResponseEnum;
 import com.sparta.restplaceforj.dto.UserProfileResponseDto;
 import com.sparta.restplaceforj.dto.UserSignUpRequestDto;
 import com.sparta.restplaceforj.dto.UserSignUpResponseDto;
+import com.sparta.restplaceforj.dto.UserUpdateRequestDto;
+import com.sparta.restplaceforj.security.UserDetailsImpl;
 import com.sparta.restplaceforj.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -52,4 +55,25 @@ public class UserController {
                         .build()
         );
     }
+
+    /**
+     * 유저 프로필 수정 controller
+     *
+     * @param userUpdateRequestDto
+     * @param userDetails
+     * @return CommonResponse
+     */
+    @PatchMapping
+    public ResponseEntity<CommonResponse<UserProfileResponseDto>> updateUserProfile(
+            @RequestBody @Valid UserUpdateRequestDto userUpdateRequestDto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        UserProfileResponseDto userProfileResponseDto = userService.updateUserProfile(userUpdateRequestDto, userDetails.getUser());
+        return ResponseEntity.ok(
+                CommonResponse.<UserProfileResponseDto>builder()
+                        .response(ResponseEnum.UPDATE_USER_PROFILE)
+                        .data(userProfileResponseDto)
+                        .build()
+        );
+    }
+
 }
