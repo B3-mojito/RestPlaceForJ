@@ -8,7 +8,10 @@ import com.sparta.restplaceforj.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
@@ -34,18 +37,5 @@ public class UserController {
                         .build()
         );
     }
-
-    @GetMapping
-    public ResponseEntity<CommonResponse<UserSignUpResponseDto>> getUserProfile(
-            @RequestBody @Valid UserSignUpRequestDto userSignUprequestDto) {
-        UserSignUpResponseDto userSignUpresponseDto = userService.createUser(userSignUprequestDto);
-        return ResponseEntity.ok(
-                CommonResponse.<UserSignUpResponseDto>builder()
-                        .response(ResponseEnum.CREATE_USER)
-                        .data(userSignUpresponseDto)
-                        .build()
-        );
-    }
-
 
 }
