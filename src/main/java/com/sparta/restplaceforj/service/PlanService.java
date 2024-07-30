@@ -1,6 +1,5 @@
 package com.sparta.restplaceforj.service;
 
-import com.sparta.restplaceforj.dto.ColumnResponseDto;
 import com.sparta.restplaceforj.dto.PlanRequestDto;
 import com.sparta.restplaceforj.dto.PlanResponseDto;
 import com.sparta.restplaceforj.entity.Column;
@@ -10,7 +9,6 @@ import com.sparta.restplaceforj.exception.ErrorEnum;
 import com.sparta.restplaceforj.repository.CoworkerRepository;
 import com.sparta.restplaceforj.repository.PlanRepository;
 import com.sparta.restplaceforj.repository.UserRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

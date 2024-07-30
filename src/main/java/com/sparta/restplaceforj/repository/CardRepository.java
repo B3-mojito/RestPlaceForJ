@@ -13,7 +13,7 @@ public interface CardRepository extends JpaRepository<Card, Long> {
   default Card findCardById(Long id) {
     return findById(id).orElseThrow(() -> new CommonException(ErrorEnum.CARD_NOT_FOUND));
   }
-  
+
   List<CardResponseDto> findAllByColumn(Column column);
 
 

@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-  @ExceptionHandler({CommonException.class})
-  public ResponseEntity<CommonResponse> illegalArgumentExceptionHandler(CommonException ex) {
-    return ResponseEntity.ok(
-        CommonResponse.builder()
-            .response(ex.getResponse()).build());
-  }
+    @ExceptionHandler({CommonException.class})
+    public ResponseEntity<CommonResponse> illegalArgumentExceptionHandler(CommonException ex) {
+        return ResponseEntity.ok(
+                CommonResponse.builder()
+                        .response(ex.getResponse()).build());
+    }
 }
 

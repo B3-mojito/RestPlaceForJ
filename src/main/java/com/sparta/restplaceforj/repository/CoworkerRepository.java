@@ -1,6 +1,5 @@
 package com.sparta.restplaceforj.repository;
 
-import com.sparta.restplaceforj.dto.PlanResponseDto;
 import com.sparta.restplaceforj.entity.Coworker;
 import com.sparta.restplaceforj.entity.Plan;
 import java.util.List;
