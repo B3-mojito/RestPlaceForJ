@@ -13,8 +13,10 @@ public enum ResponseEnum implements Response {
   UPDATE_CARD("카드 수정 완료", HttpStatus.OK),
   FIND_CARD("카드 조회 완료", HttpStatus.OK),
   DELETE_CARD("카트 삭제 완료", HttpStatus.OK),
+
   //user
   CREATE_USER("유저 생성 완료", HttpStatus.CREATED),
+  DELETE_USER("유저 탈퇴 완료", HttpStatus.OK),
 
 
   //post
@@ -30,6 +32,7 @@ public enum ResponseEnum implements Response {
   GET_COMMENT_LIST("댓글 조회 완료", HttpStatus.OK),
   UPDATE_COMMENT("댓글 수정 완료", HttpStatus.OK),
   DELETE_COMMENT("댓글 삭제 완료", HttpStatus.OK),
+  //comment
 
   //like
 
