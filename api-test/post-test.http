@@ -1,6 +1,5 @@
 ## Variables
-@username = test
-@password = test
+
 
 @post-id = 6
 
@@ -22,25 +21,29 @@
 
 
 #
-####  로그인
-#POST http://localhost:8080/v1/login
-#Content-Type: application/json
-#
-#{
-#  "username": "{{username}}",
-#  "password": "{{password}}"
-#}
-#
-#> {%
-#  client.global.set("Authorization", response.headers.valueOf("Authorization"));
-#%}
+### 로그인
+POST http://localhost:8080/v1/users/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+> {%
+  client.global.set("Authorization", response.headers.valueOf("Authorization"));
+  client.log("Authorization: " + response.headers.valueOf("Authorization"));
+
+  client.global.set("RefreshToken", response.headers.valueOf("RefreshToken"));
+  client.log("RefreshToken: " + response.headers.valueOf("RefreshToken"));
+%}
 
 
 
 
 ### 글 작성
 POST http://localhost:8080/v1/posts
-#Authorization:{{Authorization}}
+Authorization:{{Authorization}}
 Content-Type: application/json
 
 {

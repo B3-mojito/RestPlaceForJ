@@ -32,6 +32,11 @@ public enum ResponseEnum implements Response {
   DELETE_COMMENT("댓글 삭제 완료", HttpStatus.OK),
 
   //like
+  CREATE_POST_LIKE_COMMENT("글 좋아요 생성 완료", HttpStatus.CREATED),
+  DELETE_POST_LIKE_COMMENT("글 좋아요 삭제 완료", HttpStatus.CREATED),
+  CREATE_COMMENT_LIKE_COMMENT("댓글 좋아요 생성 완료", HttpStatus.OK),
+  DELETE_COMMENT_LIKE_COMMENT("댓글 좋아요 삭제 완료", HttpStatus.OK),
+
 
   //plan
   CREATE_PLAN("플랜 생성 완료", HttpStatus.CREATED),

@@ -72,4 +72,12 @@ public class Post extends Timestamped {
       placeName = postRequestDto.getPlaceName();
     }
   }
+
+  public void removeLikeFromPost() {
+    likesCount--;
+  }
+
+  public void addLikeToPost() {
+    likesCount++;
+  }
 }
