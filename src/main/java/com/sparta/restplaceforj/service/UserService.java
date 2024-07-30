@@ -1,5 +1,6 @@
 package com.sparta.restplaceforj.service;
 
+import com.sparta.restplaceforj.dto.UserProfileResponseDto;
 import com.sparta.restplaceforj.dto.UserSignUpRequestDto;
 import com.sparta.restplaceforj.dto.UserSignUpResponseDto;
 import com.sparta.restplaceforj.entity.User;
@@ -46,5 +47,17 @@ public class UserService {
                 .build();
 
         return userSignUpresponseDto;
+    }
+
+    public UserProfileResponseDto getUserProfile(Long userId) {
+        User user = userRepository.findByIdOrThrow(userId);
+        UserProfileResponseDto userProfileResponseDto = UserProfileResponseDto.builder()
+                .profilePicture(user.getProfilePicture())
+                .bio(user.getBio())
+                .nickname(user.getNickname())
+                .build();
+
+        return userProfileResponseDto;
+
     }
 }

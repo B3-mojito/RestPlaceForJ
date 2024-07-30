@@ -2,16 +2,14 @@ package com.sparta.restplaceforj.controller;
 
 import com.sparta.restplaceforj.common.CommonResponse;
 import com.sparta.restplaceforj.common.ResponseEnum;
+import com.sparta.restplaceforj.dto.UserProfileResponseDto;
 import com.sparta.restplaceforj.dto.UserSignUpRequestDto;
 import com.sparta.restplaceforj.dto.UserSignUpResponseDto;
 import com.sparta.restplaceforj.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -38,4 +36,20 @@ public class UserController {
         );
     }
 
+    /**
+     * 유저 프로필 조회 controller
+     *
+     * @param userId
+     * @return CommonResponse
+     */
+    @GetMapping("/{user-id}")
+    public ResponseEntity<CommonResponse<UserProfileResponseDto>> getUserProfile(@PathVariable("user-id") Long userId) {
+        UserProfileResponseDto userProfileResponseDto = userService.getUserProfile(userId);
+        return ResponseEntity.ok(
+                CommonResponse.<UserProfileResponseDto>builder()
+                        .response(ResponseEnum.GET_USER_PROFILE)
+                        .data(userProfileResponseDto)
+                        .build()
+        );
+    }
 }

@@ -15,6 +15,7 @@ public enum ResponseEnum implements Response {
   DELETE_CARD("카트 삭제 완료", HttpStatus.OK),
   //user
   CREATE_USER("유저 생성 완료", HttpStatus.CREATED),
+  GET_USER_PROFILE("유저 프로필 조회 완료", HttpStatus.OK),
 
 
   //post

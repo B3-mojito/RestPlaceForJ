@@ -23,7 +23,7 @@ public class User extends Timestamped {
 
     private String bio;
 
-    private String picture;
+    private String profilePicture;
 
     @Enumerated(value = EnumType.STRING)
     private UserStatus userStatus;
@@ -41,6 +41,7 @@ public class User extends Timestamped {
         this.email = email;
         this.password = password;
         this.userRole = UserRole.USER;
+        this.userStatus = UserStatus.ACTIVE;
 
     }
 
