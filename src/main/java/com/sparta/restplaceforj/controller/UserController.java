@@ -3,6 +3,7 @@ package com.sparta.restplaceforj.controller;
 import com.sparta.restplaceforj.common.CommonResponse;
 import com.sparta.restplaceforj.common.ResponseEnum;
 import com.sparta.restplaceforj.dto.UserResignRequestDto;
+import com.sparta.restplaceforj.dto.UserResignResponseDto;
 import com.sparta.restplaceforj.dto.UserSignUpRequestDto;
 import com.sparta.restplaceforj.dto.UserSignUpResponseDto;
 import com.sparta.restplaceforj.security.UserDetailsImpl;
@@ -47,15 +48,15 @@ public class UserController {
      * @return CommonResponse
      */
   @DeleteMapping
-  public ResponseEntity<CommonResponse> deleteUser(
+  public ResponseEntity<CommonResponse<UserResignResponseDto>> deleteUser(
           @AuthenticationPrincipal UserDetailsImpl userDetails,
           @RequestBody UserResignRequestDto userResignRequestDto) {
-    userService.deleteUser(userDetails.getUser(), userResignRequestDto.getPassword());
+      UserResignResponseDto userResignResponseDto = userService.deleteUser(userDetails.getUser(), userResignRequestDto.getPassword());
 
     return ResponseEntity.ok(
-            CommonResponse.builder()
+            CommonResponse.<UserResignResponseDto>builder()
                     .response(ResponseEnum.DELETE_USER)
-                    .data(null)
+                    .data(userResignResponseDto)
                     .build()
     );
 

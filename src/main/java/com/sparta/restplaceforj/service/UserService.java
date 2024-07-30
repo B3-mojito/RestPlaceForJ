@@ -1,5 +1,6 @@
 package com.sparta.restplaceforj.service;
 
+import com.sparta.restplaceforj.dto.UserResignResponseDto;
 import com.sparta.restplaceforj.dto.UserSignUpRequestDto;
 import com.sparta.restplaceforj.dto.UserSignUpResponseDto;
 import com.sparta.restplaceforj.entity.User;
@@ -50,7 +51,7 @@ public class UserService {
   }
 
     @Transactional
-    public void deleteUser(User user, String password){
+    public UserResignResponseDto deleteUser(User user, String password){
       if(user.getUserStatus() == UserStatus.DEACTIVATE) {
           throw new CommonException(ErrorEnum.BAD_REQUEST);
       }
@@ -61,6 +62,13 @@ public class UserService {
 
       user.setUserStatus(UserStatus.DEACTIVATE);
       userRepository.save(user);
+
+        UserResignResponseDto userResignResponseDto = UserResignResponseDto.builder()
+                .email(user.getEmail())
+                .role(user.getUserRole())
+                .build();
+
+      return userResignResponseDto;
     }
 
 }
