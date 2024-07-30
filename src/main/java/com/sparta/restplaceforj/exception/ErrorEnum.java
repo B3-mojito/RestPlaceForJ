@@ -32,6 +32,7 @@ public enum ErrorEnum implements Response {
   COMMENT_NOT_FOUND("댓글을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   //like
   POST_LIKE_NOT_FOUND("글 좋아요를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+  COMMENT_LIKE_NOT_FOUND("댓글 좋아요를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
 
   //Plan error

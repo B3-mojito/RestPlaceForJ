@@ -10,8 +10,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PostLikeRepository extends JpaRepository<PostLike, Long> {
 
-  boolean existsByUserAndPost(User user, Post post);
-
   Optional<PostLike> findByPostAndUser(Post post, User user);
 
   default PostLike findByPostLikeOrThrow(Post post, User user) {
@@ -20,4 +18,5 @@ public interface PostLikeRepository extends JpaRepository<PostLike, Long> {
     );
   }
 
+  boolean existsByPostAndUser(Post post, User user);
 }

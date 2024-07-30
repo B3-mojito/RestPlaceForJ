@@ -3,6 +3,7 @@ package com.sparta.restplaceforj.controller;
 
 import com.sparta.restplaceforj.common.CommonResponse;
 import com.sparta.restplaceforj.common.ResponseEnum;
+import com.sparta.restplaceforj.dto.CommentLikeResponseDto;
 import com.sparta.restplaceforj.dto.PostLikeResponseDto;
 import com.sparta.restplaceforj.security.UserDetailsImpl;
 import com.sparta.restplaceforj.service.LikeService;
@@ -21,7 +22,7 @@ public class LikeController {
   private final LikeService likeService;
 
   /**
-   * 좋아요 증가&감소.
+   * 글 좋아요 증가&감소.
    */
   @PostMapping("/posts/{post-id}/likes")
   public ResponseEntity<CommonResponse> createPostLike(
@@ -36,6 +37,26 @@ public class LikeController {
     return ResponseEntity.ok(CommonResponse.builder()
         .response(responseEnum)
         .data(optionalPostLikeResponseDto.orElse(null))
+        .build());
+  }
+
+  /**
+   * 글 좋아요 증가&감소.
+   */
+  @PostMapping("/comments/{comment-id}/likes")
+  public ResponseEntity<CommonResponse> createCommentLike(
+      @PathVariable("comment-id") long commentId,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    Optional<CommentLikeResponseDto> optionalCommentLikeResponseDto = likeService
+        .createCommentLike(commentId, userDetails.getUser());
+
+    ResponseEnum responseEnum =
+        optionalCommentLikeResponseDto.isPresent() ? ResponseEnum.CREATE_COMMENT_LIKE_COMMENT
+            : ResponseEnum.DELETE_COMMENT_LIKE_COMMENT;
+
+    return ResponseEntity.ok(CommonResponse.builder()
+        .response(responseEnum)
+        .data(optionalCommentLikeResponseDto.orElse(null))
         .build());
   }
 }
