@@ -28,6 +28,11 @@ public enum ResponseEnum implements Response {
   UPDATE_POST("글 수정 완료", HttpStatus.OK),
 
   //comment
+  CREATE_COMMENT("댓글 생성 완료", HttpStatus.CREATED),
+  GET_COMMENT_LIST("댓글 조회 완료", HttpStatus.OK),
+  UPDATE_COMMENT("댓글 수정 완료", HttpStatus.OK),
+  DELETE_COMMENT("댓글 삭제 완료", HttpStatus.OK),
+  //comment
 
   //like
 
@@ -43,8 +48,8 @@ public enum ResponseEnum implements Response {
   DELETE_COLUMN("컬럼 삭제 완료", HttpStatus.OK),
   GET_COLUMN("컬럼 조회 성공", HttpStatus.OK);
 
-    private final String message;
-    private final HttpStatus httpStatus;
+  private final String message;
+  private final HttpStatus httpStatus;
 
 
 }

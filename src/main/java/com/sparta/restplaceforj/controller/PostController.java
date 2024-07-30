@@ -2,7 +2,7 @@ package com.sparta.restplaceforj.controller;
 
 import com.sparta.restplaceforj.common.CommonResponse;
 import com.sparta.restplaceforj.common.ResponseEnum;
-import com.sparta.restplaceforj.dto.PostPlaceResponseDto;
+import com.sparta.restplaceforj.dto.PageResponseDto;
 import com.sparta.restplaceforj.dto.PostRequestDto;
 import com.sparta.restplaceforj.dto.PostResponseDto;
 import com.sparta.restplaceforj.service.PostService;
@@ -63,15 +63,15 @@ public class PostController {
    * 글의 placeName 의로 그룹화하여 갯수가 많은순으로 정렬 api.
    */
   @GetMapping("/place-name")
-  public ResponseEntity<CommonResponse<PostPlaceResponseDto>> getPlaceList(
+  public ResponseEntity<CommonResponse<PageResponseDto>> getPlaceList(
       @RequestParam int page, @RequestParam(defaultValue = "5") int size,
       @RequestParam String region, @RequestParam String theme) {
 
-    PostPlaceResponseDto postPageResponseDto = postService
+    PageResponseDto postPageResponseDto = postService
         .getPlaceList(page, size, region, theme);
 
     return ResponseEntity.ok(
-        CommonResponse.<PostPlaceResponseDto>builder()
+        CommonResponse.<PageResponseDto>builder()
             .response(ResponseEnum.GET_POST_LIST)
             .data(postPageResponseDto)
             .build()
@@ -82,16 +82,16 @@ public class PostController {
    * 글을 조회하면 제목과 아이디만 반환.
    */
   @GetMapping
-  public ResponseEntity<CommonResponse<PostPlaceResponseDto>> getPostTitleList(
+  public ResponseEntity<CommonResponse<PageResponseDto>> getPostTitleList(
       @RequestParam int page, @RequestParam(defaultValue = "5") int size,
       @RequestParam("place-name") String placeName, @RequestParam(required = false) String q,
       @RequestParam(value = "sort-by", defaultValue = "createAt") String sortBy) {
 
-    PostPlaceResponseDto postPageResponseDto = postService
+    PageResponseDto postPageResponseDto = postService
         .getPostTitleList(page, size, placeName, sortBy, q);
 
     return ResponseEntity.ok(
-        CommonResponse.<PostPlaceResponseDto>builder()
+        CommonResponse.<PageResponseDto>builder()
             .response(ResponseEnum.GET_POST_ID_TITLE_LIST)
             .data(postPageResponseDto)
             .build()

@@ -1,7 +1,7 @@
 package com.sparta.restplaceforj.service;
 
+import com.sparta.restplaceforj.dto.PageResponseDto;
 import com.sparta.restplaceforj.dto.PostIdTitleDto;
-import com.sparta.restplaceforj.dto.PostPlaceResponseDto;
 import com.sparta.restplaceforj.dto.PostRequestDto;
 import com.sparta.restplaceforj.dto.PostResponseDto;
 import com.sparta.restplaceforj.entity.Post;
@@ -59,7 +59,7 @@ public class PostService {
     postRepository.deleteById(postId);
   }
 
-  public PostPlaceResponseDto getPlaceList(
+  public PageResponseDto getPlaceList(
       int page, int size, String region, String theme) {
 
     ThemeEnum themeEnum = ThemeEnum.valueOf(theme);
@@ -68,7 +68,7 @@ public class PostService {
     PageImpl<String> placeNameList = postDslRepository
         .getPostListGroupByPlaceName(pageRequest, region, themeEnum);
 
-    return PostPlaceResponseDto.<String>builder()
+    return PageResponseDto.<String>builder()
         .page(placeNameList)
         .build();
   }
@@ -76,7 +76,7 @@ public class PostService {
   /**
    * 글 아이디와 제목만 조회.
    */
-  public PostPlaceResponseDto getPostTitleList(
+  public PageResponseDto getPostTitleList(
       int page, int size, String placeName, String sortBy, String q) {
 
     if (!(sortBy.equals("createAt") || sortBy.equals("viewsCount") ||
@@ -91,7 +91,7 @@ public class PostService {
     PageImpl<PostIdTitleDto> postIdTitleList = postDslRepository
         .getPostTitleList(pageRequest, placeName, q);
 
-    return PostPlaceResponseDto.<PostIdTitleDto>builder()
+    return PageResponseDto.<PostIdTitleDto>builder()
         .page(postIdTitleList)
         .build();
   }
