@@ -16,35 +16,35 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserService {
 
-  private final UserRepository userRepository;
-  private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-  @Transactional
-  public UserSignUpResponseDto createUser(UserSignUpRequestDto userSignUprequestDto) {
+    @Transactional
+    public UserSignUpResponseDto createUser(UserSignUpRequestDto userSignUprequestDto) {
 
-    if (userRepository.existsByEmail(userSignUprequestDto.getEmail())) {
-      throw new CommonException(ErrorEnum.DUPLICATED_EMAIL);
+        if (userRepository.existsByEmail(userSignUprequestDto.getEmail())) {
+            throw new CommonException(ErrorEnum.DUPLICATED_EMAIL);
+        }
+
+        if (userRepository.existsByNickname(userSignUprequestDto.getNickname())) {
+            throw new CommonException(ErrorEnum.DUPLICATED_NICKNAME);
+        }
+
+        String password = passwordEncoder.encode(userSignUprequestDto.getPassword());
+
+        User user = User.builder()
+                .email(userSignUprequestDto.getEmail())
+                .password(password)
+                .name(userSignUprequestDto.getName())
+                .nickname(userSignUprequestDto.getNickname())
+                .build();
+
+        userRepository.save(user);
+
+        UserSignUpResponseDto userSignUpresponseDto = UserSignUpResponseDto.builder()
+                .user(user)
+                .build();
+
+        return userSignUpresponseDto;
     }
-
-    if (userRepository.existsByNickname(userSignUprequestDto.getNickname())) {
-      throw new CommonException(ErrorEnum.DUPLICATED_NICKNAME);
-    }
-
-    String password = passwordEncoder.encode(userSignUprequestDto.getPassword());
-
-    User user = User.builder()
-        .email(userSignUprequestDto.getEmail())
-        .password(password)
-        .name(userSignUprequestDto.getName())
-        .nickname(userSignUprequestDto.getNickname())
-        .build();
-
-    userRepository.save(user);
-
-    UserSignUpResponseDto userSignUpresponseDto = UserSignUpResponseDto.builder()
-        .user(user)
-        .build();
-
-    return userSignUpresponseDto;
-  }
 }
