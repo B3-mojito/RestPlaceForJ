@@ -43,8 +43,8 @@ public enum ResponseEnum implements Response {
   DELETE_COLUMN("컬럼 삭제 완료", HttpStatus.OK),
   GET_COLUMN("컬럼 조회 성공", HttpStatus.OK);
 
-  private final String message;
-  private final HttpStatus httpStatus;
+    private final String message;
+    private final HttpStatus httpStatus;
 
 
 }
