@@ -39,6 +39,13 @@ public class UserController {
         );
     }
 
+
+    /**
+     * 유저 생성 controller
+     *
+     * @param userResignRequestDto
+     * @return CommonResponse
+     */
   @DeleteMapping
   public ResponseEntity<CommonResponse> deleteUser(
           @AuthenticationPrincipal UserDetailsImpl userDetails,
