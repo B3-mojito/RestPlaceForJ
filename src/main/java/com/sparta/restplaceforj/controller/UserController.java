@@ -2,16 +2,17 @@ package com.sparta.restplaceforj.controller;
 
 import com.sparta.restplaceforj.common.CommonResponse;
 import com.sparta.restplaceforj.common.ResponseEnum;
+import com.sparta.restplaceforj.dto.UserResignRequestDto;
 import com.sparta.restplaceforj.dto.UserSignUpRequestDto;
 import com.sparta.restplaceforj.dto.UserSignUpResponseDto;
+import com.sparta.restplaceforj.security.UserDetailsImpl;
 import com.sparta.restplaceforj.service.UserService;
 import jakarta.validation.Valid;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -36,6 +37,21 @@ public class UserController {
             .data(userSignUpresponseDto)
             .build()
     );
+  }
+
+  @DeleteMapping
+  public ResponseEntity<CommonResponse> deleteUser(
+          @AuthenticationPrincipal UserDetailsImpl userDetails,
+          @RequestBody UserResignRequestDto userResignRequestDto) {
+    userService.deleteUser(userDetails.getUser(), userResignRequestDto.getPassword());
+
+    return ResponseEntity.ok(
+            CommonResponse.builder()
+                    .response(ResponseEnum.DELETE_USER)
+                    .data(null)
+                    .build()
+    );
+
   }
 
 }

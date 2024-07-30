@@ -16,6 +16,7 @@ public enum ResponseEnum implements Response {
 
   //user
   CREATE_USER("유저 생성 완료", HttpStatus.CREATED),
+  DELETE_USER("유저 탈퇴 완료", HttpStatus.OK),
 
 
   //post

@@ -7,10 +7,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -29,6 +28,7 @@ public class User {
   private String picture;
   @Enumerated(value = EnumType.STRING)
   private UserStatus userStatus;
+  private LocalDateTime authUserAt;
 
   @Builder
   public User(String nickname, String name, String email, String password) {
@@ -36,5 +36,10 @@ public class User {
     this.name = name;
     this.email = email;
     this.password = password;
+  }
+
+  public void setUserStatus(UserStatus userStatus) {
+    this.userStatus = userStatus;
+    this.authUserAt = LocalDateTime.now();
   }
 }
