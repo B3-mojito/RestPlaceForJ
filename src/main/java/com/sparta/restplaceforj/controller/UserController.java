@@ -19,25 +19,25 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/users")
 public class UserController {
 
-  private final UserService userService;
+    private final UserService userService;
 
-  /**
-   * 유저 생성 controller
-   *
-   * @param userSignUprequestDto
-   * @return CommonResponse
-   */
-  @PostMapping
-  public ResponseEntity<CommonResponse<UserSignUpResponseDto>> createUser(
-      @RequestBody @Valid UserSignUpRequestDto userSignUprequestDto) {
-    UserSignUpResponseDto userSignUpresponseDto = userService.createUser(userSignUprequestDto);
-    return ResponseEntity.ok(
-        CommonResponse.<UserSignUpResponseDto>builder()
-            .response(ResponseEnum.CREATE_USER)
-            .data(userSignUpresponseDto)
-            .build()
-    );
-  }
+    /**
+     * 유저 생성 controller
+     *
+     * @param userSignUprequestDto
+     * @return CommonResponse
+     */
+    @PostMapping
+    public ResponseEntity<CommonResponse<UserSignUpResponseDto>> createUser(
+            @RequestBody @Valid UserSignUpRequestDto userSignUprequestDto) {
+        UserSignUpResponseDto userSignUpresponseDto = userService.createUser(userSignUprequestDto);
+        return ResponseEntity.ok(
+                CommonResponse.<UserSignUpResponseDto>builder()
+                        .response(ResponseEnum.CREATE_USER)
+                        .data(userSignUpresponseDto)
+                        .build()
+        );
+    }
 
   @DeleteMapping
   public ResponseEntity<CommonResponse> deleteUser(

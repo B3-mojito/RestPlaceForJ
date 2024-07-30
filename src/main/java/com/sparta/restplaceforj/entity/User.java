@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class User extends Timestamped {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,16 +30,24 @@ public class User {
   private UserStatus userStatus;
   private LocalDateTime authUserAt;
 
-  @Builder
-  public User(String nickname, String name, String email, String password) {
-    this.nickname = nickname;
-    this.name = name;
-    this.email = email;
-    this.password = password;
-  }
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;
 
-  public void setUserStatus(UserStatus userStatus) {
-    this.userStatus = userStatus;
-    this.authUserAt = LocalDateTime.now();
-  }
+    @Setter
+    private String refreshToken;
+
+    @Builder
+    public User(String nickname, String name, String email, String password) {
+        this.nickname = nickname;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.userRole = UserRole.USER;
+        this.userStatus = UserStatus.ACTIVE;
+    }
+
+      public void setUserStatus(UserStatus userStatus) {
+        this.userStatus = userStatus;
+        this.authUserAt = LocalDateTime.now();
+    }
 }
