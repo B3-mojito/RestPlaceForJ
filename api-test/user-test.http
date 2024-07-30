@@ -37,3 +37,14 @@ RefreshToekn: {{RefreshToken}}
     client.global.clear("Authorization");
     client.global.clear("RefreshToken");
 %}
+
+### 유저 프로필 조회
+GET http://localhost:8080/v1/users/1
+Authorization: {{Authorization}}
+RefreshToekn: {{RefreshToken}}
+
+
+> {%
+    client.global.clear("Authorization");
+    client.global.clear("RefreshToken");
+%}
