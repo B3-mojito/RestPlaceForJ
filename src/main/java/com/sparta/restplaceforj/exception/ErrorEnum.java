@@ -30,6 +30,9 @@ public enum ErrorEnum implements Response {
 
   //comment
   COMMENT_NOT_FOUND("댓글을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+  //like
+  POST_LIKE_NOT_FOUND("글 좋아요를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+
 
   //Plan error
   PLAN_NOT_FOUND("플랜을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
@@ -39,7 +42,12 @@ public enum ErrorEnum implements Response {
 
 
   // Card errors
-  CARD_NOT_FOUND("카드를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+  CARD_NOT_FOUND("카드를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+
+
+  GLOBAL_ERROR("처리하지 않은 예외", HttpStatus.INTERNAL_SERVER_ERROR),
+  ;
+
 
   private final String message;
   private final HttpStatus httpStatus;
