@@ -12,13 +12,11 @@ import com.sparta.restplaceforj.entity.QPost;
 import com.sparta.restplaceforj.entity.ThemeEnum;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
-@Slf4j
 @RequiredArgsConstructor
 @Repository
 public class PostDslRepository {
@@ -36,7 +34,7 @@ public class PostDslRepository {
         .orderBy(post.count().desc())
         .groupBy(post.placeName);
 
-    long totalSize = query.fetchCount();
+    long totalSize = query.fetch().size();
     List<String> placeNameList = query.offset(pageable.getOffset())
         .limit(pageable.getPageSize())
         .fetch();
