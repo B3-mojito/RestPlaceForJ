@@ -2,10 +2,7 @@ package com.sparta.restplaceforj.controller;
 
 import com.sparta.restplaceforj.common.CommonResponse;
 import com.sparta.restplaceforj.common.ResponseEnum;
-import com.sparta.restplaceforj.dto.UserProfileResponseDto;
-import com.sparta.restplaceforj.dto.UserSignUpRequestDto;
-import com.sparta.restplaceforj.dto.UserSignUpResponseDto;
-import com.sparta.restplaceforj.dto.UserUpdateRequestDto;
+import com.sparta.restplaceforj.dto.*;
 import com.sparta.restplaceforj.security.UserDetailsImpl;
 import com.sparta.restplaceforj.service.UserService;
 import jakarta.validation.Valid;
@@ -13,6 +10,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -55,6 +56,29 @@ public class UserController {
                         .build()
         );
     }
+
+
+    /**
+     * 유저 프로필 사진 업로드 controller
+     *
+     * @param multipartFile
+     * @param userDetails
+     * @return CommonResponse
+     */
+    @PostMapping("/profileImage")
+    public ResponseEntity<CommonResponse<UpdateUserProfileImageResponseDto>> createUserProfileImage(
+            @RequestParam("images") MultipartFile multipartFile,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+        UpdateUserProfileImageResponseDto updateUserProfileImageResponseDto = userService.updateUserProfileImage(multipartFile, userDetails.getUser());
+        return ResponseEntity.ok(
+                CommonResponse.<UpdateUserProfileImageResponseDto>builder()
+                        .response(ResponseEnum.CREATE_USER_PROFILE_IMAGE)
+                        .data(updateUserProfileImageResponseDto)
+                        .build()
+        );
+    }
+
+
 
     /**
      * 유저 프로필 수정 controller

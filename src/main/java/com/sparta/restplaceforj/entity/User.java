@@ -23,6 +23,7 @@ public class User extends Timestamped {
 
     private String bio;
 
+    @Setter
     private String profilePicture;
 
     @Enumerated(value = EnumType.STRING)
@@ -45,10 +46,9 @@ public class User extends Timestamped {
 
     }
 
-    public void updateProfile(String nickname, String bio, String profilePicture, String password) {
+    public void updateProfile(String nickname, String bio, String password) {
         this.nickname = nickname;
         this.bio = bio;
-        this.profilePicture = profilePicture;
         this.password = password;
     }
 }

@@ -17,6 +17,7 @@ public enum ResponseEnum implements Response {
   CREATE_USER("유저 생성 완료", HttpStatus.CREATED),
   GET_USER_PROFILE("유저 프로필 조회 완료", HttpStatus.OK),
   UPDATE_USER_PROFILE("유저 프로필 수정 완료", HttpStatus.OK),
+  CREATE_USER_PROFILE_IMAGE("유저 프로필 업로드 완료", HttpStatus.CREATED),
 
 
   //post
