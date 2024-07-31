@@ -80,4 +80,8 @@ public class Post extends Timestamped {
   public void addLikeToPost() {
     likesCount++;
   }
+
+  public void addViewToPost() {
+    viewsCount++;
+  }
 }

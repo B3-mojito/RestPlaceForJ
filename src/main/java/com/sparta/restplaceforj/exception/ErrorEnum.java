@@ -28,6 +28,7 @@ public enum ErrorEnum implements Response {
   POST_NOT_FOUND("글를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   THEME_NOT_FOUND("테마를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   SORT_NOT_FOUND("정렬 불가능 합니다.", HttpStatus.NOT_FOUND),
+  POST_MISMATCH("작성자만 삭제 가능합니다.", HttpStatus.FORBIDDEN),
 
   //comment
   COMMENT_NOT_FOUND("댓글을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
