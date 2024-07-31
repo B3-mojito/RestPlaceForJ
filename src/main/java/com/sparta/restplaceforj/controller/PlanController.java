@@ -5,10 +5,13 @@ import com.sparta.restplaceforj.common.ResponseEnum;
 import com.sparta.restplaceforj.dto.ColumnResponseDto;
 import com.sparta.restplaceforj.dto.PlanRequestDto;
 import com.sparta.restplaceforj.dto.PlanResponseDto;
+import com.sparta.restplaceforj.security.UserDetailsImpl;
 import com.sparta.restplaceforj.service.PlanService;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -33,8 +37,9 @@ public class PlanController {
    */
   @PostMapping
   public ResponseEntity<CommonResponse<PlanResponseDto>> createPlan(
-      @RequestBody @Valid PlanRequestDto planRequestDto) {
-    PlanResponseDto responseDto = planService.createPlan(planRequestDto);
+      @RequestBody @Valid PlanRequestDto planRequestDto,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    PlanResponseDto responseDto = planService.createPlan(planRequestDto, userDetails.getUser());
     return ResponseEntity.ok(
         CommonResponse.<PlanResponseDto>builder()
             .response(ResponseEnum.CREATE_PLAN)
@@ -51,7 +56,7 @@ public class PlanController {
    * @return CommonResponse
    */
   @PatchMapping("/{plan-id}")
-  public ResponseEntity<CommonResponse<PlanResponseDto>> updateColumn(
+  public ResponseEntity<CommonResponse<PlanResponseDto>> updatePlan(
       @PathVariable("plan-id") Long planId,
       @RequestBody @Valid PlanRequestDto planRequestDto) {
     PlanResponseDto planResponseDto = planService
@@ -84,18 +89,20 @@ public class PlanController {
     );
   }
 
-/*
+
   /**
    * 플랜 다건 조회 controller
    *
-   * @param planId
+   * @param userId
+   * @param userDetails
    * @return CommonResponse
-
-  @GetMapping("{user-id}")
+   */
+  @GetMapping
   public ResponseEntity<CommonResponse<List<PlanResponseDto>>> getPlanList(
-      @RequestParam(value = "user-id") Long userId) {
+      @RequestParam(value = "user-id") Long userId,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
     List<PlanResponseDto> planResponseDto = planService
-        .getPlanList(planId);
+        .getPlanList(userDetails.getUser(), userId);
 
     return ResponseEntity.ok(
         CommonResponse.<List<PlanResponseDto>>builder()
@@ -104,7 +111,7 @@ public class PlanController {
             .build()
     );
   }
-*/
+
 
   /**
    * 플랜 조회 controller
