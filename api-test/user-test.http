@@ -38,6 +38,21 @@ RefreshToekn: {{RefreshToken}}
     client.global.clear("RefreshToken");
 %}
 
+### 회원 탈퇴
+DELETE http://localhost:8080/v1/users
+Content-Type: application/json
+Authorization: {{Authorization}}
+RefreshToekn: {{RefreshToken}}
+
+{
+  "password" : "{{password}}"
+}
+
+> {%
+    client.global.clear("Authorization");
+    client.global.clear("RefreshToken");
+%}
+
 ### 유저 프로필 조회
 GET http://localhost:8080/v1/users/1
 Authorization: {{Authorization}}

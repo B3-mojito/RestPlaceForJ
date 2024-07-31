@@ -1,8 +1,18 @@
 package com.sparta.restplaceforj.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.*;
 
+import java.time.LocalDateTime;
+import org.hibernate.annotations.DynamicUpdate;
+
+@DynamicUpdate
 @Getter
 @Entity
 @Table(name = "users")
@@ -29,6 +39,8 @@ public class User extends Timestamped {
     @Enumerated(value = EnumType.STRING)
     private UserStatus userStatus;
 
+    private LocalDateTime authUserAt;
+
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
@@ -43,9 +55,12 @@ public class User extends Timestamped {
         this.password = password;
         this.userRole = UserRole.USER;
         this.userStatus = UserStatus.ACTIVE;
-
     }
 
+      public void setUserStatus(UserStatus userStatus) {
+        this.userStatus = userStatus;
+        this.authUserAt = LocalDateTime.now();
+    }
     public void updateProfile(String nickname, String bio, String password) {
         this.nickname = nickname;
         this.bio = bio;
