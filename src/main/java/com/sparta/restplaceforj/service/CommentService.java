@@ -4,6 +4,7 @@ import com.sparta.restplaceforj.dto.CommentResponseDto;
 import com.sparta.restplaceforj.dto.PageResponseDto;
 import com.sparta.restplaceforj.entity.Comment;
 import com.sparta.restplaceforj.entity.Post;
+import com.sparta.restplaceforj.entity.User;
 import com.sparta.restplaceforj.exception.CommonException;
 import com.sparta.restplaceforj.exception.ErrorEnum;
 import com.sparta.restplaceforj.repository.CommentDslRepository;
@@ -28,14 +29,20 @@ public class CommentService {
   private final UserRepository userRepository;
 
   /**
-   * 댓글 생성.
+   * 댓글 생성
+   *
+   * @param postId  댓글 작성할 글
+   * @param content 작성 내용
+   * @param user    작성자
+   * @return CommentResponseDto : id, postId, content, likesCount
    */
   @Transactional
-  public CommentResponseDto createPost(long postId, String content) {
+  public CommentResponseDto createPost(long postId, String content, User user) {
 
     Post post = postRepository.findByIdOrThrow(postId);
     Comment comment = Comment.builder()
         .post(post)
+        .user(user)
         .content(content)
         .build();
 
@@ -47,7 +54,12 @@ public class CommentService {
   }
 
   /**
-   * 댓글 조회.
+   * 댓글 조회
+   *
+   * @param page   현재 페이지
+   * @param size   페이지 사이즈
+   * @param postId 조회할 글
+   * @return PageResponseDto : contentList, size, page, totalPages, totalElements
    */
   public PageResponseDto<CommentResponseDto> getCommentList(int page, int size, long postId) {
 
@@ -65,11 +77,19 @@ public class CommentService {
   }
 
   /**
-   * 댓글 수정.
+   * 댓글 수정 .
+   *
+   * @param commentId 수정할 댓글
+   * @param content   : 수정 내용
+   * @param userId    작성자만 수정
+   * @return : id, postId, content, likesCount
    */
   @Transactional
-  public CommentResponseDto updateComment(long commentId, String content) {
+  public CommentResponseDto updateComment(long commentId, String content, long userId) {
     Comment comment = commentRepository.findByIdOrThrow(commentId);
+    if (comment.getUser().getId() != userId) {
+      throw new CommonException(ErrorEnum.COMMENT_MISMATCH);
+    }
     comment.updateContent(content);
 
     return CommentResponseDto.builder()
@@ -78,11 +98,18 @@ public class CommentService {
   }
 
   /**
-   * 댓글 삭제.
+   * 댓글 삭제 .
+   *
+   * @param commentId 삭제할 댓글
+   * @param userId    작성자
    */
   @Transactional
-  public void deleteComment(long commentId) {
+  public void deleteComment(long commentId, long userId) {
     Comment comment = commentRepository.findByIdOrThrow(commentId);
+    if (comment.getUser().getId() != userId) {
+      throw new CommonException(ErrorEnum.COMMENT_MISMATCH);
+    }
+
     commentRepository.deleteById(commentId);
   }
 
