@@ -22,7 +22,11 @@ public class LikeController {
   private final LikeService likeService;
 
   /**
-   * 글 좋아요 증가&감소.
+   * 글 좋아요(2번은 삭제).
+   *
+   * @param postId      좋아요 할 글
+   * @param userDetails 좋아요 누른 사람
+   * @return optionalPostLikeResponseDto
    */
   @PostMapping("/posts/{post-id}/likes")
   public ResponseEntity<CommonResponse> createPostLike(
@@ -41,7 +45,11 @@ public class LikeController {
   }
 
   /**
-   * 글 좋아요 증가&감소.
+   * 댓글 좋아요 (2번 취소).
+   *
+   * @param commentId   좋아요 할 댓글
+   * @param userDetails 좋아요 누른 사람
+   * @return optionalCommentLikeResponseDto
    */
   @PostMapping("/comments/{comment-id}/likes")
   public ResponseEntity<CommonResponse> createCommentLike(

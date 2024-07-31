@@ -27,7 +27,11 @@ public class LikeService {
   private final CommentLikeRepository commentLikeRepository;
 
   /**
-   * 좋아요 증가&감소.
+   * 글 좋아요
+   *
+   * @param postId 좋아요받을 글 아이디
+   * @param user   좋아요를 하는 사람
+   * @return PostLikeResponseDto
    */
   public Optional<PostLikeResponseDto> createPostLike(long postId, User user) {
     Post post = postRepository.findByIdOrThrow(postId);
@@ -55,7 +59,11 @@ public class LikeService {
   }
 
   /**
-   * 댓글 좋아요 증가&감소.
+   * 댓글 좋아요.
+   *
+   * @param commentId 좋아요 받을 댓글
+   * @param user      좋아요할 사람
+   * @return CommentLikeResponseDto
    */
   public Optional<CommentLikeResponseDto> createCommentLike(long commentId, User user) {
     Comment comment = commentRepository.findByIdOrThrow(commentId);
