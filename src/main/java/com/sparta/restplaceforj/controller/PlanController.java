@@ -32,8 +32,8 @@ public class PlanController {
   /**
    * 플랜 생성 controller
    *
-   * @param planRequestDto
-   * @return CommonResponse
+   * @param planRequestDto : title
+   * @return PlanResponseDto : id, title
    */
   @PostMapping
   public ResponseEntity<CommonResponse<PlanResponseDto>> createPlan(
@@ -51,9 +51,9 @@ public class PlanController {
   /**
    * 플랜 수정 controller
    *
-   * @param planId
-   * @param planRequestDto
-   * @return CommonResponse
+   * @param planId         플랜아이디
+   * @param planRequestDto : title
+   * @return PlanResponseDto : id, title
    */
   @PatchMapping("/{plan-id}")
   public ResponseEntity<CommonResponse<PlanResponseDto>> updatePlan(
@@ -73,13 +73,15 @@ public class PlanController {
   /**
    * 플랜 삭제 controller
    *
-   * @param planId
-   * @return CommonResponse
+   * @param planId 플랜 아이디
+   * @return CommonResponse : null
    */
   @DeleteMapping("/{plan-id}")
   public ResponseEntity<CommonResponse<ColumnResponseDto>> deletePlan(
-      @PathVariable("plan-id") Long planId) {
-    planService.deleteColumn(planId);
+      @PathVariable("plan-id") Long planId,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+    planService.deleteColumn(planId, userDetails.getUser());
 
     return ResponseEntity.ok(
         CommonResponse.<ColumnResponseDto>builder()
@@ -93,9 +95,9 @@ public class PlanController {
   /**
    * 플랜 다건 조회 controller
    *
-   * @param userId
-   * @param userDetails
-   * @return CommonResponse
+   * @param userId      유저 아이디
+   * @param userDetails 유저 디테일
+   * @return PlanResponseDto : id, title
    */
   @GetMapping
   public ResponseEntity<CommonResponse<List<PlanResponseDto>>> getPlanList(
@@ -116,14 +118,16 @@ public class PlanController {
   /**
    * 플랜 조회 controller
    *
-   * @param planId
-   * @return CommonResponse
+   * @param planId      플랜 아이디
+   * @param userDetails 유저 디테일
+   * @return PlanResponseDto : id, title
    */
   @GetMapping("{plan-id}")
   public ResponseEntity<CommonResponse<PlanResponseDto>> getPlan(
-      @PathVariable("plan-id") Long planId) {
+      @PathVariable("plan-id") Long planId,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
     PlanResponseDto planResponseDto = planService
-        .getPlan(planId);
+        .getPlan(planId, userDetails.getUser());
 
     return ResponseEntity.ok(
         CommonResponse.<PlanResponseDto>builder()

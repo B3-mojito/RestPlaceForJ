@@ -36,19 +36,13 @@ public class PlanService {
   @Transactional
   public PlanResponseDto createPlan(PlanRequestDto planRequestDto, User user) {
 
-    Plan plan = Plan.builder()
-        .title(planRequestDto.getTitle())
-        .build();
+    Plan plan = Plan.builder().title(planRequestDto.getTitle()).build();
     planRepository.save(plan);
 
-    coworkerRepository.save(Coworker.builder()
-        .plan(plan)
-        .user(user)
-        .build());
+    coworkerRepository.save(Coworker.builder().plan(plan).user(user).build());
     return PlanResponseDto.builder()
 
-        .title(plan.getTitle())
-        .build();
+        .title(plan.getTitle()).build();
   }
 
   /**
@@ -65,16 +59,14 @@ public class PlanService {
 
     plan.updatePlan(planRequestDto);
 
-    return PlanResponseDto.builder()
-        .id(plan.getId())
-        .title(plan.getTitle())
-        .build();
+    return PlanResponseDto.builder().id(plan.getId()).title(plan.getTitle()).build();
   }
 
   /**
    * 플랜 삭제 로직
    *
    * @param planId 플랜아이디
+   * @param user   유저 객체
    */
   @Transactional
   public void deleteColumn(Long planId, User user) {
@@ -96,7 +88,6 @@ public class PlanService {
    * @param userId 유저 아이디
    * @return List<PlanResponseDto> : planId, title
    */
-  @Transactional
   public List<PlanResponseDto> getPlanList(User user, Long userId) {
     if (!userRepository.existsById(userId)) {
       throw new CommonException(ErrorEnum.USER_NOT_FOUND);
@@ -114,10 +105,8 @@ public class PlanService {
       if (plans == null && users == null) {
         throw new CommonException(ErrorEnum.PLAN_NOT_FOUND);
       }
-      PlanResponseDto planResponseDto = PlanResponseDto.builder()
-          .id(plans.getId())
-          .title(plans.getTitle())
-          .build();
+      PlanResponseDto planResponseDto = PlanResponseDto.builder().id(plans.getId())
+          .title(plans.getTitle()).build();
       planResponseDtos.add(planResponseDto);
     }
     return planResponseDtos;
@@ -128,16 +117,16 @@ public class PlanService {
    * 플랜 조회 로직
    *
    * @param planId 플랜 아이디
+   * @param user   유저 객체
    * @return PlanResponseDto : planId, title
    */
-  @Transactional
-  public PlanResponseDto getPlan(Long planId) {
+  public PlanResponseDto getPlan(Long planId, User user) {
 
     Plan plan = planRepository.findByIdOrThrow(planId);
-
-    return PlanResponseDto.builder()
-        .id(plan.getId())
-        .title(plan.getTitle())
-        .build();
+    Coworker coworker = coworkerRepository.findByPlanIdOrThrow(planId);
+    if (user.getId() != coworker.getUser().getId()) {
+      throw new CommonException(ErrorEnum.BAD_REQUEST);
+    }
+    return PlanResponseDto.builder().id(plan.getId()).title(plan.getTitle()).build();
   }
 }
