@@ -104,6 +104,9 @@ public class UserService {
         String bio = userUpdateRequestDto.getBio() != null ? userUpdateRequestDto.getBio() : user.getBio();
         String password = user.getPassword();
 
+        // 중복된 닉네임을 가진 사용자가 있을 시 예외처리
+        if(userRepository.existsByNickname(nickname)) throw new CommonException(ErrorEnum.DUPLICATED_NICKNAME);
+
         // 비밀번호 변경 로직
         if (!userUpdateRequestDto.getCurrentPassword().isEmpty()
                 && !userUpdateRequestDto.getNewPassword().isEmpty()
