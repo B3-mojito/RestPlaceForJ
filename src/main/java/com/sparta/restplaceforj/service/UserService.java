@@ -17,8 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -54,6 +52,25 @@ public class UserService {
         return UserSignUpResponseDto.builder()
                 .user(user)
                 .build();
+    }
+
+    @Transactional
+    public UserResignResponseDto deleteUser(User user, String password){
+      if(user.getUserStatus() == UserStatus.DEACTIVATE) {
+          throw new CommonException(ErrorEnum.BAD_REQUEST);
+      }
+
+      if(!passwordEncoder.matches(password, user.getPassword())) {
+        throw new CommonException(ErrorEnum.BAD_PASSWORD);
+      }
+
+      user.setUserStatus(UserStatus.DEACTIVATE);
+      userRepository.save(user);
+
+      return UserResignResponseDto.builder()
+              .email(user.getEmail())
+              .role(user.getUserRole())
+              .build();
     }
 
     public UserProfileResponseDto getUserProfile(Long userId) {
@@ -113,27 +130,5 @@ public class UserService {
                 .bio(user.getBio())
                 .nickname(user.getNickname())
                 .build();
-    return userSignUpresponseDto;
-  }
-
-    @Transactional
-    public UserResignResponseDto deleteUser(User user, String password){
-      if(user.getUserStatus() == UserStatus.DEACTIVATE) {
-          throw new CommonException(ErrorEnum.BAD_REQUEST);
-      }
-
-      if(!passwordEncoder.matches(password, user.getPassword())) {
-        throw new CommonException(ErrorEnum.BAD_PASSWORD);
-      }
-
-      user.setUserStatus(UserStatus.DEACTIVATE);
-      userRepository.save(user);
-
-        UserResignResponseDto userResignResponseDto = UserResignResponseDto.builder()
-                .email(user.getEmail())
-                .role(user.getUserRole())
-                .build();
-
-      return userResignResponseDto;
     }
 }
