@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 @Getter
 public class PageResponseDto<T> {
 
-  private final List placeNameList;
+  private final List<T> placeNameList;
   private final int size;
   private final int page;
   private final int totalPages;
