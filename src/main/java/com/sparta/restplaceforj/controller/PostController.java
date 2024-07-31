@@ -5,9 +5,11 @@ import com.sparta.restplaceforj.common.ResponseEnum;
 import com.sparta.restplaceforj.dto.PageResponseDto;
 import com.sparta.restplaceforj.dto.PostRequestDto;
 import com.sparta.restplaceforj.dto.PostResponseDto;
+import com.sparta.restplaceforj.security.UserDetailsImpl;
 import com.sparta.restplaceforj.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -32,13 +34,15 @@ public class PostController {
    * 글 생성 api
    *
    * @param postRequestDto : title, content, address, theme, placeName
+   * @param userDetails    : 토큰 유저 정보
    * @return PostResponseDto : title, content, address, likesCount, viewCount, themeEnum
    */
   @PostMapping
   public ResponseEntity<CommonResponse<PostResponseDto>> createPost(
-      @RequestBody PostRequestDto postRequestDto) {
+      @RequestBody PostRequestDto postRequestDto,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-    PostResponseDto postResponseDto = postService.createPost(postRequestDto);
+    PostResponseDto postResponseDto = postService.createPost(postRequestDto, userDetails.getUser());
 
     return ResponseEntity.ok(
         CommonResponse.<PostResponseDto>builder()
@@ -51,12 +55,14 @@ public class PostController {
   /**
    * 삭제 api
    *
-   * @param postId pathVariable
+   * @param postId      pathVariable
+   * @param userDetails : 토큰 유저 정보
    * @return null
    */
   @DeleteMapping("/{post-id}")
-  public ResponseEntity<CommonResponse> deletePost(@PathVariable("post-id") long postId) {
-    postService.deletePost(postId);
+  public ResponseEntity<CommonResponse> deletePost(
+      @PathVariable("post-id") long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    postService.deletePost(postId, userDetails.getUser());
 
     return ResponseEntity.ok(
         CommonResponse.<PostResponseDto>builder()
@@ -76,7 +82,7 @@ public class PostController {
    */
   @GetMapping("/place-name")
   public ResponseEntity<CommonResponse<PageResponseDto>> getPlaceList(
-      @RequestParam int page, @RequestParam(defaultValue = "5") int size,
+      @RequestParam int page, @RequestParam(defaultValue = "10") int size,
       @RequestParam String region, @RequestParam String theme) {
 
     PageResponseDto postPageResponseDto = postService
@@ -102,7 +108,7 @@ public class PostController {
    */
   @GetMapping
   public ResponseEntity<CommonResponse<PageResponseDto>> getPostTitleList(
-      @RequestParam int page, @RequestParam(defaultValue = "5") int size,
+      @RequestParam int page, @RequestParam(defaultValue = "10") int size,
       @RequestParam("place-name") String placeName, @RequestParam(required = false) String q,
       @RequestParam(value = "sort-by", defaultValue = "createAt") String sortBy) {
 
@@ -122,13 +128,16 @@ public class PostController {
    *
    * @param postId         수정 글 아이디
    * @param postRequestDto title, content, address, theme, placeName
+   * @param userDetails    : 토큰 유저 정보
    * @return PostResponseDto id, userId, title, content, address, likesCount, viewsCount, themeEnum
    */
   @PatchMapping("/{post-id}")
   public ResponseEntity<CommonResponse<PostResponseDto>> updatePost(
-      @PathVariable("post-id") long postId, @RequestBody PostRequestDto postRequestDto) {
+      @PathVariable("post-id") long postId, @RequestBody PostRequestDto postRequestDto,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-    PostResponseDto postResponseDto = postService.updatePost(postId, postRequestDto);
+    PostResponseDto postResponseDto = postService
+        .updatePost(postId, postRequestDto, userDetails.getUser());
 
     return ResponseEntity.ok(
         CommonResponse.<PostResponseDto>builder()
