@@ -38,7 +38,7 @@ public class Comment {
 
   @Builder
   public Comment(User user, Post post, String content) {
-//    this.user = user;
+    this.user = user;
     this.post = post;
     this.content = content;
   }
