@@ -5,7 +5,7 @@
 @content = 힘내세요!
 @edit_content = edit 힘내세요!dd
 
-@post-id = 24
+@post-id = 1
 
 ####  로그인
 #POST http://localhost:8080/v1/login
@@ -25,7 +25,7 @@
 
 ### 댓글 작성
 POST http://localhost:8080/posts/{{post-id}}/comments
-#Authorization:{{Authorization}}
+Authorization:{{Authorization}}
 Content-Type: application/json
 
 {

@@ -46,4 +46,12 @@ public class Comment {
   public void updateContent(String content) {
     this.content = content;
   }
+
+  public void removeLikeFromComment() {
+    likesCount--;
+  }
+
+  public void addLikeToComment() {
+    likesCount++;
+  }
 }
