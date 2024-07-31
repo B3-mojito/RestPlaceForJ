@@ -95,11 +95,12 @@ public class UserController {
      * @param userDetails
      * @return UpdateUserProfileImageResponseDto 필드명: profileImageUrl
      */
-    @PostMapping("/profileImage")
+    @PostMapping("/profileImage/{user-id}")
     public ResponseEntity<CommonResponse<UpdateUserProfileImageResponseDto>> createUserProfileImage(
             @RequestParam("images") MultipartFile multipartFile,
-            @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
-        UpdateUserProfileImageResponseDto updateUserProfileImageResponseDto = userService.updateUserProfileImage(multipartFile, userDetails.getUser());
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @PathVariable("user-id") Long userId) throws IOException {
+        UpdateUserProfileImageResponseDto updateUserProfileImageResponseDto = userService.updateUserProfileImage(multipartFile, userDetails.getUser(), userId);
         return ResponseEntity.ok(
                 CommonResponse.<UpdateUserProfileImageResponseDto>builder()
                         .response(ResponseEnum.CREATE_USER_PROFILE_IMAGE)

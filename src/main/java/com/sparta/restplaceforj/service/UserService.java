@@ -84,7 +84,10 @@ public class UserService {
     }
 
     @Transactional
-    public UpdateUserProfileImageResponseDto updateUserProfileImage(MultipartFile multipartFile, User user) throws IOException {
+    public UpdateUserProfileImageResponseDto updateUserProfileImage(MultipartFile multipartFile, User user, Long userId) throws IOException {
+
+        if(user.getId() != userId) throw new CommonException(ErrorEnum.INVALID_ACCESS);
+
         String fileName = s3Service.upload(multipartFile);
         user.setProfilePicture(fileName);
         userRepository.save(user);
