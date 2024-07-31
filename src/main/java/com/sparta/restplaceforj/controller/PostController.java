@@ -5,7 +5,9 @@ import com.sparta.restplaceforj.common.ResponseEnum;
 import com.sparta.restplaceforj.dto.PageResponseDto;
 import com.sparta.restplaceforj.dto.PostRequestDto;
 import com.sparta.restplaceforj.dto.PostResponseDto;
+import com.sparta.restplaceforj.service.ImageResponseDto;
 import com.sparta.restplaceforj.service.PostService;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,7 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 여행 추천 글 api.
@@ -127,6 +131,20 @@ public class PostController {
         CommonResponse.<PostResponseDto>builder()
             .response(ResponseEnum.GET_POST)
             .data(postResponseDto)
+            .build()
+    );
+  }
+
+  @PostMapping(value = "/images")
+  public ResponseEntity<CommonResponse<ImageResponseDto>> createPostImage(
+      @RequestPart("images") MultipartFile images) throws IOException {
+
+    ImageResponseDto imageResponseDto = postService.createPostImage(images);
+
+    return ResponseEntity.ok(
+        CommonResponse.<ImageResponseDto>builder()
+            .response(ResponseEnum.CREATE_USER_PROFILE_IMAGE)
+            .data(imageResponseDto)
             .build()
     );
   }

@@ -9,7 +9,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,6 +47,9 @@ public class Post extends Timestamped {
   @Enumerated(EnumType.STRING)
   private ThemeEnum themeEnum;
 
+  @OneToMany(mappedBy = "post")
+  private List<Image> imageList;
+
   @Builder
   public Post(PostRequestDto requestDto, User user) {
     this.user = user;
@@ -79,5 +84,11 @@ public class Post extends Timestamped {
 
   public void addLikeToPost() {
     likesCount++;
+  }
+
+  //양방향 추가 메서드
+  public void addImages(Image image) {
+    imageList.add(image);
+    image.setPost(this);
   }
 }

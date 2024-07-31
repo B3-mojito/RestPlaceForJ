@@ -63,6 +63,7 @@ DELETE localhost:8080/v1/posts/{{post-id}}
 ### 글 조회
 GET localhost:8080/v1/posts/place-name
     ?page=1&theme={{theme}}&region={{region}}
+Authorization:{{Authorization}}
 
 
 ### 글 아이디 제목 조회

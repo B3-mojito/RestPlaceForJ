@@ -4,20 +4,28 @@ import com.sparta.restplaceforj.dto.PageResponseDto;
 import com.sparta.restplaceforj.dto.PostIdTitleDto;
 import com.sparta.restplaceforj.dto.PostRequestDto;
 import com.sparta.restplaceforj.dto.PostResponseDto;
+import com.sparta.restplaceforj.entity.Image;
 import com.sparta.restplaceforj.entity.Post;
 import com.sparta.restplaceforj.entity.ThemeEnum;
 import com.sparta.restplaceforj.exception.CommonException;
 import com.sparta.restplaceforj.exception.ErrorEnum;
+import com.sparta.restplaceforj.repository.ImageRepository;
 import com.sparta.restplaceforj.repository.PostDslRepository;
 import com.sparta.restplaceforj.repository.PostRepository;
+import com.sparta.restplaceforj.s3.S3Service;
+import java.io.IOException;
+import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 추천글 서비스.
@@ -29,6 +37,8 @@ public class PostService {
 
   private final PostRepository postRepository;
   private final PostDslRepository postDslRepository;
+  private final ImageRepository imageRepository;
+  private final S3Service s3Service;
 
   /**
    * 글 새성.
@@ -46,6 +56,10 @@ public class PostService {
         Post.builder()
             .requestDto(postRequestDto)
             .build());
+
+//    추후 이미지 파일 아이디까지 넘어 온다면 구현
+//    imageRepository.findById(imageId);
+//    post.addImages(image);
 
     Post savedPost = postRepository.save(post);
 
@@ -117,5 +131,56 @@ public class PostService {
     return PostResponseDto.builder()
         .post(post)
         .build();
+  }
+
+  @Transactional
+  public ImageResponseDto createPostImage(MultipartFile multipartFile)
+      throws IOException {
+
+    //원본 이름
+    String originalFileName = multipartFile.getOriginalFilename();
+    //파일 확장자 추출
+    String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
+
+    imageCheck(ext);
+
+    // 중복을 방지하기위한 S3 저장하는 이름
+    String changedFileName = changeImageName(ext);
+    //저장 후 경로
+    String path = s3Service.upload(multipartFile, changedFileName);
+
+    Image image = Image.builder()
+        .originalFileName(originalFileName)
+        .changedFileName(changedFileName)
+        .path(path)
+        .build();
+
+    imageRepository.save(image);
+
+    return ImageResponseDto.builder()
+        .image(image)
+        .build();
+  }
+
+  private static void imageCheck(String ext) {
+    if (ext.equals("jpg") || ext.equals("jpeg") || ext.equals("png")) {
+      throw new CommonException(ErrorEnum.ONLY_IMAGE);
+    }
+  }
+
+  //uuid 를 이용해서 중복없는 이름 만든다.
+  private String changeImageName(String ext) {
+    final String uuid = UUID.randomUUID().toString();
+    return uuid + ext;
+  }
+
+  // 일정 시간이 지난 후 연관관계가 없는 이미지는 자동으로 삭제
+  @Scheduled(cron = "${cloud.aws.cron}")
+  @Transactional
+  public void deleteUnNecessaryImage() {
+    List<Image> images = imageRepository.findByPostIsNull();
+    s3Service.deleteUnNecessaryImage(images);
+    imageRepository.deleteAll(images);
+
   }
 }
