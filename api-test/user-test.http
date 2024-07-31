@@ -65,7 +65,7 @@ RefreshToken: {{RefreshToken}}
 %}
 
 ### 유저 프로필 수정
-PATCH http://localhost:8080/v1/users
+PATCH http://localhost:8080/v1/users/3
 Authorization: {{Authorization}}
 RefreshToken: {{RefreshToken}}
 Content-Type: application/json
