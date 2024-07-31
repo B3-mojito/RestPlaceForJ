@@ -26,7 +26,7 @@ public class LikeController {
    *
    * @param postId      좋아요 할 글
    * @param userDetails 좋아요 누른 사람
-   * @return optionalPostLikeResponseDto
+   * @return PostLikeResponseDto 필드명 : id, userId, postId
    */
   @PostMapping("/posts/{post-id}/likes")
   public ResponseEntity<CommonResponse> createPostLike(
@@ -49,7 +49,7 @@ public class LikeController {
    *
    * @param commentId   좋아요 할 댓글
    * @param userDetails 좋아요 누른 사람
-   * @return optionalCommentLikeResponseDto
+   * @return CommentLikeResponseDto 필드명 : id, userId, commentId
    */
   @PostMapping("/comments/{comment-id}/likes")
   public ResponseEntity<CommonResponse> createCommentLike(
