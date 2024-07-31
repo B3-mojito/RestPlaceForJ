@@ -117,11 +117,12 @@ public class UserController {
      * @param userDetails
      * @return CommonResponse
      */
-    @PatchMapping
+    @PatchMapping("/{user-id}")
     public ResponseEntity<CommonResponse<UserProfileResponseDto>> updateUserProfile(
             @RequestBody @Valid UserUpdateRequestDto userUpdateRequestDto,
-            @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        UserProfileResponseDto userProfileResponseDto = userService.updateUserProfile(userUpdateRequestDto, userDetails.getUser());
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @PathVariable("user-id") Long userId) {
+        UserProfileResponseDto userProfileResponseDto = userService.updateUserProfile(userUpdateRequestDto, userDetails.getUser(), userId);
         return ResponseEntity.ok(
                 CommonResponse.<UserProfileResponseDto>builder()
                         .response(ResponseEnum.UPDATE_USER_PROFILE)

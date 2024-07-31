@@ -95,7 +95,9 @@ public class UserService {
     }
 
     @Transactional
-    public UserProfileResponseDto updateUserProfile(UserUpdateRequestDto userUpdateRequestDto, User user) {
+    public UserProfileResponseDto updateUserProfile(UserUpdateRequestDto userUpdateRequestDto, User user, Long userId) {
+
+        if(user.getId() != userId) throw new CommonException(ErrorEnum.INVALID_ACCESS);
 
         // 변경할 값이 있는지 확인하고 업데이트
         String nickname = userUpdateRequestDto.getNickname() != null ? userUpdateRequestDto.getNickname() : user.getNickname();
