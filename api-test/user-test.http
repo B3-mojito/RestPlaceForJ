@@ -30,7 +30,7 @@ Content-Type: application/json
 ### 로그아웃
 POST http://localhost:8080/v1/users/logout
 Authorization: {{Authorization}}
-RefreshToekn: {{RefreshToken}}
+RefreshToken: {{RefreshToken}}
 
 
 > {%
@@ -42,10 +42,40 @@ RefreshToekn: {{RefreshToken}}
 DELETE http://localhost:8080/v1/users
 Content-Type: application/json
 Authorization: {{Authorization}}
-RefreshToekn: {{RefreshToken}}
+RefreshToken: {{RefreshToken}}
 
 {
   "password" : "{{password}}"
+}
+
+> {%
+    client.global.clear("Authorization");
+    client.global.clear("RefreshToken");
+%}
+
+### 유저 프로필 조회
+GET http://localhost:8080/v1/users/1
+Authorization: {{Authorization}}
+RefreshToken: {{RefreshToken}}
+
+
+> {%
+    client.global.clear("Authorization");
+    client.global.clear("RefreshToken");
+%}
+
+### 유저 프로필 수정
+PATCH http://localhost:8080/v1/users/3
+Authorization: {{Authorization}}
+RefreshToken: {{RefreshToken}}
+Content-Type: application/json
+
+{
+  "nickname": "수정 테스트 6",
+  "bio": "수정 테스트 6",
+  "currentPassword": "{{password}}",
+  "newPassword": "newpassword123!",
+  "confirmPassword": "newpassword123!"
 }
 
 > {%

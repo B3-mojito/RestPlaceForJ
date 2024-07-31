@@ -16,6 +16,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
     default User findByEmailOrThrow(String email) {
-        return findByEmail(email).orElseThrow(() -> new CommonException(ErrorEnum.PLAN_NOT_FOUND));
+        return findByEmail(email).orElseThrow(() -> new CommonException(ErrorEnum.USER_NOT_FOUND));
+    }
+
+    default User findByIdOrThrow(Long userId) {
+        return findById(userId).orElseThrow(() -> new CommonException(ErrorEnum.USER_NOT_FOUND));
     }
 }

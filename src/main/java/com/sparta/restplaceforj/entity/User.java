@@ -8,9 +8,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
-import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
+import org.hibernate.annotations.DynamicUpdate;
 
 @DynamicUpdate
 @Getter
@@ -19,18 +19,27 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends Timestamped {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
-  private String nickname;
-  private String name;
-  private String email;
-  private String password;
-  private String bio;
-  private String picture;
-  @Enumerated(value = EnumType.STRING)
-  private UserStatus userStatus;
-  private LocalDateTime authUserAt;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    private String nickname;
+
+    private String name;
+
+    private String email;
+
+    private String password;
+
+    private String bio;
+
+    @Setter
+    private String profilePicture;
+
+    @Enumerated(value = EnumType.STRING)
+    private UserStatus userStatus;
+
+    private LocalDateTime authUserAt;
 
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
@@ -51,5 +60,10 @@ public class User extends Timestamped {
       public void setUserStatus(UserStatus userStatus) {
         this.userStatus = userStatus;
         this.authUserAt = LocalDateTime.now();
+    }
+    public void updateProfile(String nickname, String bio, String password) {
+        this.nickname = nickname;
+        this.bio = bio;
+        this.password = password;
     }
 }
