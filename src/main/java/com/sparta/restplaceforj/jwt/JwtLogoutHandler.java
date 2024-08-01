@@ -25,7 +25,7 @@ public class JwtLogoutHandler implements LogoutHandler, LogoutSuccessHandler {
 
     @Override
     public void logout(
-            HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+        HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 
         log.info("로그아웃 시도");
 
@@ -35,7 +35,7 @@ public class JwtLogoutHandler implements LogoutHandler, LogoutSuccessHandler {
         // 유저를 찾고, 유저의 refreshToken을 null로 set
         Claims info = jwtUtil.getUserInfoFromToken(accessToken);
         String email =info.getSubject();
-        redisUtil.deleteValue(jwtUtil.AUTH_REFRESH_HEADER+email);
+        redisUtil.deleteValue(email);
 
         // SecurityContextHolder 초기화
         SecurityContextHolder.clearContext();

@@ -27,7 +27,7 @@ public class RedisUtil {
 
     // key, value, expiration 설정
     @Transactional
-    public void setValuesWithTimeout(String key, String value, long timeout) {
+    public void setValuesWithTimeout(String key, String value, Long timeout) {
         stringRedisTemplate.opsForValue().set(key, value, Duration.ofMillis(timeout));
     }
 

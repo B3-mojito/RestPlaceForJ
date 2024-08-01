@@ -24,6 +24,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+import static com.sparta.restplaceforj.jwt.JwtUtil.BEARER_PREFIX;
+
 @Slf4j(topic = "Jwt 검증 및 인가")
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
@@ -69,7 +71,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                                                         HttpServletResponse response,
                                                         String email) {
 
-        String refreshToken = redisUtil.getValues(jwtUtil.AUTH_REFRESH_HEADER+email);
+        String refreshToken = redisUtil.getValues(email)
+                .substring(BEARER_PREFIX.length());
 
         // 리프레시 토큰이 null이 아니고, 유효한 토큰인지 확인
         if (StringUtils.hasText(refreshToken) && jwtUtil.validateToken(request, refreshToken)) {

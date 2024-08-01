@@ -30,7 +30,7 @@ public class JwtUtil {
     // accessToken 만료 시간 (60분)
     private final long ACCESS_TOKEN_EXPIRE_TIME = 60 * 60 * 1000L;
     // refreshToken 만료 시간 (2주)
-    private final long REFRESH_TOKEN_EXPIRE_TIME = 14 * 24 * 60 * 60 * 1000L;
+    public static long REFRESH_TOKEN_EXPIRE_TIME = 14 * 24 * 60 * 60 * 1000L;
 
     @Value("${jwt.secret.key}")
     private String secretKey;
