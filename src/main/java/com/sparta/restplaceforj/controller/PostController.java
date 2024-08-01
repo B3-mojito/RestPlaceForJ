@@ -6,6 +6,7 @@ import com.sparta.restplaceforj.dto.AddCardRequestDto;
 import com.sparta.restplaceforj.dto.CardRequestDto;
 import com.sparta.restplaceforj.dto.ImageResponseDto;
 import com.sparta.restplaceforj.dto.PageResponseDto;
+import com.sparta.restplaceforj.dto.PostIdTitleDto;
 import com.sparta.restplaceforj.dto.PostRequestDto;
 import com.sparta.restplaceforj.dto.PostResponseDto;
 import com.sparta.restplaceforj.security.UserDetailsImpl;
@@ -42,7 +43,8 @@ public class PostController {
    *
    * @param postRequestDto : title, content, address, theme, placeName
    * @param userDetails    : 토큰 유저 정보
-   * @return PostResponseDto : title, content, address, likesCount, viewCount, themeEnum
+   * @return PostResponseDto : title, content, address, likesCount, viewCount, themeEnum,
+   * nickName,profilePicture
    */
   @PostMapping
   public ResponseEntity<CommonResponse<PostResponseDto>> createPost(
@@ -88,15 +90,15 @@ public class PostController {
    * @return PageResponseDto : placeNameList, size, page, totalPages, totalElements
    */
   @GetMapping("/place-name")
-  public ResponseEntity<CommonResponse<PageResponseDto>> getPlaceList(
+  public ResponseEntity<CommonResponse<PageResponseDto<String>>> getPlaceList(
       @RequestParam int page, @RequestParam(defaultValue = "10") int size,
       @RequestParam String region, @RequestParam String theme) {
 
-    PageResponseDto postPageResponseDto = postService
+    PageResponseDto<String> postPageResponseDto = postService
         .getPlaceList(page, size, region, theme);
 
     return ResponseEntity.ok(
-        CommonResponse.<PageResponseDto>builder()
+        CommonResponse.<PageResponseDto<String>>builder()
             .response(ResponseEnum.GET_POST_LIST)
             .data(postPageResponseDto)
             .build()
@@ -114,17 +116,40 @@ public class PostController {
    * @return PageResponseDto : placeNameList, size, page, totalPages, totalElements
    */
   @GetMapping
-  public ResponseEntity<CommonResponse<PageResponseDto>> getPostTitleList(
+  public ResponseEntity<CommonResponse<PageResponseDto<PostIdTitleDto>>> getPostTitleList(
       @RequestParam int page, @RequestParam(defaultValue = "10") int size,
       @RequestParam("place-name") String placeName, @RequestParam(required = false) String q,
       @RequestParam(value = "sort-by", defaultValue = "createAt") String sortBy) {
 
-    PageResponseDto postPageResponseDto = postService
+    PageResponseDto<PostIdTitleDto> postPageResponseDto = postService
         .getPostTitleList(page, size, placeName, sortBy, q);
 
     return ResponseEntity.ok(
-        CommonResponse.<PageResponseDto>builder()
+        CommonResponse.<PageResponseDto<PostIdTitleDto>>builder()
             .response(ResponseEnum.GET_POST_ID_TITLE_LIST)
+            .data(postPageResponseDto)
+            .build()
+    );
+  }
+
+  /**
+   * @param userDetails 조회할 대상
+   * @param page        현재 페이지
+   * @param size        페이지 크기
+   * @param sortBy      정렬 기준
+   * @return PageResponseDto : placeNameList, size, page, totalPages, totalElements
+   */
+  @GetMapping("/me")
+  public ResponseEntity<CommonResponse<PageResponseDto<PostIdTitleDto>>> getMyPostList(
+      @AuthenticationPrincipal UserDetailsImpl userDetails,
+      @RequestParam int page, @RequestParam(defaultValue = "5") int size,
+      @RequestParam(value = "sort-by", defaultValue = "createAt") String sortBy) {
+    PageResponseDto<PostIdTitleDto> postPageResponseDto = postService
+        .getMyPostList(page, size, sortBy, userDetails.getUser().getId());
+
+    return ResponseEntity.ok(
+        CommonResponse.<PageResponseDto<PostIdTitleDto>>builder()
+            .response(ResponseEnum.GET_MY_POST_LIST)
             .data(postPageResponseDto)
             .build()
     );
@@ -136,7 +161,8 @@ public class PostController {
    * @param postId         수정 글 아이디
    * @param postRequestDto title, content, address, theme, placeName
    * @param userDetails    : 토큰 유저 정보
-   * @return PostResponseDto id, userId, title, content, address, likesCount, viewsCount, themeEnum
+   * @return PostResponseDto : title, content, address, likesCount, viewCount, themeEnum,
+   * nickName,profilePicture
    */
   @PatchMapping("/{post-id}")
   public ResponseEntity<CommonResponse<PostResponseDto>> updatePost(
@@ -158,7 +184,8 @@ public class PostController {
    * 단권글 조회 api.
    *
    * @param postId 조회 글 아이디
-   * @return PostResponseDto :id, userId, title, content, address, likesCount, viewsCount, themeEnum
+   * @return PostResponseDto : title, content, address, likesCount, viewCount, themeEnum,
+   * nickName,profilePicture
    */
   @GetMapping("/{post-id}")
   public ResponseEntity<CommonResponse<PostResponseDto>> getPost(
@@ -173,6 +200,13 @@ public class PostController {
     );
   }
 
+  /**
+   * 사진을 s3 업로드 api.
+   *
+   * @param images 저장할 파일
+   * @return ImageResponseDto : id, path, originalFileName, changedFiledName
+   * @throws IOException InputStream getInputStream() throws IOException
+   */
   @PostMapping(value = "/images")
   public ResponseEntity<CommonResponse<ImageResponseDto>> createPostImage(
       @RequestPart("images") MultipartFile images) throws IOException {
