@@ -1,4 +1,8 @@
 spring:
+  servlet:
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 3MB
   datasource:
     url: ${DATASOURCE_URL}
     username: ${DATASOURCE_USERNAME}
@@ -17,6 +21,7 @@ spring:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
       password: ${REDIS_PASSWORD}
+
 cloud:
   aws:
     s3:
@@ -28,6 +33,7 @@ cloud:
       static: ${REGION}
     stack:
       auto: false
+    cron: ${CRON}
 jwt:
   secret:
     key: ${JWT_SECRET_KEY}

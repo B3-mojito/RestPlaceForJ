@@ -1,7 +1,7 @@
 ## Variables
 
 
-@post-id = 2
+@post-id = 6
 
 @title = title12
 @content = content
@@ -51,7 +51,8 @@ Content-Type: application/json
   "content": "{{content}}",
   "theme" : "{{theme}}",
   "address" : "{{address}}",
-  "placeName" : "{{place-name}}"
+  "placeName" : "{{place-name}}",
+  "imageIdList": [11]
 }
 
 
@@ -63,7 +64,7 @@ Authorization:{{Authorization}}
 
 ### 글 조회 (장소명으로 그룹지어 조회)
 GET localhost:8080/v1/posts/place-name
-    ?page=0&theme={{theme}}&region={{region}}
+    ?page=1&theme={{theme}}&region={{region}}
 Authorization:{{Authorization}}
 
 

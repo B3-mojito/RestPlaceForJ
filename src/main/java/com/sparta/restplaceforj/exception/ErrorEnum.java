@@ -28,6 +28,8 @@ public enum ErrorEnum implements Response {
   POST_NOT_FOUND("글를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   THEME_NOT_FOUND("테마를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   SORT_NOT_FOUND("정렬 불가능 합니다.", HttpStatus.NOT_FOUND),
+  ONLY_IMAGE("이미지 파일만 올릴 수 있습니다.", HttpStatus.FORBIDDEN),
+  IMAGE_NOT_FOUND("이미지 파일을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   POST_MISMATCH("작성자만 삭제 가능합니다.", HttpStatus.FORBIDDEN),
 
   //comment
@@ -49,7 +51,8 @@ public enum ErrorEnum implements Response {
   // Card errors
   CARD_NOT_FOUND("카드를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
-
+  // Global errors
+  VALID_ERROR("잘못된 접근 값입니다.", HttpStatus.BAD_REQUEST),
   GLOBAL_ERROR("처리하지 않은 예외", HttpStatus.INTERNAL_SERVER_ERROR);
 
 
