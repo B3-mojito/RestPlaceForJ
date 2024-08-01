@@ -9,7 +9,7 @@ import lombok.Getter;
 public class PostResponseDto {
 
   private final long id;
-  // private final long userId;
+  private final long userId;
   private final String title;
   private final String content;
   private final String address;
@@ -20,7 +20,7 @@ public class PostResponseDto {
   @Builder
   public PostResponseDto(Post post) {
     this.id = post.getId();
-    // this.userId = post.getUser().getId();
+    this.userId = post.getUser().getId();
     this.title = post.getTitle();
     this.content = post.getContent();
     this.address = post.getAddress();

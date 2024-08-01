@@ -1,26 +1,27 @@
 ## Variables
-@username = fltnsah121
-@password = test@1231
 
 @content = 힘내세요!
 @edit_content = edit 힘내세요!dd
 
-@post-id = 1
+@post-id = 2
+@comment-id = 1
 
 ####  로그인
-#POST http://localhost:8080/v1/login
-#Content-Type: application/json
-#
-#{
-#  "username": "{{username}}",
-#  "password": "{{password}}"
-#}
-#
-#> {%
-#  client.global.set("Authorization", response.headers.valueOf("Authorization"));
-#%}
+POST http://localhost:8080/v1/users/login
+Content-Type: application/json
 
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
 
+> {%
+  client.global.set("Authorization", response.headers.valueOf("Authorization"));
+  client.log("Authorization: " + response.headers.valueOf("Authorization"));
+
+  client.global.set("RefreshToken", response.headers.valueOf("RefreshToken"));
+  client.log("RefreshToken: " + response.headers.valueOf("RefreshToken"));
+%}
 
 
 ### 댓글 작성
@@ -35,7 +36,7 @@ Content-Type: application/json
 
 
 ### 댓글 수정
-PATCH http://localhost:8080/posts/{{post-id}}/comments/4
+PATCH http://localhost:8080/posts/{{post-id}}/comments/{{comment-id}}
 Authorization:{{Authorization}}
 Content-Type: application/json
 
@@ -45,7 +46,7 @@ Content-Type: application/json
 
 
 ### 댓글 삭제
-DELETE http://localhost:8080/posts/{{post-id}}/comments/5
+DELETE http://localhost:8080/posts/{{post-id}}/comments/{{comment-id}}
 Authorization:{{Authorization}}
 Content-Type: application/json
 
@@ -53,7 +54,7 @@ Content-Type: application/json
 
 ### 댓글 조회
 GET http://localhost:8080/posts/{{post-id}}/comments?page=0
-
+Authorization:{{Authorization}}
 
 
 

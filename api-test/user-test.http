@@ -85,6 +85,16 @@ Content-Type: application/json
 }
 
 > {%
-  client.global.clear("Authorization");
-  client.global.clear("RefreshToken");
+    client.global.clear("Authorization");
+    client.global.clear("RefreshToken");
+%}
+
+### 토큰 재발급
+POST http://localhost:8080/v1/users/reissue
+Authorization: {{Authorization}}
+RefreshToken: {{RefreshToken}}
+
+> {%
+    client.global.clear("Authorization");
+    client.global.clear("RefreshToken");
 %}

@@ -11,47 +11,35 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Entity
-@Table(name = "comments")
+@Table(name = "images")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Comment {
+public class Image extends Timestamped {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
-  @OnDelete(action = OnDeleteAction.CASCADE)
-  @ManyToOne(fetch = FetchType.LAZY)
-  private User user;
-
+  @Setter
   @OnDelete(action = OnDeleteAction.CASCADE)
   @ManyToOne(fetch = FetchType.LAZY)
   private Post post;
 
-  private String content;
+  private String path;
 
-  private long likesCount;
+  private String originalFileName;
+
+  private String changedFileName;
 
   @Builder
-  public Comment(User user, Post post, String content) {
-    this.user = user;
-    this.post = post;
-    this.content = content;
-  }
-
-  public void updateContent(String content) {
-    this.content = content;
-  }
-
-  public void removeLikeFromComment() {
-    likesCount--;
-  }
-
-  public void addLikeToComment() {
-    likesCount++;
+  public Image(String path, String originalFileName, String changedFileName) {
+    this.path = path;
+    this.originalFileName = originalFileName;
+    this.changedFileName = changedFileName;
   }
 }

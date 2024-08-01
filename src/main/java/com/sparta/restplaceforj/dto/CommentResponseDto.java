@@ -11,7 +11,7 @@ public class CommentResponseDto {
 
   private final long postId;
 
-//  private final long userId;
+  private final long userId;
 
   private final String content;
 
@@ -21,7 +21,7 @@ public class CommentResponseDto {
   public CommentResponseDto(Comment comment) {
     id = comment.getId();
     postId = comment.getPost().getId();
-//    userId = comment.getUser().getId();
+    userId = comment.getUser().getId();
     content = comment.getContent();
     likesCount = comment.getLikesCount();
   }

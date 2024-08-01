@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 @Getter
 public class PageResponseDto<T> {
 
-  private final List placeNameList;
+  private final List<T> contentList;
   private final int size;
   private final int page;
   private final int totalPages;
@@ -16,7 +16,7 @@ public class PageResponseDto<T> {
 
   @Builder
   public PageResponseDto(Page<T> page) {
-    placeNameList = page.getContent();
+    contentList = page.getContent();
     size = page.getSize();
     this.page = page.getNumber();
     totalElements = page.getTotalElements();
