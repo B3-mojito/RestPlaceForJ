@@ -20,19 +20,12 @@ public class RedisUtil {
         return stringRedisTemplate.opsForValue().get(key);
     }
 
-    @Transactional
-    public void setValues(String key, String value) {
-        stringRedisTemplate.opsForValue().set(key, value);
-    }
-
     // key, value, expiration 설정
-    @Transactional
     public void setValuesWithTimeout(String key, String value, Long timeout) {
         stringRedisTemplate.opsForValue().set(key, value, Duration.ofMillis(timeout));
     }
 
     // key를 통해 value 삭제하기
-    @Transactional
     public boolean deleteValue(String key) {
         return stringRedisTemplate.delete(key);
     }
