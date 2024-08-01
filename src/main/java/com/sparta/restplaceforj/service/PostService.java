@@ -61,9 +61,12 @@ public class PostService {
             .requestDto(postRequestDto)
             .build());
 
-//    추후 이미지 파일 아이디까지 넘어 온다면 구현
-//    imageRepository.findById(imageId);
-//    post.addImages(image);
+    if (!postRequestDto.getImageIdList().isEmpty()) {
+      for (Long imageId : postRequestDto.getImageIdList()) {
+        Image image = imageRepository.findByIdOrThrow(imageId);
+        post.addImages(image);
+      }
+    }
 
     Post savedPost = postRepository.save(post);
 

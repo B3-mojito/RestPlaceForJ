@@ -51,7 +51,8 @@ Content-Type: application/json
   "content": "{{content}}",
   "theme" : "{{theme}}",
   "address" : "{{address}}",
-  "placeName" : "{{place-name}}"
+  "placeName" : "{{place-name}}",
+  "imageIdList": [11]
 }
 
 
