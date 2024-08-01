@@ -219,11 +219,12 @@ public class PostService {
     return uuid + ext;
   }
 
-  // 일정 시간이 지난 후 연관관계가 없는 이미지는 자동으로 삭제
-  //                 초 분 시 일 월 요일
-//  @Scheduled(cron = "0 40 14 * * *")
-//  @Scheduled(cron = "${cloud.aws.cron}")
-  @Scheduled(fixedRate = 1000 * 60 * 60)
+  /*
+    일정 시간이 지난 후 연관관계가 없는 이미지는 자동으로 삭제
+                     초 분 시 일 월 요일
+    @Scheduled(cron = "0 40 14 * * *") -> 매일 오후 2시
+    */
+  @Scheduled(cron = "${cloud.aws.cron}")
   @Transactional
   public void deleteUnNecessaryImage() {
     log.info(new Date() + "스케쥴러 실행");
