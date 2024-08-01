@@ -7,6 +7,7 @@ import com.sparta.restplaceforj.entity.Image;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -47,8 +48,8 @@ public class S3Service {
     return amazonS3.getUrl(bucket, changedImageName).toString();
   }
 
-  public void deleteUnNecessaryImage(List<Image> images) {
-
+  public List<Image> deleteUnNecessaryImage(List<Image> images) {
+    List<Image> imagesToDeleteList = new ArrayList<>();
     images.stream()
         .filter(
             image -> Duration.between(image.getCreatedAt(), LocalDateTime.now()).toHours() >= 1)
@@ -56,7 +57,11 @@ public class S3Service {
           DeleteObjectRequest deleteRequest = new DeleteObjectRequest(
               bucket, image.getChangedFileName());
           amazonS3.deleteObject(deleteRequest);
+          imagesToDeleteList.add(image);
         });
+
+    return imagesToDeleteList;
+
   }
 
 }

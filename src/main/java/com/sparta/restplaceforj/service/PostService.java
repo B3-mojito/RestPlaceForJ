@@ -181,13 +181,14 @@ public class PostService {
   // 일정 시간이 지난 후 연관관계가 없는 이미지는 자동으로 삭제
   //                 초 분 시 일 월 요일
 //  @Scheduled(cron = "0 40 14 * * *")
-  @Scheduled(cron = "${cloud.aws.cron}")
+//  @Scheduled(cron = "${cloud.aws.cron}")
+  @Scheduled(fixedRate = 1000 * 60 * 60)
   @Transactional
   public void deleteUnNecessaryImage() {
     log.info(new Date() + "스케쥴러 실행");
     List<Image> images = imageRepository.findByPostIsNull();
-    s3Service.deleteUnNecessaryImage(images);
-    imageRepository.deleteAll(images);
+    List<Image> deletedImageList = s3Service.deleteUnNecessaryImage(images);
+    imageRepository.deleteAll(deletedImageList);
 
   }
 }
