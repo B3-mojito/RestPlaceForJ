@@ -26,7 +26,6 @@ import java.io.IOException;
 
 @Slf4j(topic = "Jwt 검증 및 인가")
 @RequiredArgsConstructor
-// OncePerRequestFilter 상속 -> HttpServlet 사용 가능해짐
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;

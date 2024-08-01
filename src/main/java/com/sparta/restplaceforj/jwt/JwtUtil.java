@@ -76,14 +76,6 @@ public class JwtUtil {
         return null;
     }
 
-    public String getRefreshTokenFromHeader(HttpServletRequest request) {
-        String accessToken = request.getHeader(AUTH_REFRESH_HEADER);
-        if (StringUtils.hasText(accessToken) && accessToken.startsWith(BEARER_PREFIX)) {
-            return accessToken.substring(BEARER_PREFIX.length());
-        }
-        return null;
-    }
-
     public boolean validateToken(HttpServletRequest request, String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
