@@ -28,5 +28,8 @@ jwt:
     key: ${JWT_SECRET_KEY}
 server:
   port: ${SERVER_PORT}
+kakao:
+  secret:
+    key: ${KAKAO_KEY}
 
 logging.level.org.springframework.boot.autoconfigure: ERROR
