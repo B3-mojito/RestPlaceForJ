@@ -1,7 +1,6 @@
 package com.sparta.restplaceforj.util;
 
 import com.amazonaws.util.Base64;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -18,7 +17,7 @@ import java.util.Date;
 public class AuthCodeUtil {
 
     public static final String SECRET_KEY = "secret_key ";
-    private static final Long EXPIRATION_TIME = 60 * 30L; // 30분 유효기간
+    public static final Long EXPIRATION_TIME = 30 * 60 * 1000L; // 30분 유효기간
 
     @Value("${jwt.secret.key}")
     private String secretKey;
@@ -37,24 +36,17 @@ public class AuthCodeUtil {
         return Jwts.builder()
                 .setSubject(email)
                 .setExpiration(new Date(date.getTime() + EXPIRATION_TIME))
+                .setIssuedAt(date)
                 .signWith(key, signatureAlgorithm)
                 .compact();
     }
 
-    public static String getEmailFromAuthCode(String authCode) {
-        return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
+    public String getEmailFromAuthCode(String authCode) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
                 .parseClaimsJws(authCode)
                 .getBody()
                 .getSubject();
-    }
-
-    public static boolean isTokenExpired(String token) {
-        try {
-            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
-            return false;
-        } catch (ExpiredJwtException e) {
-            return true;
-        }
     }
 }
