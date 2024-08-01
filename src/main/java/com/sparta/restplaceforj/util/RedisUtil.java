@@ -37,4 +37,8 @@ public class RedisUtil {
         return stringRedisTemplate.delete(key);
     }
 
+    // key를 통해 value가 있는지 확인
+    public boolean existData(String key) {
+        return Boolean.TRUE.equals(stringRedisTemplate.hasKey(key));
+    }
 }
