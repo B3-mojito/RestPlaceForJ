@@ -28,6 +28,7 @@ cloud:
       static: ${REGION}
     stack:
       auto: false
+    cron: ${CRON}
 jwt:
   secret:
     key: ${JWT_SECRET_KEY}

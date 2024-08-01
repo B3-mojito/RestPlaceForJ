@@ -2,10 +2,10 @@ package com.sparta.restplaceforj.controller;
 
 import com.sparta.restplaceforj.common.CommonResponse;
 import com.sparta.restplaceforj.common.ResponseEnum;
+import com.sparta.restplaceforj.dto.ImageResponseDto;
 import com.sparta.restplaceforj.dto.PageResponseDto;
 import com.sparta.restplaceforj.dto.PostRequestDto;
 import com.sparta.restplaceforj.dto.PostResponseDto;
-import com.sparta.restplaceforj.service.ImageResponseDto;
 import com.sparta.restplaceforj.service.PostService;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;

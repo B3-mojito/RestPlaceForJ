@@ -1,5 +1,6 @@
 package com.sparta.restplaceforj.service;
 
+import com.sparta.restplaceforj.dto.ImageResponseDto;
 import com.sparta.restplaceforj.dto.PageResponseDto;
 import com.sparta.restplaceforj.dto.PostIdTitleDto;
 import com.sparta.restplaceforj.dto.PostRequestDto;
@@ -14,9 +15,11 @@ import com.sparta.restplaceforj.repository.PostDslRepository;
 import com.sparta.restplaceforj.repository.PostRepository;
 import com.sparta.restplaceforj.s3.S3Service;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * 추천글 서비스.
  */
+@Slf4j
 @RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
@@ -73,7 +77,7 @@ public class PostService {
     postRepository.deleteById(postId);
   }
 
-  public PageResponseDto getPlaceList(
+  public PageResponseDto<String> getPlaceList(
       int page, int size, String region, String theme) {
 
     ThemeEnum themeEnum = ThemeEnum.valueOf(theme);
@@ -90,7 +94,7 @@ public class PostService {
   /**
    * 글 아이디와 제목만 조회.
    */
-  public PageResponseDto getPostTitleList(
+  public PageResponseDto<PostIdTitleDto> getPostTitleList(
       int page, int size, String placeName, String sortBy, String q) {
 
     if (!(sortBy.equals("createAt") || sortBy.equals("viewsCount") ||
@@ -163,7 +167,7 @@ public class PostService {
   }
 
   private static void imageCheck(String ext) {
-    if (ext.equals("jpg") || ext.equals("jpeg") || ext.equals("png")) {
+    if (!(ext.equals(".jpg") || ext.equals(".jpeg") || ext.equals(".png"))) {
       throw new CommonException(ErrorEnum.ONLY_IMAGE);
     }
   }
@@ -175,9 +179,12 @@ public class PostService {
   }
 
   // 일정 시간이 지난 후 연관관계가 없는 이미지는 자동으로 삭제
+  //                 초 분 시 일 월 요일
+//  @Scheduled(cron = "0 40 14 * * *")
   @Scheduled(cron = "${cloud.aws.cron}")
   @Transactional
   public void deleteUnNecessaryImage() {
+    log.info(new Date() + "스케쥴러 실행");
     List<Image> images = imageRepository.findByPostIsNull();
     s3Service.deleteUnNecessaryImage(images);
     imageRepository.deleteAll(images);

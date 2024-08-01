@@ -1,4 +1,4 @@
-package com.sparta.restplaceforj.service;
+package com.sparta.restplaceforj.dto;
 
 import com.sparta.restplaceforj.entity.Image;
 import lombok.Builder;

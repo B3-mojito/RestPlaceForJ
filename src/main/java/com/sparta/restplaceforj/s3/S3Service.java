@@ -51,7 +51,7 @@ public class S3Service {
 
     images.stream()
         .filter(
-            image -> Duration.between(image.getCreatedAt(), LocalDateTime.now()).toHours() >= 0.1)
+            image -> Duration.between(image.getCreatedAt(), LocalDateTime.now()).toHours() >= 1)
         .forEach(image -> {
           DeleteObjectRequest deleteRequest = new DeleteObjectRequest(
               bucket, image.getChangedFileName());
