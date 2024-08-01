@@ -28,9 +28,9 @@ public class ColumnController {
   /**
    * 컬럼 생성 controller
    *
-   * @param planId
-   * @param columnRequestDto
-   * @return CommonResponse
+   * @param planId           컬럼 아이디
+   * @param columnRequestDto : title, date
+   * @return columnResponseDto : id, title, date
    */
   @PostMapping
   public ResponseEntity<CommonResponse<ColumnResponseDto>> createColumn(
@@ -48,10 +48,10 @@ public class ColumnController {
   /**
    * 컬럼 수정 controller
    *
-   * @param planId
-   * @param columnId
-   * @param columnRequestDto
-   * @return CommonResponse
+   * @param planId           플랜 아이디
+   * @param columnId         컬럼 아이디
+   * @param columnRequestDto : title, date
+   * @return columnResponseDto : id, title, date
    */
   @PatchMapping("/{column-id}")
   public ResponseEntity<CommonResponse<ColumnResponseDto>> updateColumn(
@@ -70,9 +70,9 @@ public class ColumnController {
   /**
    * 컬럼 삭제 controller
    *
-   * @param planId
-   * @param columnId
-   * @return CommonResponse
+   * @param planId   플랜 아이디
+   * @param columnId 컬럼 아이디
+   * @return CommonResponse null
    */
   @DeleteMapping("/{column-id}")
   public ResponseEntity<CommonResponse<ColumnResponseDto>> deleteColumn(
@@ -89,8 +89,8 @@ public class ColumnController {
   /**
    * 컬럼 다건 조회 controller
    *
-   * @param planId
-   * @return CommonResponse
+   * @param planId 플랜 아이디
+   * @return columnResponseDto : id, title, date
    */
   @GetMapping
   public ResponseEntity<CommonResponse<List<ColumnResponseDto>>> getColumnList(

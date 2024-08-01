@@ -19,91 +19,91 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class ColumnService {
 
-    private final ColumnRepository columnRepository;
-    private final PlanRepository planRepository;
+  private final ColumnRepository columnRepository;
+  private final PlanRepository planRepository;
 
 
-    /**
-     * 컬럼 생성 로직
-     *
-     * @param planId
-     * @param requestDto
-     * @return ColumnResponseDto
-     */
-    @Transactional
-    public ColumnResponseDto createColumn(Long planId, ColumnRequestDto requestDto)
-            throws CommonException {
+  /**
+   * 컬럼 생성 로직
+   *
+   * @param planId           플랜 아이디
+   * @param columnRequestDto : title, date
+   * @return columnResponseDto : id, title, date
+   */
+  @Transactional
+  public ColumnResponseDto createColumn(Long planId, ColumnRequestDto columnRequestDto)
+      throws CommonException {
 
-        Plan plan = planRepository.findByIdOrThrow(planId);
+    Plan plan = planRepository.findByIdOrThrow(planId);
 
-        Column columns = Column.builder()
-                .title(requestDto.getTitle())
-                .date(requestDto.getDate())
-                .plan(plan)
-                .build();
+    Column columns = Column.builder()
+        .title(columnRequestDto.getTitle())
+        .date(columnRequestDto.getDate())
+        .plan(plan)
+        .build();
 
-        columnRepository.save(columns);
+    columnRepository.save(columns);
 
-        return ColumnResponseDto.builder()
-                .id(columns.getId())
-                .title(columns.getTitle())
-                .date(columns.getDate())
-                .build();
+    return ColumnResponseDto.builder()
+        .id(columns.getId())
+        .title(columns.getTitle())
+        .date(columns.getDate())
+        .build();
+  }
+
+  /**
+   * 컬럼 수정 로직
+   *
+   * @param planId           플랜 아이디
+   * @param columnId         컬럼 아이디
+   * @param columnRequestDto : title, date
+   * @return ColumnResponseDto : id, title, date
+   */
+  @Transactional
+  public ColumnResponseDto updateColumn(Long planId, Long columnId,
+      ColumnRequestDto columnRequestDto) {
+    Column column = columnRepository.findByIdOrThrow(columnId);
+
+    if (!column.getPlan().equals(planRepository.findByIdOrThrow(planId))) {
+      throw new CommonException(ErrorEnum.BAD_REQUEST);
     }
 
-    /**
-     * 컬럼 수정 로직
-     *
-     * @param planId
-     * @param columnId
-     * @param requestDto
-     * @return ColumnResponseDto
-     */
-    @Transactional
-    public ColumnResponseDto updateColumn(Long planId, Long columnId,
-                                          ColumnRequestDto requestDto) {
-        Column column = columnRepository.findByIdOrThrow(columnId);
+    column.updateColumn(columnRequestDto);
+    columnRepository.save(column);
 
-        if (!column.getPlan().equals(planRepository.findByIdOrThrow(planId))) {
-            throw new CommonException(ErrorEnum.BAD_REQUEST);
-        }
+    return ColumnResponseDto.builder()
+        .id(columnId)
+        .title(column.getTitle())
+        .date(column.getDate())
+        .build();
+  }
 
-        column.updateColumn(requestDto);
-        columnRepository.save(column);
+  /**
+   * 컬럼 삭제 로직
+   *
+   * @param planId   플랜 아이디
+   * @param columnId 컬럼 아이디
+   */
+  @Transactional
+  public void deleteColumn(Long planId, Long columnId) {
+    Column column = columnRepository.findByIdOrThrow(columnId);
 
-        return ColumnResponseDto.builder()
-                .id(columnId)
-                .title(column.getTitle())
-                .date(column.getDate())
-                .build();
+    if (!column.getPlan().equals(planRepository.findByIdOrThrow(planId))) {
+      throw new CommonException(ErrorEnum.BAD_REQUEST);
     }
 
-    /**
-     * 컬럼 삭제 로직
-     *
-     * @param planId
-     * @param columnId
-     */
-    @Transactional
-    public void deleteColumn(Long planId, Long columnId) {
-        Column column = columnRepository.findByIdOrThrow(columnId);
+    columnRepository.delete(column);
+  }
 
-        if (!column.getPlan().equals(planRepository.findByIdOrThrow(planId))) {
-            throw new CommonException(ErrorEnum.BAD_REQUEST);
-        }
+  /**
+   * 컬럼 다건 조회 로직
+   *
+   * @param planId 플랜 아이디
+   */
+  @Transactional
+  public List<ColumnResponseDto> getColumnList(Long planId) {
+    Plan plan = planRepository.findByIdOrThrow(planId);
 
-        columnRepository.delete(column);
-    }
-
-    /**
-     * 컬럼 다건 조회 로직
-     *
-     * @param planId
-     */
-    @Transactional
-    public List<ColumnResponseDto> getColumnList(Long planId) {
-        Plan plan = planRepository.findByIdOrThrow(planId);
-
-        return columnRepository.findByPlanId(plan.getId());
-    }
+    return columnRepository.findByPlanId(plan.getId());
+  }
 }
