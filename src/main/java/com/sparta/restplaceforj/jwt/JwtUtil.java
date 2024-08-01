@@ -57,12 +57,11 @@ public class JwtUtil {
     }
 
     // refreshToken 생성
-    public String createRefreshToken(String email, UserRole role) {
+    public String createRefreshToken(String email) {
         Date date = new Date();
 
         return BEARER_PREFIX + Jwts.builder()
                 .setSubject(email)
-                .claim(AUTHORIZATION_KEY, role)
                 .setExpiration(new Date(date.getTime() + REFRESH_TOKEN_EXPIRE_TIME))
                 .setIssuedAt(date)
                 .signWith(key, signatureAlgorithm)

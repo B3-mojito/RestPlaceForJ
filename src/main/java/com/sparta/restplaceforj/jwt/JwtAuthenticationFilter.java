@@ -78,7 +78,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         //accessToken, refreshToken 생성
         String accessToken = jwtUtil.createAccessToken(email, role);
-        String refreshToken = jwtUtil.createRefreshToken(email, role);
+        String refreshToken = jwtUtil.createRefreshToken(email);
 
         //refreshToken 저장
         redisUtil.setValues(jwtUtil.AUTH_REFRESH_HEADER+email, refreshToken);
