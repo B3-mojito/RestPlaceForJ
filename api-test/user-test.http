@@ -1,3 +1,9 @@
+## Variables
+# @no-cookie-jar
+@password = asdfg1234!
+@email = asdf12345@naver.com
+@name = 하이요2
+@nickname = 하이요24
 
 ### 유저 등록
 POST http://localhost:8080/v1/users
@@ -20,11 +26,11 @@ Content-Type: application/json
 }
 
 > {%
-    client.global.set("Authorization", response.headers.valueOf("Authorization"));
-    client.log("Authorization: " + response.headers.valueOf("Authorization"));
+  client.global.set("Authorization", response.headers.valueOf("Authorization"));
+  client.log("Authorization: " + response.headers.valueOf("Authorization"));
 
-    client.global.set("RefreshToken", response.headers.valueOf("RefreshToken"));
-    client.log("RefreshToken: " + response.headers.valueOf("RefreshToken"));
+  client.global.set("RefreshToken", response.headers.valueOf("RefreshToken"));
+  client.log("RefreshToken: " + response.headers.valueOf("RefreshToken"));
 %}
 
 ### 로그아웃
@@ -34,8 +40,8 @@ RefreshToken: {{RefreshToken}}
 
 
 > {%
-    client.global.clear("Authorization");
-    client.global.clear("RefreshToken");
+  client.global.clear("Authorization");
+  client.global.clear("RefreshToken");
 %}
 
 ### 회원 탈퇴
@@ -49,8 +55,8 @@ RefreshToken: {{RefreshToken}}
 }
 
 > {%
-    client.global.clear("Authorization");
-    client.global.clear("RefreshToken");
+  client.global.clear("Authorization");
+  client.global.clear("RefreshToken");
 %}
 
 ### 유저 프로필 조회
@@ -60,8 +66,8 @@ RefreshToken: {{RefreshToken}}
 
 
 > {%
-    client.global.clear("Authorization");
-    client.global.clear("RefreshToken");
+  client.global.clear("Authorization");
+  client.global.clear("RefreshToken");
 %}
 
 ### 유저 프로필 수정
