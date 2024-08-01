@@ -3,6 +3,7 @@ package com.sparta.restplaceforj.config;
 import com.sparta.restplaceforj.jwt.*;
 import com.sparta.restplaceforj.repository.UserRepository;
 import com.sparta.restplaceforj.security.UserDetailsServiceImpl;
+import com.sparta.restplaceforj.util.JwtUtil;
 import com.sparta.restplaceforj.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
