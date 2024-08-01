@@ -34,7 +34,8 @@ public class TokenService {
         String email = claims.getSubject();
 
         // refreshToken 가져오기
-        String refreshToken = redisUtil.getValues(jwtUtil.AUTH_REFRESH_HEADER+email).substring(BEARER_PREFIX.length());
+        String refreshToken = redisUtil.getValues(email)
+                .substring(BEARER_PREFIX.length());
         if (refreshToken == null || !jwtUtil.validateToken(request, refreshToken)) {
             throw new CommonException(ErrorEnum.INVALID_JWT);
         }
