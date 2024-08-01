@@ -88,6 +88,10 @@ public class Post extends Timestamped {
     likesCount++;
   }
 
+  public void addViewToPost() {
+    viewsCount++;
+  }
+
   //양방향 추가 메서드
   public void addImages(Image image) {
     imageList.add(image);

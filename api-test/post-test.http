@@ -59,9 +59,10 @@ Content-Type: application/json
 
 ### 글 삭제
 DELETE localhost:8080/v1/posts/{{post-id}}
+Authorization:{{Authorization}}
 
 
-### 글 조회
+### 글 조회 (장소명으로 그룹지어 조회)
 GET localhost:8080/v1/posts/place-name
     ?page=1&theme={{theme}}&region={{region}}
 Authorization:{{Authorization}}
@@ -69,11 +70,13 @@ Authorization:{{Authorization}}
 
 ### 글 아이디 제목 조회
 GET localhost:8080/v1/posts
-    ?place-name={{place-name}}&page=1&q={{q}}&sort-by={{sort-by}}
+    ?place-name={{place-name}}&page=0&q={{q}}&sort-by={{sort-by}}
+Authorization:{{Authorization}}
 
 
 ### 글 수정
 PATCH localhost:8080/v1/posts/{{post-id}}
+Authorization:{{Authorization}}
 Content-Type: application/json
 
 {
@@ -85,3 +88,4 @@ Content-Type: application/json
 
 ### 글 단권 조회
 GET localhost:8080/v1/posts/{{post-id}}
+Authorization:{{Authorization}}

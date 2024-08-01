@@ -20,6 +20,7 @@ public enum ResponseEnum implements Response {
   GET_USER_PROFILE("유저 프로필 조회 완료", HttpStatus.OK),
   UPDATE_USER_PROFILE("유저 프로필 수정 완료", HttpStatus.OK),
   CREATE_USER_PROFILE_IMAGE("유저 프로필 업로드 완료", HttpStatus.CREATED),
+  UPDATE_TOKEN("토큰 재발급 완료", HttpStatus.OK),
 
 
   //post
