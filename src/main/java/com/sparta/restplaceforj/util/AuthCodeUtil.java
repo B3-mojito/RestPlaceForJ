@@ -1,5 +1,6 @@
 package com.sparta.restplaceforj.util;
 
+import com.amazonaws.util.Base64;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -8,7 +9,6 @@ import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Base64Utils;
 
 import java.security.Key;
 import java.util.Date;
@@ -27,7 +27,7 @@ public class AuthCodeUtil {
 
     @PostConstruct
     public void init() {
-        byte[] bytes = Base64Utils.decodeFromUrlSafeString(secretKey);
+        byte[] bytes = Base64.decode(secretKey);
         key = Keys.hmacShaKeyFor(bytes);
     }
 
