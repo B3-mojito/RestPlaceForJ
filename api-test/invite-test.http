@@ -22,7 +22,7 @@ Authorization: {{Authorization}}
 RefreshToken: {{RefreshToken}}
 
 {
-  "email" : ""
+  "email" : "chyj2108@naver.com"
 }
 
 
@@ -38,7 +38,7 @@ Authorization: {{Authorization}}
 RefreshToken: {{RefreshToken}}
 
 {
-  "authCode": ""
+  "authCode": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaHlqMjEwOEBuYXZlci5jb20iLCJleHAiOjE3MjI1Mzc5NDcsImlhdCI6MTcyMjUzNjE0N30.pdA1jw8hlGLAtGWVLSDCSAtAsciIcT9pP-jakY-P5Lw"
 }
 
 

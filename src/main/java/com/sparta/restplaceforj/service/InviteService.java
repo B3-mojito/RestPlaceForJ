@@ -15,9 +15,12 @@ import com.sparta.restplaceforj.util.RedisUtil;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class InviteService {
@@ -64,7 +67,7 @@ public class InviteService {
         message.setText(msg, "utf-8", "html");
 
         // redis에 송신할 이메일 주소, 인증 코드, 만료 기한(30분) 설정
-        redisUtil.setValuesWithTimeout(authCodeUtil.SECRET_KEY+email, authCode, 60 * 30L);
+        redisUtil.setValuesWithTimeout(AuthCodeUtil.SECRET_KEY+email, authCode, AuthCodeUtil.EXPIRATION_TIME);
 
         return message;
     }
@@ -72,8 +75,8 @@ public class InviteService {
     // 이메일 송신
     public void sendEmail(String toEmail) throws MessagingException {
         // 이미 인증 메일을 보냈다면 인증 코드가 중복될 수 있으므로 제거
-        if (redisUtil.existData(toEmail)) {
-            redisUtil.deleteValue(toEmail);
+        if (redisUtil.existData(AuthCodeUtil.SECRET_KEY+toEmail)) {
+            redisUtil.deleteValue(AuthCodeUtil.SECRET_KEY+toEmail);
         }
 
         // mail.html 템플릿에 따라 이메일 포맷 생성
@@ -85,15 +88,11 @@ public class InviteService {
 
     // 인증코드 검증
     public String verifyAuthCode(String authCode) {
-        // 인증코드 기한이 유효한지 확인
-        if (authCodeUtil.isTokenExpired(authCode)) {
-            throw new CommonException(ErrorEnum.INVALID_AUTH_CODE);
-        }
-
         // 유저가 보낸 코드에서 파싱한 이메일과 레디스에 저장된 이메일이 동일한지 확인
-        String email = AuthCodeUtil.getEmailFromAuthCode(authCode);
-        String authCodeFromRedis = redisUtil.getValues(authCodeUtil.SECRET_KEY+email)
-                .substring(authCodeUtil.SECRET_KEY.length());
+
+        String email = authCodeUtil.getEmailFromAuthCode(authCode);
+        log.info("email: {}", email);
+        String authCodeFromRedis = redisUtil.getValues(AuthCodeUtil.SECRET_KEY+email);
         if (!authCode.equals(authCodeFromRedis)) {
             throw new CommonException(ErrorEnum.INVALID_AUTH_CODE);
         }
