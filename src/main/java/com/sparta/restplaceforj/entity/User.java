@@ -44,8 +44,6 @@ public class User extends Timestamped {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
-    @Setter
-    private String refreshToken;
 
     @Builder
     public User(String nickname, String name, String email, String password) {
@@ -57,7 +55,7 @@ public class User extends Timestamped {
         this.userStatus = UserStatus.ACTIVE;
     }
 
-      public void setUserStatus(UserStatus userStatus) {
+    public void setUserStatus(UserStatus userStatus) {
         this.userStatus = userStatus;
         this.authUserAt = LocalDateTime.now();
     }

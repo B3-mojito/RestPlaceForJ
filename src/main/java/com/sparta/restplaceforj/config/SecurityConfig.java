@@ -3,6 +3,7 @@ package com.sparta.restplaceforj.config;
 import com.sparta.restplaceforj.jwt.*;
 import com.sparta.restplaceforj.repository.UserRepository;
 import com.sparta.restplaceforj.security.UserDetailsServiceImpl;
+import com.sparta.restplaceforj.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
   private final JwtUtil jwtUtil;
+  private final RedisUtil redisUtil;
   private final UserDetailsServiceImpl userDetailsService;
   private final AuthenticationConfiguration authenticationConfiguration;
   private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -46,7 +48,7 @@ public class SecurityConfig {
     //인증 필터
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil, userRepository);
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil, redisUtil, userRepository);
         filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
         return filter;
     }
@@ -54,7 +56,7 @@ public class SecurityConfig {
     //인가 필터
     @Bean
     public JwtAuthorizationFilter jwtAuthorizationFilter() {
-        return new JwtAuthorizationFilter(jwtUtil, userDetailsService);
+        return new JwtAuthorizationFilter(jwtUtil, redisUtil, userDetailsService);
     }
 
     @Bean

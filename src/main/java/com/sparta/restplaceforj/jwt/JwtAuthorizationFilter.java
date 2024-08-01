@@ -6,6 +6,7 @@ import com.sparta.restplaceforj.exception.CommonException;
 import com.sparta.restplaceforj.exception.ErrorEnum;
 import com.sparta.restplaceforj.security.UserDetailsImpl;
 import com.sparta.restplaceforj.security.UserDetailsServiceImpl;
+import com.sparta.restplaceforj.util.RedisUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -29,6 +30,7 @@ import java.io.IOException;
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
+    private final RedisUtil redisUtil;
     private final UserDetailsServiceImpl userDetailsService;
 
     @Override
@@ -42,7 +44,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 authenticateWithAccessToken(accessToken);
             } else {
                 // accessToken이 유효하지 않을 때 -> refreshToken 검증
-                validateAndAuthenticateWithRefreshToken(request, response);
+                Claims claims = jwtUtil.getUserInfoFromToken(accessToken);
+                String email = claims.getSubject();
+                validateAndAuthenticateWithRefreshToken(request, response, email);
             }
         }
 
@@ -63,9 +67,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     // accessToken이 유효하지 않은 경우, 리프레시 토큰 검증 및 엑세스토큰 재발급
     public void validateAndAuthenticateWithRefreshToken(HttpServletRequest request,
-                                                        HttpServletResponse response) {
+                                                        HttpServletResponse response,
+                                                        String email) {
 
-        String refreshToken = jwtUtil.getRefreshTokenFromHeader(request);
+        String refreshToken = redisUtil.getValues(jwtUtil.AUTH_REFRESH_HEADER+email);
 
         // 리프레시 토큰이 null이 아니고, 유효한 토큰인지 확인
         if (StringUtils.hasText(refreshToken) && jwtUtil.validateToken(request, refreshToken)) {
@@ -76,23 +81,20 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     info.getSubject());
             User user = userDetails.getUser();
 
-      // 유저의 리프레시 토큰 검증
-      if (user.getRefreshToken() != null && user.getRefreshToken().equals(refreshToken)) {
-        // accessToken 생성
-        UserRole role = user.getUserRole();
-        String newAccessToken = jwtUtil.createAccessToken(info.getSubject(), role);
-        jwtUtil.setHeaderAccessToken(response, newAccessToken);
+            // accessToken 생성
+            UserRole role = user.getUserRole();
+            String newAccessToken = jwtUtil.createAccessToken(info.getSubject(), role);
+            jwtUtil.setHeaderAccessToken(response, newAccessToken);
 
-                try {
-                    //Athentication 설정
-                    setAuthentication(info.getSubject());
-                } catch (Exception e) {
-                    log.error(e.getMessage());
-                    throw new CommonException(ErrorEnum.NOT_FOUND_AUTHENTICATION_INFO);
-                }
-            } else {
-                throw new CommonException(ErrorEnum.INVALID_JWT);
+            try {
+                //Athentication 설정
+                setAuthentication(info.getSubject());
+            } catch (Exception e) {
+                log.error(e.getMessage());
+                throw new CommonException(ErrorEnum.NOT_FOUND_AUTHENTICATION_INFO);
             }
+        } else {
+            throw new CommonException(ErrorEnum.INVALID_JWT);
         }
     }
 
