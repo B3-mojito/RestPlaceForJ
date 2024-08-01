@@ -1,7 +1,7 @@
 ## Variables
 
 
-@post-id = 6
+@post-id = 7
 
 @title = title12
 @content = content
@@ -16,6 +16,7 @@
 @edit_place-name = 이수역꼬치거리 edit
 
 @region = 서울 동작구
+#createdAt    viewsCount   likesCount
 @sort-by = viewsCount
 @q =
 
@@ -72,6 +73,13 @@ Authorization:{{Authorization}}
 GET localhost:8080/v1/posts
     ?place-name={{place-name}}&page=0&q={{q}}&sort-by={{sort-by}}
 Authorization:{{Authorization}}
+
+### 내가 쓴 글 아이디 제목 조회
+GET localhost:8080/v1/posts/me
+    ?page=0&q={{q}}&sort-by={{sort-by}}
+Authorization:{{Authorization}}
+
+
 
 
 ### 글 수정

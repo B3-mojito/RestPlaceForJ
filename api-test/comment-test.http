@@ -3,7 +3,7 @@
 @content = 힘내세요!
 @edit_content = edit 힘내세요!dd
 
-@post-id = 2
+@post-id = 1
 @comment-id = 1
 
 ####  로그인
