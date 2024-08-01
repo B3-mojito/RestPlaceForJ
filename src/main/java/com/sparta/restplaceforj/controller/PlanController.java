@@ -3,8 +3,10 @@ package com.sparta.restplaceforj.controller;
 import com.sparta.restplaceforj.common.CommonResponse;
 import com.sparta.restplaceforj.common.ResponseEnum;
 import com.sparta.restplaceforj.dto.ColumnResponseDto;
+import com.sparta.restplaceforj.dto.PlanListDto;
 import com.sparta.restplaceforj.dto.PlanRequestDto;
 import com.sparta.restplaceforj.dto.PlanResponseDto;
+import com.sparta.restplaceforj.entity.User;
 import com.sparta.restplaceforj.security.UserDetailsImpl;
 import com.sparta.restplaceforj.service.PlanService;
 import jakarta.validation.Valid;
@@ -58,9 +60,10 @@ public class PlanController {
   @PatchMapping("/{plan-id}")
   public ResponseEntity<CommonResponse<PlanResponseDto>> updatePlan(
       @PathVariable("plan-id") Long planId,
-      @RequestBody @Valid PlanRequestDto planRequestDto) {
+      @RequestBody @Valid PlanRequestDto planRequestDto,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
     PlanResponseDto planResponseDto = planService
-        .updateColumn(planId, planRequestDto);
+        .updateColumn(planId, planRequestDto, userDetails.getUser());
 
     return ResponseEntity.ok(
         CommonResponse.<PlanResponseDto>builder()
@@ -95,21 +98,19 @@ public class PlanController {
   /**
    * 플랜 다건 조회 controller
    *
-   * @param userId      유저 아이디
-   * @param userDetails 유저 디테일
+   * @param userId 유저 아이디
    * @return PlanResponseDto : id, title
    */
   @GetMapping
   public ResponseEntity<CommonResponse<List<PlanResponseDto>>> getPlanList(
-      @RequestParam(value = "user-id") Long userId,
-      @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    List<PlanResponseDto> planResponseDto = planService
-        .getPlanList(userDetails.getUser(), userId);
+      @RequestParam Long userId) {
+    List<PlanResponseDto> planResponseDtoList = planService
+        .getPlanList(userId);
 
     return ResponseEntity.ok(
         CommonResponse.<List<PlanResponseDto>>builder()
             .response(ResponseEnum.GET_PLAN_LIST)
-            .data(planResponseDto)
+            .data(planResponseDtoList)
             .build()
     );
   }
