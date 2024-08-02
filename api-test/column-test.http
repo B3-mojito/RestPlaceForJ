@@ -37,6 +37,6 @@ Content-Type: application/json
 
 ### 컬럼 전체 조회
 # @no-cookie-jar
-GET http://localhost:8080/v1/plans/{{plan_id}}/
+GET http://localhost:8080/v1/plans/{{plan_id}}
 Authorization: {{Authorization}}
 Content-Type: application/json
