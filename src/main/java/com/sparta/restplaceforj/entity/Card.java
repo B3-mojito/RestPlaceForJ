@@ -43,6 +43,9 @@ public class Card {
 
   private String memo;
 
+  public void changeColum(Column column) {
+    this.column = column;
+  }
 
   @Builder
   public Card(String title, String address, Column column, String placeName,

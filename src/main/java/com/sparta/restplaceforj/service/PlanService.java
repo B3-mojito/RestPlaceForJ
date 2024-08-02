@@ -7,6 +7,7 @@ import com.sparta.restplaceforj.entity.Column;
 import com.sparta.restplaceforj.entity.Plan;
 import com.sparta.restplaceforj.exception.CommonException;
 import com.sparta.restplaceforj.exception.ErrorEnum;
+import com.sparta.restplaceforj.repository.ColumnRepository;
 import com.sparta.restplaceforj.repository.CoworkerRepository;
 import com.sparta.restplaceforj.repository.PlanRepository;
 import com.sparta.restplaceforj.repository.UserRepository;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlanService {
 
   private final PlanRepository planRepository;
+  private final ColumnRepository columnRepository;
   private final CoworkerRepository coworkerRepository;
   private final UserRepository userRepository;
 
@@ -39,6 +41,14 @@ public class PlanService {
         .build();
     planRepository.save(plan);
 
+    //plan 생성시 미정의 컬럼이 생성
+    Column column = Column.builder()
+        .title("미정")
+        .plan(plan)
+        .defaultValue(Boolean.TRUE)
+        .build();
+
+    columnRepository.save(column);
       /*
        * 추후 유저 완성시 사용
        coworkerRepository.save(Coworker.builder()
