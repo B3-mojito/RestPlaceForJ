@@ -27,7 +27,7 @@ import java.io.IOException;
 
 import static com.sparta.restplaceforj.util.JwtUtil.BEARER_PREFIX;
 
-@Slf4j(topic = "Jwt 검증 및 인가")
+@Slf4j(topic = "JwtAuthorizationFilter")
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 

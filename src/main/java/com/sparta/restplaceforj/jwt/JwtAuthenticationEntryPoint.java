@@ -1,5 +1,7 @@
 package com.sparta.restplaceforj.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sparta.restplaceforj.common.ResponseEnum;
 import com.sparta.restplaceforj.exception.ErrorEnum;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,9 +22,11 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
-                         AuthenticationException authException) throws IOException, ServletException {
+                         AuthenticationException authException) throws IOException {
 
-        response.setCharacterEncoding("utf-8");
-        response.sendError(ErrorEnum.FORBIDDEN_ACCESS.getHttpStatus().value(), ErrorEnum.FORBIDDEN_ACCESS.getMessage());
+
+        response.setContentType("application/json; charset=UTF-8");
+        response.setStatus(ResponseEnum.FORBIDDEN_ACCESS.getHttpStatus().value());
+        response.getWriter().write(new ObjectMapper().writeValueAsString(ResponseEnum.FORBIDDEN_ACCESS.getMessage()));
     }
 }

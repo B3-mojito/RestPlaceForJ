@@ -1,5 +1,7 @@
 package com.sparta.restplaceforj.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sparta.restplaceforj.common.ResponseEnum;
 import com.sparta.restplaceforj.exception.ErrorEnum;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,8 +22,8 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
       HttpServletResponse response,
       AccessDeniedException accessDeniedException) throws IOException {
 
-    response.setCharacterEncoding("utf-8");
-    response.sendError(ErrorEnum.INVALID_ACCESS.getHttpStatus().value(),
-        ErrorEnum.INVALID_ACCESS.getMessage());
+      response.setContentType("application/json; charset=UTF-8");
+      response.setStatus(ResponseEnum.INVALID_ACCESS.getHttpStatus().value());
+      response.getWriter().write(new ObjectMapper().writeValueAsString(ResponseEnum.INVALID_ACCESS.getMessage()));
   }
 }
