@@ -5,6 +5,9 @@ import com.sparta.restplaceforj.common.ResponseEnum;
 import com.sparta.restplaceforj.dto.CardRequestDto;
 import com.sparta.restplaceforj.dto.CardResponseDto;
 import com.sparta.restplaceforj.dto.CardUpdateRequestDto;
+import com.sparta.restplaceforj.dto.PlanResponseDto;
+import com.sparta.restplaceforj.dto.PostResponseDto;
+import com.sparta.restplaceforj.entity.Post;
 import com.sparta.restplaceforj.service.CardService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -37,7 +40,7 @@ public class CardController {
   @PostMapping
   public ResponseEntity<CommonResponse<CardResponseDto>> createCard(
 
-      @RequestParam("column-id") Long columnId,
+      @PathVariable("column-id") Long columnId,
       @RequestBody @Valid CardRequestDto cardRequestDto) {
 
     CardResponseDto cardResponseDto = cardService.createCard(
@@ -83,7 +86,7 @@ public class CardController {
    */
   @GetMapping
   public ResponseEntity<CommonResponse<List<CardResponseDto>>> getCardList(
-      @RequestParam("column-id") Long columnId) {
+      @RequestParam(value = "column-id") Long columnId) {
 
     return ResponseEntity.ok(
         CommonResponse.<List<CardResponseDto>>builder()
@@ -128,5 +131,49 @@ public class CardController {
             .data(null)
             .build());
   }
+
+  /**
+   * 카드 게시물 추가  controller
+   *
+   * @param cardId 카드 아이디
+   * @param postId 게시물 아이디
+   * @return PostResponseDto : id, userId, title, content, address, likesCount, viewsCount,
+   * themeEnum
+   */
+  @PostMapping("/{card-id}/posts/{post-id}")
+  public ResponseEntity<CommonResponse<PostResponseDto>> cardAddPost(
+      @PathVariable("card-id") Long cardId,
+      @PathVariable("post-id") Long postId) {
+
+    PostResponseDto postResponseDto = cardService.cardAddPost(cardId, postId);
+
+    return ResponseEntity.ok(
+        CommonResponse.<PostResponseDto>builder()
+            .response(ResponseEnum.ADD_POST)
+            .data(postResponseDto)
+            .build());
+  }
+
+  /**
+   * 카드 연관 게시물 다건 조회 controller
+   *
+   * @param cardId 유저 아이디
+   * @return PlanResponseDto : id, title
+   */
+  @GetMapping("/posts")
+  public ResponseEntity<CommonResponse<List<PostResponseDto>>> getPostList(
+      @PathVariable("column-id") Long columnId,
+      @RequestParam Long cardId) {
+    List<PostResponseDto> postResponseDtoList = cardService
+        .getPostList(cardId, columnId);
+
+    return ResponseEntity.ok(
+        CommonResponse.<List<PostResponseDto>>builder()
+            .response(ResponseEnum.GET_PLAN_LIST)
+            .data(postResponseDtoList)
+            .build()
+    );
+  }
+
 }
 

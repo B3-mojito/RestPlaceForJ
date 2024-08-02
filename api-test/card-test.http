@@ -1,0 +1,53 @@
+## Variables
+# @no-cookie-jar
+@user_id = 2
+@plan_id = 1
+@column_id = 1
+@card_id = 1
+@post_id = 6
+@title = 하이요
+@address = 제주시 아라동
+@password = asdfg1234!
+@email = asdf12345@naver.com
+@memo = 자러갑시다
+@placeName = 화장실
+
+### 로그인
+POST http://localhost:8080/v1/users/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+> {%
+  client.global.set("Authorization", response.headers.valueOf("Authorization"));
+  client.log("Authorization: " + response.headers.valueOf("Authorization"));
+
+  client.global.set("RefreshToken", response.headers.valueOf("RefreshToken"));
+  client.log("RefreshToken: " + response.headers.valueOf("RefreshToken"));
+%}
+
+### 카드 생성
+POST http://localhost:8080/v1/columns/{{column_id}}/cards
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+{
+  "title": "{{title}}",
+  "address": "{{address}}",
+  "placeName": "{{placeName}}",
+  "memo": "{{memo}}"
+}
+
+### 카드 연관포스트 저장
+POST http://localhost:8080/v1/columns/{{column_id}}/cards/{{card_id}}/posts/{{post_id}}
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+
+### 카드 연관포스트 조회
+GET http://localhost:8080/v1/columns/{{column_id}}/cards/posts?cardId={{card_id}}
+Authorization: {{Authorization}}
+Content-Type: application/json
