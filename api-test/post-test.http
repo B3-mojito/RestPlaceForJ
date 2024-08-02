@@ -52,7 +52,7 @@ Content-Type: application/json
   "theme" : "{{theme}}",
   "address" : "{{address}}",
   "placeName" : "{{place-name}}",
-  "imageIdList": [11]
+  "imageIdList": []
 }
 
 

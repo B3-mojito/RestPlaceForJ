@@ -1,6 +1,6 @@
 package com.sparta.restplaceforj.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +14,7 @@ public class CardResponseDto {
   private final String title;
   private final String address;
   private final String placeName;
-  private final LocalDateTime startedAt;
-  private final LocalDateTime endedAt;
+  private final LocalTime startedAt;
+  private final LocalTime endedAt;
   private final String memo;
 }

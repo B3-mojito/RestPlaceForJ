@@ -9,9 +9,6 @@ import lombok.Getter;
 @Getter
 public class CardRequestDto {
 
-  @NotNull
-  private Long columnId;
-
   @NotBlank(message = "카드 제목을 입력해 주세요")
   private String title;
 

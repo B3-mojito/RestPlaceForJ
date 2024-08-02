@@ -1,9 +1,9 @@
 ## Variables
 # @no-cookie-jar
-@password = asdfg1234!
-@email = asdf12345@naver.com
-@name = 하이요2
-@nickname = 하이요24
+@password = asdfg12345!
+@email = asdf123456@naver.com
+@name = 하이요24
+@nickname = 하이요242
 
 ### 유저 등록
 POST http://localhost:8080/v1/users
@@ -17,6 +17,7 @@ Content-Type: application/json
 }
 
 ### 로그인
+# @no-cookie-jar
 POST http://localhost:8080/v1/users/login
 Content-Type: application/json
 
@@ -85,8 +86,8 @@ Content-Type: application/json
 }
 
 > {%
-    client.global.clear("Authorization");
-    client.global.clear("RefreshToken");
+  client.global.clear("Authorization");
+  client.global.clear("RefreshToken");
 %}
 
 ### 토큰 재발급
@@ -95,6 +96,6 @@ Authorization: {{Authorization}}
 RefreshToken: {{RefreshToken}}
 
 > {%
-    client.global.clear("Authorization");
-    client.global.clear("RefreshToken");
+  client.global.clear("Authorization");
+  client.global.clear("RefreshToken");
 %}
