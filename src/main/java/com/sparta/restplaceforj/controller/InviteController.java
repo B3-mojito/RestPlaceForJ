@@ -19,18 +19,28 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/plans")
+@RequestMapping("/v1/plans/{plan-id}")
 public class InviteController {
 
     private final InviteService inviteService;
 
+
+    /**
+     * 유저 이메일로 검색, 인증번호 발송 controller
+     *
+     * @param emailRequestDto : email
+     * @param planId
+     * @param userDetails
+     * @return null
+     */
     @PostMapping("/invite")
     public ResponseEntity<CommonResponse> checkEmailAndSendAuthCode(
-            @RequestBody @Valid EmailRequestDto emailDto,
+            @RequestBody @Valid EmailRequestDto emailRequestDto,
+            @PathVariable("plan-id") Long planId,
             @AuthenticationPrincipal UserDetailsImpl userDetails) throws MessagingException {
 
-        inviteService.checkEmailInvalidation(emailDto.getEmail(), userDetails.getUser());
-        inviteService.sendEmail(emailDto.getEmail());
+        inviteService.checkEmailInvalidation(emailRequestDto.getEmail(), userDetails.getUser(), planId);
+        inviteService.sendEmail(emailRequestDto.getEmail());
 
         return ResponseEntity.ok(
                 CommonResponse.builder()
@@ -40,7 +50,15 @@ public class InviteController {
         );
     }
 
-    @PostMapping("/{plan-id}/authCode")
+    /**
+     * 인증번호 유효성 검사, 공동작업자로 추가 controller
+     *
+     * @param authCheckRequestDto : authCode
+     * @param planId
+     * @param userDetails
+     * @return coworkerId
+     */
+    @PostMapping("/authCode")
     public ResponseEntity<CommonResponse<AuthCheckResponseDto>> AuthCheckAndCreateCoworker(
             @RequestBody AuthCheckRequestDto authCheckRequestDto,
             @PathVariable("plan-id") Long planId,
