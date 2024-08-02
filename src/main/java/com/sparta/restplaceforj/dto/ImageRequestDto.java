@@ -1,4 +1,4 @@
-package com.sparta.restplaceforj.controller;
+package com.sparta.restplaceforj.dto;
 
 import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;

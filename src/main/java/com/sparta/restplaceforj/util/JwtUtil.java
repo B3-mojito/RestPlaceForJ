@@ -1,4 +1,4 @@
-package com.sparta.restplaceforj.jwt;
+package com.sparta.restplaceforj.util;
 
 import com.sparta.restplaceforj.entity.UserRole;
 import com.sparta.restplaceforj.exception.ErrorEnum;
@@ -21,8 +21,6 @@ public class JwtUtil {
 
     // accessToken 토큰 헤더
     public static final String AUTH_ACCESS_HEADER = "Authorization";
-    // refreshToken 토큰 헤더
-    public static final String AUTH_REFRESH_HEADER = "RefreshToken";
     // 사용자 권한 키
     public static final String AUTHORIZATION_KEY = "auth";
     // Token 식별자

@@ -1,13 +1,14 @@
 ## Variables
 
 
-@post-id = 6
+@post-id = 7
 
 @title = title12
 @content = content
 @theme = THRILL
 @address = 서울 동작구 사당동 134-1
 @place-name = 이수역꼬치거리
+@user-id =1
 
 @edit_title = title12 edit
 @edit_content = content edit
@@ -16,6 +17,7 @@
 @edit_place-name = 이수역꼬치거리 edit
 
 @region = 서울 동작구
+#createdAt    viewsCount   likesCount
 @sort-by = viewsCount
 @q =
 
@@ -52,7 +54,7 @@ Content-Type: application/json
   "theme" : "{{theme}}",
   "address" : "{{address}}",
   "placeName" : "{{place-name}}",
-  "imageIdList": [11]
+  "imageIdList": []
 }
 
 
@@ -72,6 +74,16 @@ Authorization:{{Authorization}}
 GET localhost:8080/v1/posts
     ?place-name={{place-name}}&page=0&q={{q}}&sort-by={{sort-by}}
 Authorization:{{Authorization}}
+
+
+
+
+### 내가 쓴 글 아이디 제목 조회(param: size=5, sort-by=createAt, page=0 디폴트 값)
+GET localhost:8080/v1/users/{{user-id}}/posts
+#    &sort-by={{sort-by}}
+Authorization:{{Authorization}}
+
+
 
 
 ### 글 수정

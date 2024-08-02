@@ -3,6 +3,7 @@ package com.sparta.restplaceforj.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.restplaceforj.common.ResponseEnum;
+import com.sparta.restplaceforj.util.JwtUtil;
 import com.sparta.restplaceforj.util.RedisUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;

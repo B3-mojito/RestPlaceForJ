@@ -21,4 +21,7 @@ public interface CoworkerRepository extends JpaRepository<Coworker, Long> {
   default Coworker findByPlanIdOrThrow(Long planId) {
     return findById(planId).orElseThrow(() -> new CommonException(ErrorEnum.USER_NOT_FOUND));
   }
+  List<Plan> findAllByUserId(Long userId);
+
+  boolean existsByUserIdAndPlanId(Long id, Long planId);
 }

@@ -6,6 +6,7 @@ import com.sparta.restplaceforj.exception.CommonException;
 import com.sparta.restplaceforj.exception.ErrorEnum;
 import com.sparta.restplaceforj.security.UserDetailsImpl;
 import com.sparta.restplaceforj.security.UserDetailsServiceImpl;
+import com.sparta.restplaceforj.util.JwtUtil;
 import com.sparta.restplaceforj.util.RedisUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -24,7 +25,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-import static com.sparta.restplaceforj.jwt.JwtUtil.BEARER_PREFIX;
+import static com.sparta.restplaceforj.util.JwtUtil.BEARER_PREFIX;
 
 @Slf4j(topic = "JwtAuthorizationFilter")
 @RequiredArgsConstructor

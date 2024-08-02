@@ -21,6 +21,22 @@ spring:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
       password: ${REDIS_PASSWORD}
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+
+spring.mail.host: smtp.naver.com
+spring.mail.port: 465
+spring.mail.username : ${EMAIL_ID}
+spring.mail.password : ${EMAIL_PW}
+spring.mail.properties.debug : true
+spring.mail.properties.mail.smtp.auth : true
+spring.mail.properties.mail.smtp.ssl.enable : true
+spring.mail.properties.mail.smtp.starttls.enable: true
+spring.mail.properties.mail.smtp.ssl.trust : smtp.naver.com
+
 
 cloud:
   aws:
@@ -34,10 +50,16 @@ cloud:
     stack:
       auto: false
     cron: ${CRON}
+
 jwt:
   secret:
     key: ${JWT_SECRET_KEY}
+
 server:
   port: ${SERVER_PORT}
+
+
+
+
 
 logging.level.org.springframework.boot.autoconfigure: ERROR

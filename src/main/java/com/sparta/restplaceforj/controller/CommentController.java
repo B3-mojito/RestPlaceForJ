@@ -60,7 +60,7 @@ public class CommentController {
    */
   @GetMapping
   public ResponseEntity<CommonResponse<PageResponseDto<CommentResponseDto>>> getCommentList(
-      @RequestParam int page, @RequestParam(defaultValue = "5") int size,
+      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size,
       @PathVariable("post-id") long postId) {
 
     PageResponseDto<CommentResponseDto> commentResponseDtoList = commentService
