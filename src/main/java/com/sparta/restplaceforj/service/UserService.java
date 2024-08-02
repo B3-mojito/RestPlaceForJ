@@ -77,7 +77,7 @@ public class UserService {
         User user = userRepository.findByIdOrThrow(userId);
 
         return UserProfileResponseDto.builder()
-                .profilePicture(user.getProfilePicture())
+                .profileImage(user.getProfileImage())
                 .bio(user.getBio())
                 .nickname(user.getNickname())
                 .build();
@@ -89,11 +89,11 @@ public class UserService {
         if(user.getId() != userId) throw new CommonException(ErrorEnum.INVALID_ACCESS);
 
         String fileName = s3Service.upload(multipartFile);
-        user.setProfilePicture(fileName);
+        user.setProfileImage(fileName);
         userRepository.save(user);
 
         return UpdateUserProfileImageResponseDto.builder()
-                .profileImageUrl(fileName)
+                .profileImage(fileName)
                 .build();
     }
 

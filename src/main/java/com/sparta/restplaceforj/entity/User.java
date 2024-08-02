@@ -34,7 +34,7 @@ public class User extends Timestamped {
     private String bio;
 
     @Setter
-    private String profilePicture;
+    private String profileImage;
 
     @Enumerated(value = EnumType.STRING)
     private UserStatus userStatus;

@@ -7,12 +7,12 @@ import lombok.Getter;
 public class UserProfileResponseDto {
     private final String nickname;
     private final String bio;
-    private final String profilePicture;
+    private final String profileImage;
 
     @Builder
-    public UserProfileResponseDto(String nickname, String bio, String profilePicture) {
+    public UserProfileResponseDto(String nickname, String bio, String profileImage) {
         this.nickname = nickname;
         this.bio = bio;
-        this.profilePicture = profilePicture;
+        this.profileImage = profileImage;
     }
 }
