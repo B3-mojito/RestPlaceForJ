@@ -2,11 +2,10 @@ package com.sparta.restplaceforj.controller;
 
 import com.sparta.restplaceforj.common.CommonResponse;
 import com.sparta.restplaceforj.common.ResponseEnum;
+import com.sparta.restplaceforj.dto.CardResponseDto;
 import com.sparta.restplaceforj.dto.ColumnResponseDto;
-import com.sparta.restplaceforj.dto.PlanListDto;
 import com.sparta.restplaceforj.dto.PlanRequestDto;
 import com.sparta.restplaceforj.dto.PlanResponseDto;
-import com.sparta.restplaceforj.entity.User;
 import com.sparta.restplaceforj.security.UserDetailsImpl;
 import com.sparta.restplaceforj.service.PlanService;
 import jakarta.validation.Valid;
@@ -134,6 +133,28 @@ public class PlanController {
         CommonResponse.<PlanResponseDto>builder()
             .response(ResponseEnum.GET_PLAN)
             .data(planResponseDto)
+            .build()
+    );
+  }
+
+  /**
+   * 플랜 으로 카드 전건 조회 controller
+   *
+   * @param planId      플랜 아이디
+   * @param userDetails 유저 디테일
+   * @return PlanResponseDto : id, title
+   */
+  @GetMapping("/{plan-id}/cards")
+  public ResponseEntity<CommonResponse<List<CardResponseDto>>> getCardLists(
+      @PathVariable("plan-id") Long planId,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    List<CardResponseDto> cardResponseDto = planService
+        .getCardLists(planId, userDetails.getUser());
+
+    return ResponseEntity.ok(
+        CommonResponse.<List<CardResponseDto>>builder()
+            .response(ResponseEnum.GET_PLAN)
+            .data(cardResponseDto)
             .build()
     );
   }

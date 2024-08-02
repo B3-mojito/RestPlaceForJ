@@ -10,9 +10,11 @@ import java.util.List;
 
 public interface ColumnRepository extends JpaRepository<Column, Long> {
 
-    default Column findByIdOrThrow(Long columnId) {
-        return findById(columnId).orElseThrow(() -> new CommonException(ErrorEnum.COLUMN_NOT_FOUND));
-    }
+  default Column findByIdOrThrow(Long columnId) {
+    return findById(columnId).orElseThrow(() -> new CommonException(ErrorEnum.COLUMN_NOT_FOUND));
+  }
 
-    List<ColumnResponseDto> findByPlanId(Long planId);
+  List<ColumnResponseDto> findByPlanId(Long planId);
+
+  List<Column> findColumnsByPlanId(Long planId);
 }
