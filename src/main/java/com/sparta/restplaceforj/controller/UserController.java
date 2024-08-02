@@ -90,7 +90,7 @@ public class UserController {
      * @param userDetails
      * @return UpdateUserProfileImageResponseDto 필드명: profileImageUrl
      */
-    @PostMapping("/profileImage/{user-id}")
+    @PostMapping("/{user-id}/profileImage")
     public ResponseEntity<CommonResponse<UpdateUserProfileImageResponseDto>> createUserProfileImage(
             @RequestParam("images") MultipartFile multipartFile,
             @AuthenticationPrincipal UserDetailsImpl userDetails,
