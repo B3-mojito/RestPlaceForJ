@@ -74,9 +74,12 @@ GET localhost:8080/v1/posts
     ?place-name={{place-name}}&page=0&q={{q}}&sort-by={{sort-by}}
 Authorization:{{Authorization}}
 
-### 내가 쓴 글 아이디 제목 조회
+
+
+
+### 내가 쓴 글 아이디 제목 조회(param: size=5, sort-by=createAt, page=0 디폴트 값)
 GET localhost:8080/v1/posts/me
-    ?page=0&q={{q}}&sort-by={{sort-by}}
+#    &sort-by={{sort-by}}
 Authorization:{{Authorization}}
 
 
