@@ -38,14 +38,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+        log.info("accessToken 검증 시도");
         String accessToken = jwtUtil.getAccessTokenFromHeader(request);
 
         if (StringUtils.hasText(accessToken)) {
             if (jwtUtil.validateToken(request, accessToken)) {
-                // accessToken이 유효할 때
+                log.info("유효한 accessToken");
                 authenticateWithAccessToken(accessToken);
             } else {
-                // accessToken이 유효하지 않을 때 -> refreshToken 검증
+                log.info("유효하지 않은 accessToken");
                 Claims claims = jwtUtil.getUserInfoFromToken(accessToken);
                 String email = claims.getSubject();
                 validateAndAuthenticateWithRefreshToken(request, response, email);
@@ -71,13 +72,14 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     public void validateAndAuthenticateWithRefreshToken(HttpServletRequest request,
                                                         HttpServletResponse response,
                                                         String email) {
-
+        log.info("refreshToken 검증 시도");
         String refreshToken = redisUtil.getValues(email)
                 .substring(BEARER_PREFIX.length());
 
         // 리프레시 토큰이 null이 아니고, 유효한 토큰인지 확인
         if (StringUtils.hasText(refreshToken) && jwtUtil.validateToken(request, refreshToken)) {
 
+            log.info("유효한 refreshToken");
             // 유저 객체 가져오기
             Claims info = jwtUtil.getUserInfoFromToken(refreshToken);
             UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(
@@ -108,6 +110,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     context.setAuthentication(authentication);
 
     SecurityContextHolder.setContext(context);
+      log.info("인증처리 완료");
   }
 
     // 인증 객체 생성
