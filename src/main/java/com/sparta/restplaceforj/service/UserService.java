@@ -124,7 +124,14 @@ public class UserService {
     }
 
 
-
+    /**
+     * 유저 프로필 수정 controller
+     *
+     * @param userUpdateRequestDto : nickname, bio, currentPassword, newPassword, confirmPassword;
+     * @param user
+     * @param userId
+     * @return UserProfileResponseDto :nickname, bio, profilePicture
+     */
     @Transactional
     public UserProfileResponseDto updateUserProfile(UserUpdateRequestDto userUpdateRequestDto, User user, Long userId) {
 
