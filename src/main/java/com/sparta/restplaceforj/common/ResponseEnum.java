@@ -30,6 +30,7 @@ public enum ResponseEnum implements Response {
   GET_POST_LIST("글 전체 조회 완료", HttpStatus.OK),
   GET_POST_ID_TITLE_LIST("글 아이디 제목 조회 완료", HttpStatus.OK),
   UPDATE_POST("글 수정 완료", HttpStatus.OK),
+  GET_MY_POST_LIST("본인 작성 게시물 조회 완료", HttpStatus.OK),
 
   //comment
   CREATE_COMMENT("댓글 생성 완료", HttpStatus.CREATED),
