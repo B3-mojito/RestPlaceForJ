@@ -16,13 +16,13 @@ Content-Type: application/json
 %}
 
 ### 인증 코드 전송
-POST http://localhost:8080/v1/plans/invite
+POST http://localhost:8080/v1/plans/4/invite
 Content-Type: application/json
 Authorization: {{Authorization}}
 RefreshToken: {{RefreshToken}}
 
 {
-  "email" : "chyj2108@naver.com"
+  "email" : ""
 }
 
 
@@ -32,13 +32,13 @@ RefreshToken: {{RefreshToken}}
 %}
 
 ### 인증 코드 확인, 공동 작업자 추가
-POST http://localhost:8080/v1/plans/1/authCode
+POST http://localhost:8080/v1/plans/2/authCode
 Content-Type: application/json
 Authorization: {{Authorization}}
 RefreshToken: {{RefreshToken}}
 
 {
-  "authCode": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaHlqMjEwOEBuYXZlci5jb20iLCJleHAiOjE3MjI1Mzc5NDcsImlhdCI6MTcyMjUzNjE0N30.pdA1jw8hlGLAtGWVLSDCSAtAsciIcT9pP-jakY-P5Lw"
+  "authCode": ""
 }
 
 
