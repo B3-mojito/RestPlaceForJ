@@ -1,9 +1,3 @@
-## Variables
-# @no-cookie-jar
-@password = asdfg1234!
-@email = asdf12345@naver.com
-@name = 하이요2
-@nickname = 하이요24
 
 ### 유저 등록
 POST http://localhost:8080/v1/users
