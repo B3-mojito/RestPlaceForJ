@@ -51,6 +51,12 @@ public enum ResponseEnum implements Response {
   DELETE_PLAN("플랜 삭제 완료", HttpStatus.OK),
   GET_PLAN_LIST("플랜 전체 조회 완료", HttpStatus.OK),
   GET_PLAN("플랜 조회 완료", HttpStatus.OK),
+
+  //invitation
+  SEND_AUTH_CODE("인증 코드 전송 완료", HttpStatus.OK),
+  AUTH_CODE_CHECK("인증 완료", HttpStatus.OK),
+  CREATE_COWORKER("공동 작업자 추가 완료", HttpStatus.CREATED),
+
   //column
   CREATE_COLUMN("컬럼 생성 완료", HttpStatus.CREATED),
   UPDATE_COLUMN("컬럼 수정 완료", HttpStatus.OK),

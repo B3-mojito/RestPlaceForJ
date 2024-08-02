@@ -3,7 +3,7 @@ package com.sparta.restplaceforj.service;
 import com.sparta.restplaceforj.entity.User;
 import com.sparta.restplaceforj.exception.CommonException;
 import com.sparta.restplaceforj.exception.ErrorEnum;
-import com.sparta.restplaceforj.jwt.JwtUtil;
+import com.sparta.restplaceforj.util.JwtUtil;
 import com.sparta.restplaceforj.repository.UserRepository;
 import com.sparta.restplaceforj.util.RedisUtil;
 import io.jsonwebtoken.Claims;
@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import static com.sparta.restplaceforj.jwt.JwtUtil.BEARER_PREFIX;
+import static com.sparta.restplaceforj.util.JwtUtil.BEARER_PREFIX;
 
 @RequiredArgsConstructor
 @Service

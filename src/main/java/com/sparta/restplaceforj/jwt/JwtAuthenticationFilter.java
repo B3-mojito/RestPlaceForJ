@@ -6,6 +6,7 @@ import com.sparta.restplaceforj.entity.User;
 import com.sparta.restplaceforj.entity.UserRole;
 import com.sparta.restplaceforj.repository.UserRepository;
 import com.sparta.restplaceforj.security.UserDetailsImpl;
+import com.sparta.restplaceforj.util.JwtUtil;
 import com.sparta.restplaceforj.util.RedisUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
