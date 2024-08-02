@@ -27,12 +27,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private final JwtUtil jwtUtil;
     private final RedisUtil redisUtil;
-    private final UserRepository userRepository;
 
-    public JwtAuthenticationFilter(JwtUtil jwtUtil, RedisUtil redisUtil, UserRepository userRepository) {
+    public JwtAuthenticationFilter(JwtUtil jwtUtil, RedisUtil redisUtil) {
         this.jwtUtil = jwtUtil;
         this.redisUtil = redisUtil;
-        this.userRepository = userRepository;
         setFilterProcessesUrl("/v1/users/login");
     }
 
