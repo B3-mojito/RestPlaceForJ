@@ -27,24 +27,30 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final S3Service s3Service;
 
+    /**
+     * 회원 가입 메서드
+     *
+     * @param userSignUpRequestDto 필드명: email, password, name, nickname
+     * @return userSignUpResponseDto 필드명: email, name, nickname;
+     */
     @Transactional
-    public UserSignUpResponseDto createUser(UserSignUpRequestDto userSignUprequestDto) {
+    public UserSignUpResponseDto createUser(UserSignUpRequestDto userSignUpRequestDto) {
 
-        if (userRepository.existsByEmail(userSignUprequestDto.getEmail())) {
+        if (userRepository.existsByEmail(userSignUpRequestDto.getEmail())) {
             throw new CommonException(ErrorEnum.DUPLICATED_EMAIL);
         }
 
-        if (userRepository.existsByNickname(userSignUprequestDto.getNickname())) {
+        if (userRepository.existsByNickname(userSignUpRequestDto.getNickname())) {
             throw new CommonException(ErrorEnum.DUPLICATED_NICKNAME);
         }
 
-        String password = passwordEncoder.encode(userSignUprequestDto.getPassword());
+        String password = passwordEncoder.encode(userSignUpRequestDto.getPassword());
 
         User user = User.builder()
-                .email(userSignUprequestDto.getEmail())
+                .email(userSignUpRequestDto.getEmail())
                 .password(password)
-                .name(userSignUprequestDto.getName())
-                .nickname(userSignUprequestDto.getNickname())
+                .name(userSignUpRequestDto.getName())
+                .nickname(userSignUpRequestDto.getNickname())
                 .build();
 
         userRepository.save(user);
@@ -54,6 +60,13 @@ public class UserService {
                 .build();
     }
 
+    /**
+     * 회원 탈퇴 controller
+     *
+     * @param user
+     * @param password
+     * @return userResignResponseDto : email, role
+     */
     @Transactional
     public UserResignResponseDto deleteUser(User user, String password){
       if(user.getUserStatus() == UserStatus.DEACTIVATE) {
@@ -73,6 +86,12 @@ public class UserService {
               .build();
     }
 
+    /**
+     * 유저 프로필 조회 메서드
+     *
+     * @param userId
+     * @return UserProfileResponseDto :nickname, bio, profilePicture
+     */
     public UserProfileResponseDto getUserProfile(Long userId) {
         User user = userRepository.findByIdOrThrow(userId);
 
@@ -83,6 +102,13 @@ public class UserService {
                 .build();
     }
 
+    /**
+     * 유저 프로필 사진 업로드 메서드
+     *
+     * @param multipartFile
+     * @param user
+     * @return UpdateUserProfileImageResponseDto : profileImageUrl
+     */
     @Transactional
     public UpdateUserProfileImageResponseDto updateUserProfileImage(MultipartFile multipartFile, User user, Long userId) throws IOException {
 
@@ -96,6 +122,8 @@ public class UserService {
                 .profileImage(fileName)
                 .build();
     }
+
+
 
     @Transactional
     public UserProfileResponseDto updateUserProfile(UserUpdateRequestDto userUpdateRequestDto, User user, Long userId) {
