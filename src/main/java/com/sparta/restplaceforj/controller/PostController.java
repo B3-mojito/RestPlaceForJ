@@ -32,8 +32,8 @@ import org.springframework.web.multipart.MultipartFile;
  * 여행 추천 글 api.
  */
 @RestController
+@RequestMapping("/v1")
 @RequiredArgsConstructor
-@RequestMapping("/v1/posts")
 public class PostController {
 
   private final PostService postService;
@@ -46,7 +46,7 @@ public class PostController {
    * @return PostResponseDto : title, content, address, likesCount, viewCount, themeEnum,
    * nickName,profilePicture
    */
-  @PostMapping
+  @PostMapping("/posts")
   public ResponseEntity<CommonResponse<PostResponseDto>> createPost(
       @RequestBody PostRequestDto postRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -68,7 +68,7 @@ public class PostController {
    * @param userDetails : 토큰 유저 정보
    * @return null
    */
-  @DeleteMapping("/{post-id}")
+  @DeleteMapping("/posts/{post-id}")
   public ResponseEntity<CommonResponse> deletePost(
       @PathVariable("post-id") long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
     postService.deletePost(postId, userDetails.getUser());
@@ -89,7 +89,7 @@ public class PostController {
    * @param theme  여행 테마
    * @return PageResponseDto : placeNameList, size, page, totalPages, totalElements
    */
-  @GetMapping("/place-name")
+  @GetMapping("/posts/place-name")
   public ResponseEntity<CommonResponse<PageResponseDto<String>>> getPlaceList(
       @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
       @RequestParam String region, @RequestParam String theme) {
@@ -115,7 +115,7 @@ public class PostController {
    * @param sortBy    정렬 기준
    * @return PageResponseDto : placeNameList, size, page, totalPages, totalElements
    */
-  @GetMapping
+  @GetMapping("/posts")
   public ResponseEntity<CommonResponse<PageResponseDto<PostIdTitleDto>>> getPostTitleList(
       @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
       @RequestParam("place-name") String placeName, @RequestParam(required = false) String q,
@@ -139,7 +139,7 @@ public class PostController {
    * @param sortBy      정렬 기준
    * @return PageResponseDto : placeNameList, size, page, totalPages, totalElements
    */
-  @GetMapping("/me")
+  @GetMapping("/users/{user-id}/posts")
   public ResponseEntity<CommonResponse<PageResponseDto<PostIdTitleDto>>> getMyPostList(
       @AuthenticationPrincipal UserDetailsImpl userDetails,
       @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size,
@@ -164,7 +164,7 @@ public class PostController {
    * @return PostResponseDto : title, content, address, likesCount, viewCount, themeEnum,
    * nickName,profilePicture
    */
-  @PatchMapping("/{post-id}")
+  @PatchMapping("/posts/{post-id}")
   public ResponseEntity<CommonResponse<PostResponseDto>> updatePost(
       @PathVariable("post-id") long postId, @RequestBody PostRequestDto postRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -187,7 +187,7 @@ public class PostController {
    * @return PostResponseDto : title, content, address, likesCount, viewCount, themeEnum,
    * nickName,profilePicture
    */
-  @GetMapping("/{post-id}")
+  @GetMapping("/posts/{post-id}")
   public ResponseEntity<CommonResponse<PostResponseDto>> getPost(
       @PathVariable("post-id") long postId) {
     PostResponseDto postResponseDto = postService.getPost(postId);
@@ -207,7 +207,7 @@ public class PostController {
    * @return ImageResponseDto : id, path, originalFileName, changedFiledName
    * @throws IOException InputStream getInputStream() throws IOException
    */
-  @PostMapping(value = "/images")
+  @PostMapping(value = "/posts/images")
   public ResponseEntity<CommonResponse<ImageResponseDto>> createPostImage(
       @RequestPart("images") MultipartFile images) throws IOException {
 

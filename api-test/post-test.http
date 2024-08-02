@@ -8,6 +8,7 @@
 @theme = THRILL
 @address = 서울 동작구 사당동 134-1
 @place-name = 이수역꼬치거리
+@user-id =1
 
 @edit_title = title12 edit
 @edit_content = content edit
@@ -78,7 +79,7 @@ Authorization:{{Authorization}}
 
 
 ### 내가 쓴 글 아이디 제목 조회(param: size=5, sort-by=createAt, page=0 디폴트 값)
-GET localhost:8080/v1/posts/me
+GET localhost:8080/v1/users/{{user-id}}/posts
 #    &sort-by={{sort-by}}
 Authorization:{{Authorization}}
 
