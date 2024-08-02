@@ -1,0 +1,14 @@
+version: '3.3'
+services:
+  backend:
+    container_name: mojito-server
+    build:
+      context: .
+    ports:
+      - 8080:8080
+
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - 6379:6379
