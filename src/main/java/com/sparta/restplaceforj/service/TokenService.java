@@ -22,6 +22,12 @@ public class TokenService {
     private final JwtUtil jwtUtil;
     private final RedisUtil redisUtil;
 
+    /**
+     * refreshToken 검증, 유저 정보 가져오기 메서드
+     *
+     * @param request
+     * @return User
+     */
     public User validateAndGetUserFromRefreshToken(HttpServletRequest request) {
         // accessToken 가져오기
         String accessToken = jwtUtil.getAccessTokenFromHeader(request);
@@ -44,6 +50,13 @@ public class TokenService {
         return userRepository.findByEmailOrThrow(email);
     }
 
+    /**
+     * accessToken 재발급 및 설정
+     *
+     * @param response
+     * @param user
+     * @return void
+     */
     public void updateToken(HttpServletResponse response, User user) {
         // 새로운 access token 발급
         String newAccessToken = jwtUtil.createAccessToken(user.getEmail(), user.getUserRole());
