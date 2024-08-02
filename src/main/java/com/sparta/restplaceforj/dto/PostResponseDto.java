@@ -14,7 +14,7 @@ public class PostResponseDto {
 
   private final String nickName;
 
-  private final String profilePicture;
+  private final String profileImage;
 
   private final String title;
 
@@ -33,7 +33,7 @@ public class PostResponseDto {
     id = post.getId();
     userId = post.getUser().getId();
     nickName = post.getUser().getNickname();
-    profilePicture = post.getUser().getProfilePicture();
+    profileImage = post.getUser().getProfileImage();
     title = post.getTitle();
     content = post.getContent();
     address = post.getAddress();
