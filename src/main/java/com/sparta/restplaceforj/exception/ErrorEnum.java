@@ -44,6 +44,11 @@ public enum ErrorEnum implements Response {
   //Plan error
   PLAN_NOT_FOUND("플랜을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
+  //Invitation error
+  INVALID_AUTH_CODE("잘못된 인증 코드입니다.", HttpStatus.UNAUTHORIZED),
+  DUPLICATE_INVITATION("이미 공동 작업자로 참여하고 있는 유저입니다.", HttpStatus.CONFLICT),
+  SELF_INVITATION_ERROR("본인은 초대할 수 없습니다.", HttpStatus.BAD_REQUEST),
+
   // Column errors
   COLUMN_NOT_FOUND("컬럼을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 

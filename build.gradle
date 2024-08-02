@@ -25,8 +25,12 @@ repositories {
 
 dependencies {
 
+    // 이메일 인증
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
     // Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'io.lettuce:lettuce-core:6.2.1.RELEASE'
 
     // aws
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
