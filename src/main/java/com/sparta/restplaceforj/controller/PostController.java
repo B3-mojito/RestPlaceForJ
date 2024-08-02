@@ -91,7 +91,7 @@ public class PostController {
    */
   @GetMapping("/place-name")
   public ResponseEntity<CommonResponse<PageResponseDto<String>>> getPlaceList(
-      @RequestParam int page, @RequestParam(defaultValue = "10") int size,
+      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
       @RequestParam String region, @RequestParam String theme) {
 
     PageResponseDto<String> postPageResponseDto = postService
@@ -117,7 +117,7 @@ public class PostController {
    */
   @GetMapping
   public ResponseEntity<CommonResponse<PageResponseDto<PostIdTitleDto>>> getPostTitleList(
-      @RequestParam int page, @RequestParam(defaultValue = "10") int size,
+      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
       @RequestParam("place-name") String placeName, @RequestParam(required = false) String q,
       @RequestParam(value = "sort-by", defaultValue = "createAt") String sortBy) {
 
@@ -142,8 +142,8 @@ public class PostController {
   @GetMapping("/me")
   public ResponseEntity<CommonResponse<PageResponseDto<PostIdTitleDto>>> getMyPostList(
       @AuthenticationPrincipal UserDetailsImpl userDetails,
-      @RequestParam int page, @RequestParam(defaultValue = "5") int size,
-      @RequestParam(value = "sort-by", defaultValue = "createAt") String sortBy) {
+      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size,
+      @RequestParam(value = "sort-by", defaultValue = "createdAt") String sortBy) {
     PageResponseDto<PostIdTitleDto> postPageResponseDto = postService
         .getMyPostList(page, size, sortBy, userDetails.getUser().getId());
 
