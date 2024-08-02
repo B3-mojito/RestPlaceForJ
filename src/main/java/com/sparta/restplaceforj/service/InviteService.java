@@ -19,9 +19,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class InviteService {
 
@@ -35,26 +37,32 @@ public class InviteService {
     @Value("${spring.mail.username}")
     private String configEmail;
 
-    public void checkEmailInvalidation(String email, User user) {
+    public void checkEmailInvalidation(String email, User user, Long planId) {
         //로그인한 유저 스스로 초대할 수 없도록 예외 처리
         if(email.equals(user.getEmail())) {
-            throw new CommonException(ErrorEnum.BAD_REQUEST);
+            throw new CommonException(ErrorEnum.SELF_INVITATION_ERROR);
         }
 
-        //해당 이메일로 가입한 유저가 있는지 확인
-        if(!userRepository.existsByEmail(email)) {
-            throw new CommonException(ErrorEnum.USER_NOT_FOUND);
+        // 해당 이메일로 가입한 유저(초대받을 유저)가 있는지 확인
+        User willInvitedUser = userRepository.findByEmailOrThrow(email);
+
+        // planId에 해당하는 plan이 있는지 확인
+        Plan plan = planRepository.findByIdOrThrow(planId);
+
+        // 초대하려는 유저가 이미 공동작업자로 초대되어 있는지 확인
+        if (coworkerRepository.existsByUserIdAndPlanId(willInvitedUser.getId(), plan.getId())) {
+            throw new CommonException(ErrorEnum.DUPLICATE_INVITATION);
         }
     }
 
-    private MimeMessage createEmailForm(String email) throws MessagingException {
+    private MimeMessage createEmailForm(String toEmail) throws MessagingException {
 
         // 인증 코드 생성
-        String authCode = authCodeUtil.createAuthCode(email);
+        String authCode = authCodeUtil.createAuthCode(toEmail);
 
         // 메세지 설정
         MimeMessage message = mailSender.createMimeMessage();
-        message.addRecipients(MimeMessage.RecipientType.TO, email); // 보내는 대상
+        message.addRecipients(MimeMessage.RecipientType.TO, toEmail); // 보내는 대상
         message.setSubject("[J의 안식처] 인증번호"); // 메일 제목
         message.setFrom(configEmail); //보내는 사람 메일 주소
 
@@ -67,7 +75,7 @@ public class InviteService {
         message.setText(msg, "utf-8", "html");
 
         // redis에 송신할 이메일 주소, 인증 코드, 만료 기한(30분) 설정
-        redisUtil.setValuesWithTimeout(AuthCodeUtil.SECRET_KEY+email, authCode, AuthCodeUtil.EXPIRATION_TIME);
+        redisUtil.setValuesWithTimeout(AuthCodeUtil.SECRET_KEY+toEmail, authCode, AuthCodeUtil.EXPIRATION_TIME);
 
         return message;
     }
@@ -89,10 +97,9 @@ public class InviteService {
     // 인증코드 검증
     public String verifyAuthCode(String authCode) {
         // 유저가 보낸 코드에서 파싱한 이메일과 레디스에 저장된 이메일이 동일한지 확인
-
         String email = authCodeUtil.getEmailFromAuthCode(authCode);
-        log.info("email: {}", email);
         String authCodeFromRedis = redisUtil.getValues(AuthCodeUtil.SECRET_KEY+email);
+
         if (!authCode.equals(authCodeFromRedis)) {
             throw new CommonException(ErrorEnum.INVALID_AUTH_CODE);
         }
@@ -102,6 +109,7 @@ public class InviteService {
 
 
     // 초대하려는 유저를 공동작업자로 추가
+    @Transactional
     public AuthCheckResponseDto createCoworker(Long planId, String email) {
         // 초대하려는 유저가 가입되어 있는지 확인
         User invitedUser = userRepository.findByEmailOrThrow(email);
@@ -115,18 +123,15 @@ public class InviteService {
     }
 
     // 초대자(로그인한 유저)를 공동작업자로 추가
+    @Transactional
     public void addCoworkerItself(User user, Long planId) {
         Plan plan = planRepository.findByIdOrThrow(planId);
         addCoworker(user, plan);
     }
 
-    // 이미 해당 Plan과 userId로 공동작업자로 추가되어있는지 확인
     // coworker 테이블에 추가
-    private Coworker addCoworker(User user, Plan plan) {
-        if (coworkerRepository.existsByUserIdAndPlanId(user.getId(), plan.getId())) {
-            throw new CommonException(ErrorEnum.BAD_REQUEST);
-        }
-
+    @Transactional
+    public Coworker addCoworker(User user, Plan plan) {
         Coworker coworker = Coworker.builder()
                 .user(user)
                 .plan(plan)
