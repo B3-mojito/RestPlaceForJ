@@ -19,7 +19,7 @@ public class CommentResponseDto {
 
   private final String nickName;
 
-  private final String profilePicture;
+  private final String profileImage;
 
   @Builder
   public CommentResponseDto(Comment comment) {
@@ -27,7 +27,7 @@ public class CommentResponseDto {
     postId = comment.getPost().getId();
     userId = comment.getUser().getId();
     nickName = comment.getUser().getNickname();
-    profilePicture = comment.getUser().getProfilePicture();
+    profileImage = comment.getUser().getProfileImage();
     content = comment.getContent();
     likesCount = comment.getLikesCount();
   }

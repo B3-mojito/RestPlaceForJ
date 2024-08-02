@@ -1,9 +1,11 @@
 package com.sparta.restplaceforj.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sparta.restplaceforj.common.ResponseEnum;
 import com.sparta.restplaceforj.dto.LoginRequestDto;
 import com.sparta.restplaceforj.entity.User;
 import com.sparta.restplaceforj.entity.UserRole;
+import com.sparta.restplaceforj.exception.ErrorEnum;
 import com.sparta.restplaceforj.repository.UserRepository;
 import com.sparta.restplaceforj.security.UserDetailsImpl;
 import com.sparta.restplaceforj.util.JwtUtil;
@@ -23,17 +25,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@Slf4j(topic = "로그인 및 JWT 생성")
+@Slf4j(topic = "JwtAuthenticationFilter")
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final JwtUtil jwtUtil;
     private final RedisUtil redisUtil;
-    private final UserRepository userRepository;
 
-    public JwtAuthenticationFilter(JwtUtil jwtUtil, RedisUtil redisUtil, UserRepository userRepository) {
+    public JwtAuthenticationFilter(JwtUtil jwtUtil, RedisUtil redisUtil) {
         this.jwtUtil = jwtUtil;
         this.redisUtil = redisUtil;
-        this.userRepository = userRepository;
         setFilterProcessesUrl("/v1/users/login");
     }
 
@@ -86,8 +86,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.addHeader(JwtUtil.AUTH_ACCESS_HEADER, accessToken);
 
         //응답
-        response.setStatus(HttpStatus.OK.value());
-        response.getWriter().write("로그인 성공");
+        response.setContentType("application/json; charset=UTF-8");
+        response.setStatus(ResponseEnum.LOGIN_SUCCESS.getHttpStatus().value());
+        response.getWriter().write(new ObjectMapper().writeValueAsString(ResponseEnum.LOGIN_SUCCESS.getMessage()));
+
     }
 
 
@@ -95,7 +97,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void unsuccessfulAuthentication(HttpServletRequest request,
                                               HttpServletResponse response, AuthenticationException failed) throws IOException {
         log.info("로그인 실패");
-        response.setStatus(401);
-        response.getWriter().write("로그인 실패");
+
+        response.setContentType("application/json; charset=UTF-8");
+        response.setStatus(ResponseEnum.LOGIN_FAIL.getHttpStatus().value());
+        response.getWriter().write(new ObjectMapper().writeValueAsString(ResponseEnum.LOGIN_FAIL.getMessage()));
     }
 }
