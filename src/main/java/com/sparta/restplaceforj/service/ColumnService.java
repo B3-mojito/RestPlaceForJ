@@ -2,13 +2,16 @@ package com.sparta.restplaceforj.service;
 
 import com.sparta.restplaceforj.dto.ColumnRequestDto;
 import com.sparta.restplaceforj.dto.ColumnResponseDto;
+import com.sparta.restplaceforj.entity.Card;
 import com.sparta.restplaceforj.entity.Column;
 import com.sparta.restplaceforj.entity.Plan;
 import com.sparta.restplaceforj.exception.CommonException;
 import com.sparta.restplaceforj.exception.ErrorEnum;
+import com.sparta.restplaceforj.repository.CardRepository;
 import com.sparta.restplaceforj.repository.ColumnRepository;
 import com.sparta.restplaceforj.repository.PlanRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.boot.model.internal.XMLContext.Default;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +24,7 @@ public class ColumnService {
 
   private final ColumnRepository columnRepository;
   private final PlanRepository planRepository;
+  private final CardRepository cardRepository;
 
 
   /**
@@ -40,6 +44,7 @@ public class ColumnService {
         .title(columnRequestDto.getTitle())
         .date(columnRequestDto.getDate())
         .plan(plan)
+        .defaultValue(Boolean.FALSE)
         .build();
 
     columnRepository.save(columns);
@@ -90,9 +95,18 @@ public class ColumnService {
   @Transactional
   public void deleteColumn(Long planId, Long columnId) {
     Column column = columnRepository.findByIdOrThrow(columnId);
+    Plan plan = planRepository.findByIdOrThrow(planId);
 
-    if (!column.getPlan().equals(planRepository.findByIdOrThrow(planId))) {
+    if (!column.getPlan().equals(plan)) {
       throw new CommonException(ErrorEnum.BAD_REQUEST);
+    }
+    Column defaultColum = columnRepository.findOneByPlanAndDefaultValue(plan, Boolean.TRUE)
+        .orElseThrow(() -> new CommonException(ErrorEnum.BAD_REQUEST));
+
+    List<Card> cardList = cardRepository.findByColumn(column);
+
+    for (Card card : cardList) {
+      card.changeColum(defaultColum);
     }
 
     columnRepository.delete(column);

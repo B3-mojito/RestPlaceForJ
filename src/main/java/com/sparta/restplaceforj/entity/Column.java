@@ -27,6 +27,8 @@ public class Column {
 
   private LocalDate date;
 
+  private Boolean defaultValue = Boolean.FALSE;
+
   @OnDelete(action = OnDeleteAction.CASCADE)
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "plan_id")
@@ -36,10 +38,11 @@ public class Column {
   private List<Card> cards = new ArrayList<>();
 
   @Builder
-  public Column(String title, LocalDate date, Plan plan) {
+  public Column(String title, LocalDate date, Plan plan, Boolean defaultValue) {
     this.title = title;
     this.date = date;
     this.plan = plan;
+    this.defaultValue = defaultValue;
   }
 
   public void updateColumn(ColumnRequestDto columnRequestDto) {
