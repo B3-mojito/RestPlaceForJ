@@ -34,10 +34,24 @@ public class Comment {
 
   private String content;
 
+  private long likesCount;
+
   @Builder
   public Comment(User user, Post post, String content) {
     this.user = user;
     this.post = post;
     this.content = content;
+  }
+
+  public void updateContent(String content) {
+    this.content = content;
+  }
+
+  public void removeLikeFromComment() {
+    likesCount--;
+  }
+
+  public void addLikeToComment() {
+    likesCount++;
   }
 }

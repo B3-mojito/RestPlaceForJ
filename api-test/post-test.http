@@ -1,14 +1,14 @@
 ## Variables
-@username = test
-@password = test
 
-@post-id = 6
+
+@post-id = 7
 
 @title = title12
 @content = content
 @theme = THRILL
 @address = 서울 동작구 사당동 134-1
 @place-name = 이수역꼬치거리
+@user-id =1
 
 @edit_title = title12 edit
 @edit_content = content edit
@@ -17,30 +17,35 @@
 @edit_place-name = 이수역꼬치거리 edit
 
 @region = 서울 동작구
+#createdAt    viewsCount   likesCount
 @sort-by = viewsCount
 @q =
 
 
 #
-####  로그인
-#POST http://localhost:8080/v1/login
-#Content-Type: application/json
-#
-#{
-#  "username": "{{username}}",
-#  "password": "{{password}}"
-#}
-#
-#> {%
-#  client.global.set("Authorization", response.headers.valueOf("Authorization"));
-#%}
+### 로그인
+POST http://localhost:8080/v1/users/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+> {%
+  client.global.set("Authorization", response.headers.valueOf("Authorization"));
+  client.log("Authorization: " + response.headers.valueOf("Authorization"));
+
+  client.global.set("RefreshToken", response.headers.valueOf("RefreshToken"));
+  client.log("RefreshToken: " + response.headers.valueOf("RefreshToken"));
+%}
 
 
 
 
 ### 글 작성
 POST http://localhost:8080/v1/posts
-#Authorization:{{Authorization}}
+Authorization:{{Authorization}}
 Content-Type: application/json
 
 {
@@ -48,27 +53,42 @@ Content-Type: application/json
   "content": "{{content}}",
   "theme" : "{{theme}}",
   "address" : "{{address}}",
-  "placeName" : "{{place-name}}"
+  "placeName" : "{{place-name}}",
+  "imageIdList": []
 }
 
 
 
 ### 글 삭제
 DELETE localhost:8080/v1/posts/{{post-id}}
+Authorization:{{Authorization}}
 
 
-### 글 조회
+### 글 조회 (장소명으로 그룹지어 조회)
 GET localhost:8080/v1/posts/place-name
     ?page=1&theme={{theme}}&region={{region}}
+Authorization:{{Authorization}}
 
 
 ### 글 아이디 제목 조회
 GET localhost:8080/v1/posts
-    ?place-name={{place-name}}&page=1&q={{q}}&sort-by={{sort-by}}
+    ?place-name={{place-name}}&page=0&q={{q}}&sort-by={{sort-by}}
+Authorization:{{Authorization}}
+
+
+
+
+### 내가 쓴 글 아이디 제목 조회(param: size=5, sort-by=createAt, page=0 디폴트 값)
+GET localhost:8080/v1/users/{{user-id}}/posts
+#    &sort-by={{sort-by}}
+Authorization:{{Authorization}}
+
+
 
 
 ### 글 수정
 PATCH localhost:8080/v1/posts/{{post-id}}
+Authorization:{{Authorization}}
 Content-Type: application/json
 
 {
@@ -80,3 +100,4 @@ Content-Type: application/json
 
 ### 글 단권 조회
 GET localhost:8080/v1/posts/{{post-id}}
+Authorization:{{Authorization}}

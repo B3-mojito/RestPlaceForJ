@@ -6,17 +6,17 @@ import lombok.Getter;
 import org.springframework.data.domain.Page;
 
 @Getter
-public class PostPlaceResponseDto<T> {
+public class PageResponseDto<T> {
 
-  private final List placeNameList;
+  private final List<T> contentList;
   private final int size;
   private final int page;
   private final int totalPages;
   private final long totalElements;
 
   @Builder
-  public PostPlaceResponseDto(Page<T> page) {
-    placeNameList = page.getContent();
+  public PageResponseDto(Page<T> page) {
+    contentList = page.getContent();
     size = page.getSize();
     this.page = page.getNumber();
     totalElements = page.getTotalElements();

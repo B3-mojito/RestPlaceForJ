@@ -10,11 +10,12 @@ import com.sparta.restplaceforj.exception.ErrorEnum;
 import com.sparta.restplaceforj.repository.CardRepository;
 import com.sparta.restplaceforj.repository.ColumnRepository;
 import com.sparta.restplaceforj.repository.PlanRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.boot.model.internal.XMLContext.Default;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -29,19 +30,19 @@ public class ColumnService {
   /**
    * 컬럼 생성 로직
    *
-   * @param planId
-   * @param requestDto
-   * @return ColumnResponseDto
+   * @param planId           플랜 아이디
+   * @param columnRequestDto : title, date
+   * @return columnResponseDto : id, title, date
    */
   @Transactional
-  public ColumnResponseDto createColumn(Long planId, ColumnRequestDto requestDto)
+  public ColumnResponseDto createColumn(Long planId, ColumnRequestDto columnRequestDto)
       throws CommonException {
 
     Plan plan = planRepository.findByIdOrThrow(planId);
 
     Column columns = Column.builder()
-        .title(requestDto.getTitle())
-        .date(requestDto.getDate())
+        .title(columnRequestDto.getTitle())
+        .date(columnRequestDto.getDate())
         .plan(plan)
         .defaultValue(Boolean.FALSE)
         .build();
@@ -58,21 +59,21 @@ public class ColumnService {
   /**
    * 컬럼 수정 로직
    *
-   * @param planId
-   * @param columnId
-   * @param requestDto
-   * @return ColumnResponseDto
+   * @param planId           플랜 아이디
+   * @param columnId         컬럼 아이디
+   * @param columnRequestDto : title, date
+   * @return ColumnResponseDto : id, title, date
    */
   @Transactional
   public ColumnResponseDto updateColumn(Long planId, Long columnId,
-      ColumnRequestDto requestDto) {
+      ColumnRequestDto columnRequestDto) {
     Column column = columnRepository.findByIdOrThrow(columnId);
 
     if (!column.getPlan().equals(planRepository.findByIdOrThrow(planId))) {
       throw new CommonException(ErrorEnum.BAD_REQUEST);
     }
 
-    column.updateColumn(requestDto);
+    column.updateColumn(columnRequestDto);
     columnRepository.save(column);
 
     return ColumnResponseDto.builder()
@@ -85,8 +86,8 @@ public class ColumnService {
   /**
    * 컬럼 삭제 로직
    *
-   * @param planId
-   * @param columnId
+   * @param planId   플랜 아이디
+   * @param columnId 컬럼 아이디
    */
   @Transactional
   public void deleteColumn(Long planId, Long columnId) {
@@ -111,7 +112,7 @@ public class ColumnService {
   /**
    * 컬럼 다건 조회 로직
    *
-   * @param planId
+   * @param planId 플랜 아이디
    */
   @Transactional
   public List<ColumnResponseDto> getColumnList(Long planId) {

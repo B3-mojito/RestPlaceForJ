@@ -28,6 +28,7 @@ public class PostLike {
   @ManyToOne(fetch = FetchType.LAZY)
   private User user;
 
+  @OnDelete(action = OnDeleteAction.CASCADE)
   @ManyToOne(fetch = FetchType.LAZY)
   private Post post;
 

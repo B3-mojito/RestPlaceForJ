@@ -12,13 +12,11 @@ import com.sparta.restplaceforj.entity.QPost;
 import com.sparta.restplaceforj.entity.ThemeEnum;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
-@Slf4j
 @RequiredArgsConstructor
 @Repository
 public class PostDslRepository {
@@ -36,7 +34,7 @@ public class PostDslRepository {
         .orderBy(post.count().desc())
         .groupBy(post.placeName);
 
-    long totalSize = query.fetchCount();
+    long totalSize = query.fetch().size();
     List<String> placeNameList = query.offset(pageable.getOffset())
         .limit(pageable.getPageSize())
         .fetch();
@@ -54,15 +52,17 @@ public class PostDslRepository {
       query = jpaQueryFactory
           .select(Projections.fields(PostIdTitleDto.class, post.id, post.title))
           .from(post)
-          .where(post.placeName.eq(placeName));
+          .where(post.placeName.eq(placeName))
+          .orderBy(orderSpecifier);
     } else {
       query = jpaQueryFactory
           .select(Projections.fields(PostIdTitleDto.class, post.id, post.title))
           .from(post)
-          .where(post.placeName.eq(placeName).and(post.title.contains(q)));
+          .where(post.placeName.eq(placeName).and(post.title.contains(q)))
+          .orderBy(orderSpecifier);
     }
 
-    long totalSize = query.fetchCount();
+    long totalSize = query.fetch().size();
 
     List<PostIdTitleDto> postIdAndTitleDtoList = query.offset(pageable.getOffset())
         .limit(pageable.getPageSize())
@@ -70,6 +70,25 @@ public class PostDslRepository {
 
     return new PageImpl<>(postIdAndTitleDtoList, pageable, totalSize);
 
+  }
+
+  public PageImpl<PostIdTitleDto> getMyPostList(Pageable pageable, long userId) {
+
+    OrderSpecifier<?> orderSpecifier = getOrderSpecifier(pageable.getSort(), post);
+
+    JPAQuery<PostIdTitleDto> query = jpaQueryFactory
+        .select(Projections.fields(PostIdTitleDto.class, post.id, post.title))
+        .from(post)
+        .where(post.user.id.eq(userId))
+        .orderBy(orderSpecifier);
+
+    long totalSize = query.fetch().size();
+
+    List<PostIdTitleDto> postIdAndTitleDtoList = query.offset(pageable.getOffset())
+        .limit(pageable.getPageSize())
+        .fetch();
+
+    return new PageImpl<>(postIdAndTitleDtoList, pageable, totalSize);
   }
 
   private OrderSpecifier<?> getOrderSpecifier(Sort sort, QPost post) {

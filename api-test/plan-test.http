@@ -1,13 +1,34 @@
 ## Variables
 # @no-cookie-jar
-@user_id = 1
-@plan_id = 2
+@user_id = 2
+@plan_id = 1
 @title = 하이요
 @title2 = 하이요2
+@password = asdfg1234!
+@email = asdf12345@naver.com
+@name = 하이요2
+@nickname = 하이요24
 
+### 로그인
+POST http://localhost:8080/v1/users/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+> {%
+  client.global.set("Authorization", response.headers.valueOf("Authorization"));
+  client.log("Authorization: " + response.headers.valueOf("Authorization"));
+
+  client.global.set("RefreshToken", response.headers.valueOf("RefreshToken"));
+  client.log("RefreshToken: " + response.headers.valueOf("RefreshToken"));
+%}
 
 ### 플랜 생성
 POST http://localhost:8080/v1/plans
+Authorization: {{Authorization}}
 Content-Type: application/json
 
 {
@@ -16,6 +37,7 @@ Content-Type: application/json
 
 ### 플랜 수정
 PATCH http://localhost:8080/v1/plans/{{plan_id}}
+Authorization: {{Authorization}}
 Content-Type: application/json
 
 {
@@ -24,14 +46,17 @@ Content-Type: application/json
 
 ### 플랜 삭제
 DELETE http://localhost:8080/v1/plans/{{plan_id}}
+Authorization: {{Authorization}}
 Content-Type: application/json
 
 ### 플랜 전체 조회
 # @no-cookie-jar
-GET http://localhost:8080/v1/plans/?user-id={{user_id}}
+GET http://localhost:8080/v1/plans?userId={{user_id}}
+Authorization: {{Authorization}}
 Content-Type: application/json
 
 ### 플랜 조회
 # @no-cookie-jar
 GET http://localhost:8080/v1/plans/{{plan_id}}
+Authorization: {{Authorization}}
 Content-Type: application/json
