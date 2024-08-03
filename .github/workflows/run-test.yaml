@@ -40,16 +40,16 @@ jobs:
           ./gradlew clean test
 
         env:
-          ACCESS_KEY: ${{ACCESS_KEY}}
-          BUCKET_NAME: ${{BUCKET_NAME}}
-          CRON: ${{CRON}}
-          DATASOURCE_PASSWORD: ${{DATASOURCE_PASSWORD}}
-          DATASOURCE_URL: ${{DATASOURCE_URL}}
-          DATASOURCE_USERNAME: ${{DATASOURCE_USERNAME}}
-          EMAIL_ID: ${{EMAIL_ID}}
-          JWT_SECRET_KEY: ${{JWT_SECRET_KEY}}
-          REDIS_HOST: ${{REDIS_HOST}}
-          REDIS_PASSWORD: ${{REDIS_PASSWORD}}
-          REDIS_PORT: ${{REDIS_PORT}}
-          REGION: ${{REGION}}
-          SECRET_KEY: ${{SERVER_PORT}}
+          ACCESS_KEY: ${{secrets.ACCESS_KEY}}
+          BUCKET_NAME: ${{secrets.BUCKET_NAME}}
+          CRON: ${{secrets.CRON}}
+          DATASOURCE_PASSWORD: ${{secrets.DATASOURCE_PASSWORD}}
+          DATASOURCE_URL: ${{secrets.DATASOURCE_URL}}
+          DATASOURCE_USERNAME: ${{secrets.DATASOURCE_USERNAME}}
+          EMAIL_ID: ${{secrets.EMAIL_ID}}
+          JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
+          REDIS_HOST: ${{secrets.REDIS_HOST}}
+          REDIS_PASSWORD: ${{secrets.REDIS_PASSWORD}}
+          REDIS_PORT: ${{secrets.REDIS_PORT}}
+          REGION: ${{secrets.REGION}}
+          SECRET_KEY: ${{secrets.SERVER_PORT}}
