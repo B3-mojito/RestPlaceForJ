@@ -5,7 +5,7 @@ name: Run Test
 on:
   push:
     # 배열로 여러 브랜치를 넣을 수 있다.
-    branches: [ develop, feat/* ]
+    branches: [ develop, feat/* , refactor/* ]
   # github pull request 생성시
   pull_request:
     branches:
@@ -38,3 +38,19 @@ jobs:
       - name: run unittest
         run: |
           ./gradlew clean test
+
+      - name: Use secrets
+        run: |
+          echo ${{ secrets.ACCESS_KEY }}
+          echo ${{ secrets.BUCKET_NAME }}
+          echo ${{ secrets.CRON }}
+          echo ${{ secrets.DATASOURCE_PASSWORD }}
+          echo ${{ secrets.DATASOURCE_URL }}
+          echo ${{ secrets.DATASOURCE_USERNAME }}
+          echo ${{ secrets.EMAIL_ID }}
+          echo ${{ secrets.JWT_SECRET_KEY }}
+          echo ${{ secrets.REDIS_HOST }}
+          echo ${{ secrets.REDIS_PASSWORD }}
+          echo ${{ secrets.REDIS_PORT }}
+          echo ${{ secrets.REGION }}
+          echo ${{ secrets.SERVER_PORT }}
