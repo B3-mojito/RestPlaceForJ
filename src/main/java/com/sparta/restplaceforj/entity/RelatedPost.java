@@ -18,7 +18,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 @Table(name = "card_posts")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CardPost {
+public class RelatedPost {
 
 
   @Id
@@ -34,7 +34,7 @@ public class CardPost {
   private Post post;
 
   @Builder
-  public CardPost(Card card, Post post) {
+  public RelatedPost(Card card, Post post) {
     this.card = card;
     this.post = post;
   }

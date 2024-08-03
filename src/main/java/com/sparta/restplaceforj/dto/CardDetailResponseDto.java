@@ -2,14 +2,12 @@ package com.sparta.restplaceforj.dto;
 
 import java.time.LocalTime;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Getter
 @Builder
-public class CardResponseDto {
+public class CardDetailResponseDto {
 
   private final Long id;
   private final String title;
@@ -18,4 +16,5 @@ public class CardResponseDto {
   private final LocalTime startedAt;
   private final LocalTime endedAt;
   private final String memo;
+  private final List<PostResponseDto> postList;
 }

@@ -1,11 +1,12 @@
 package com.sparta.restplaceforj.service;
 
+import com.sparta.restplaceforj.dto.CardDetailResponseDto;
 import com.sparta.restplaceforj.dto.CardRequestDto;
 import com.sparta.restplaceforj.dto.CardResponseDto;
 import com.sparta.restplaceforj.dto.CardUpdateRequestDto;
 import com.sparta.restplaceforj.dto.PostResponseDto;
 import com.sparta.restplaceforj.entity.Card;
-import com.sparta.restplaceforj.entity.CardPost;
+import com.sparta.restplaceforj.entity.RelatedPost;
 import com.sparta.restplaceforj.entity.Column;
 import com.sparta.restplaceforj.entity.Post;
 import com.sparta.restplaceforj.exception.CommonException;
@@ -133,14 +134,16 @@ public class CardService {
    * @param cardId
    * @return CardResponseDto
    */
-  public CardResponseDto getCard(Long cardId) {
+  public CardDetailResponseDto getCard(Long cardId) {
     Card card = cardRepository.findCardById(cardId);
-    return CardResponseDto.builder()
+    List<PostResponseDto> postResponseDtoList = cardPostRepository.findPostsByCardId(cardId);
+    return CardDetailResponseDto.builder()
         .id(cardId)
         .title(card.getTitle())
         .address(card.getAddress())
         .placeName(card.getPlaceName())
         .memo(card.getMemo())
+        .postList(postResponseDtoList)
         .build();
   }
 
@@ -155,28 +158,18 @@ public class CardService {
    * @param
    * @param cardId 카드 아이디
    * @param postId 포스트 아이디
-   * @return CardResponseDto
+   * @return CardResponseDto List<PlanResponseDto> : planId, title
    */
   @Transactional
   public PostResponseDto cardAddPost(Long cardId, Long postId) {
     Card card = cardRepository.findCardById(cardId);
     Post post = postRepository.findByIdOrThrow(postId);
-    CardPost cardPost = CardPost.builder().card(card).post(post).build();
+    if (cardPostRepository.findPostsByCardId(cardId).equals(post)) {
+      throw new CommonException(ErrorEnum.BAD_REQUEST);
+    }
+    RelatedPost cardPost = RelatedPost.builder().card(card).post(post).build();
     cardPostRepository.save(cardPost);
     return PostResponseDto.builder().post(post).build();
   }
-
-  /**
-   * 카드 연관게시물 다건 조회 로직
-   *
-   * @param cardId 유저 아이디
-   * @return List<PlanResponseDto> : planId, title
-   */
-  public List<PostResponseDto> getPostList(Long cardId, Long columnId) {
-    if (!cardRepository.existsById(cardId)) {
-      throw new CommonException(ErrorEnum.CARD_NOT_FOUND);
-    }
-    Column column = columnRepository.findByIdOrThrow(columnId);
-    return cardPostRepository.findPostsByCardId(cardId);
-  }
 }
+
