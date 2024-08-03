@@ -11,7 +11,6 @@ import com.sparta.restplaceforj.repository.CardRepository;
 import com.sparta.restplaceforj.repository.ColumnRepository;
 import com.sparta.restplaceforj.repository.PlanRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.boot.model.internal.XMLContext.Default;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -97,13 +96,23 @@ public class ColumnService {
     if (!column.getPlan().equals(plan)) {
       throw new CommonException(ErrorEnum.BAD_REQUEST);
     }
-    Column defaultColum = columnRepository.findOneByPlanAndDefaultValue(plan, Boolean.TRUE)
-        .orElseThrow(() -> new CommonException(ErrorEnum.BAD_REQUEST));
+
+    List<Column> defaultColumns = columnRepository.findOneByPlanAndDefaultValue(plan, Boolean.TRUE);
+
+    if (defaultColumns.isEmpty()) {
+      throw new CommonException(ErrorEnum.BAD_REQUEST);
+    }
+
+    Column defaultColumn = defaultColumns.get(0);
+
+    if (column.equals(defaultColumn)) {
+      throw new CommonException(ErrorEnum.BAD_REQUEST);
+    }
 
     List<Card> cardList = cardRepository.findByColumn(column);
 
     for (Card card : cardList) {
-      card.changeColum(defaultColum);
+      card.changeColumn(defaultColumn);
     }
 
     columnRepository.delete(column);

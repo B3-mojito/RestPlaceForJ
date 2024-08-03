@@ -9,6 +9,7 @@ import com.sparta.restplaceforj.entity.Plan;
 import com.sparta.restplaceforj.entity.User;
 import com.sparta.restplaceforj.exception.CommonException;
 import com.sparta.restplaceforj.exception.ErrorEnum;
+import com.sparta.restplaceforj.repository.ColumnRepository;
 import com.sparta.restplaceforj.repository.CoworkerRepository;
 import com.sparta.restplaceforj.repository.PlanRepository;
 import com.sparta.restplaceforj.repository.UserRepository;

@@ -25,9 +25,11 @@ public class Column {
 
   private LocalDate date;
 
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Plan plan;
+  private Boolean defaultValue = Boolean.FALSE;
+
+  @OnDelete(action = OnDeleteAction.CASCADE)
+  @ManyToOne(fetch = FetchType.LAZY)
+  private Plan plan;
 
   @Builder
   public Column(String title, LocalDate date, Plan plan, Boolean defaultValue) {
@@ -37,9 +39,9 @@ public class Column {
     this.defaultValue = defaultValue;
   }
 
-    public void updateColumn(ColumnRequestDto columnRequestDto) {
-        this.title = columnRequestDto.getTitle();
-        this.date = columnRequestDto.getDate();
-    }
+  public void updateColumn(ColumnRequestDto columnRequestDto) {
+    this.title = columnRequestDto.getTitle();
+    this.date = columnRequestDto.getDate();
+  }
 }
 

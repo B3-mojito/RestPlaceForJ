@@ -43,7 +43,7 @@ public class Card {
 
   private String memo;
 
-  public void changeColum(Column column) {
+  public void changeColumn(Column column) {
     this.column = column;
   }
 

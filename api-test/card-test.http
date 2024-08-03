@@ -1,0 +1,79 @@
+## Variables
+# @no-cookie-jar
+@column-id = 1
+@card-id = 1
+@title =정선여행
+@title2 = 수정용
+@address = 강원도정선
+@placename = 정선
+@memo = 물좋은정선
+@startedAt = 12:12
+@endedAt = 13:10
+
+
+### 로그인
+POST http://localhost:8080/v1/users/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+> {%
+  client.global.set("Authorization", response.headers.valueOf("Authorization"));
+  client.log("Authorization: " + response.headers.valueOf("Authorization"));
+
+  client.global.set("RefreshToken", response.headers.valueOf("RefreshToken"));
+  client.log("RefreshToken: " + response.headers.valueOf("RefreshToken"));
+%}
+
+
+
+
+### 카드 작성
+POST http://localhost:8080/v1/columns/{{column-id}}/cards
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+{
+  "title": "{{title}}",
+  "address": "{{address}}",
+  "placeName": "{{placename}}",
+  "memo": "{{memo}}",
+  "startedAt": "{{startedAt}}",
+  "endedAt": "{{endedAt}}",
+  "imageIdList": []
+}
+
+### 카드 수정
+# @no-cookie-jar
+PATCH http://localhost:8080/v1/columns/{{column-id}}/cards/{{card-id}}
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+{
+  "title2": "{{title2}}",
+  "address": "{{address}}",
+  "placeName": "{{placename}}",
+  "memo": "{{memo}}",
+  "startedAt": "{{startedAt}}",
+  "endedAt": "{{endedAt}}",
+  "imageIdList": []
+}
+
+### 카드 전체 조회
+GET http://localhost:8080/v1/columns/{{column-id}}/cards
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+
+### 카드 단건 조회
+GET http://localhost:8080/v1/columns/{{column-id}}/cards/{{card-id}}
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+### 카드 삭제
+DELETE http://localhost:8080/v1/columns/{{column-id}}/cards/{{card-id}}
+Authorization: {{Authorization}}
+Content-Type: application/json

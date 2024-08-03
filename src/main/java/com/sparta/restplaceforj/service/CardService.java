@@ -30,6 +30,7 @@ public class CardService {
    * @param cardRequestDto
    * @return CardResponseDto
    */
+  @Transactional
   public CardResponseDto createCard(Long columId, CardRequestDto cardRequestDto) {
     Column column = columnRepository.findByIdOrThrow(columId);
     Card card = Card.builder()
@@ -42,7 +43,16 @@ public class CardService {
         .memo(cardRequestDto.getMemo())
         .build();
     cardRepository.save(card);
-    return CardResponseDto.builder().id(card.getId()).build();
+
+    return CardResponseDto.builder()
+        .id(card.getId())
+        .title(card.getTitle())
+        .address(card.getAddress())
+        .placeName(card.getPlaceName())
+        .startedAt(card.getStartedAt())
+        .endedAt(card.getEndedAt())
+        .memo(card.getMemo())
+        .build();
   }
 
   /**
@@ -52,7 +62,7 @@ public class CardService {
    * @param cardUpdateRequestDto
    * @return CardResponseDto
    */
-
+  @Transactional
   public CardResponseDto updateCard(Long cardId, CardUpdateRequestDto cardUpdateRequestDto) {
 
     Card card = cardRepository.findCardById(cardId);
@@ -95,7 +105,15 @@ public class CardService {
 
     cardRepository.save(card);
 
-    return CardResponseDto.builder().id(card.getId()).build();
+    return CardResponseDto.builder()
+        .id(card.getId())
+        .title(card.getTitle())
+        .address(card.getAddress())
+        .placeName(card.getPlaceName())
+        .startedAt(card.getStartedAt())
+        .endedAt(card.getEndedAt())
+        .memo(card.getMemo())
+        .build();
   }
 
   /**
@@ -127,6 +145,7 @@ public class CardService {
         .build();
   }
 
+  @Transactional
   public void deleteCard(Long cardId) {
     Card card = cardRepository.findCardById(cardId);
     cardRepository.delete(card);

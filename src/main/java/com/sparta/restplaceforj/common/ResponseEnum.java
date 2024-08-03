@@ -12,7 +12,7 @@ public enum ResponseEnum implements Response {
   CREATE_CARD("카드 생성 완료", HttpStatus.CREATED),
   UPDATE_CARD("카드 수정 완료", HttpStatus.OK),
   FIND_CARD("카드 조회 완료", HttpStatus.OK),
-  DELETE_CARD("카트 삭제 완료", HttpStatus.OK),
+  DELETE_CARD("카드 삭제 완료", HttpStatus.OK),
 
   //user
   LOGIN_SUCCESS("로그인 성공", HttpStatus.OK),

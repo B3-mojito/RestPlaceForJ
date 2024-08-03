@@ -52,9 +52,13 @@ public enum ErrorEnum implements Response {
   // Column errors
   COLUMN_NOT_FOUND("컬럼을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
+  //Column move
+  DEFAULT_COLUMN_NOT_FOUND("디폴트 카드가 없습니다.", HttpStatus.NOT_FOUND),
+  MULTIPLE_DEFAULT_COLUMN("디폴트 카드가 중복되었습니다.", HttpStatus.BAD_REQUEST),
 
   // Card errors
   CARD_NOT_FOUND("카드를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+
 
   // Global errors
   VALID_ERROR("잘못된 접근 값입니다.", HttpStatus.BAD_REQUEST),

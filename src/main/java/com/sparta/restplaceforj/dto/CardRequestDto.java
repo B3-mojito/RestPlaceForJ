@@ -9,16 +9,10 @@ import lombok.Getter;
 @Getter
 public class CardRequestDto {
 
-  @NotNull
-  private Long columnId;
-
-  @NotBlank(message = "카드 제목을 입력해 주세요")
   private String title;
 
-  @NotBlank(message = "주소를 입력해 주세요.")
   private String address;
 
-  @NotBlank(message = "장소를 입력해 주세요.")
   private String placeName;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING)
@@ -26,8 +20,7 @@ public class CardRequestDto {
 
   @JsonFormat(shape = JsonFormat.Shape.STRING)
   private LocalTime endedAt;
-
-  @NotBlank(message = "메모를 입력해 주세요.")
+  
   private String memo;
 
 }
