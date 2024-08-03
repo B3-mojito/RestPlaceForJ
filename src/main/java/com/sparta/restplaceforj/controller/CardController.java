@@ -2,6 +2,7 @@ package com.sparta.restplaceforj.controller;
 
 import com.sparta.restplaceforj.common.CommonResponse;
 import com.sparta.restplaceforj.common.ResponseEnum;
+import com.sparta.restplaceforj.dto.CardDetailResponseDto;
 import com.sparta.restplaceforj.dto.CardRequestDto;
 import com.sparta.restplaceforj.dto.CardResponseDto;
 import com.sparta.restplaceforj.dto.CardUpdateRequestDto;
@@ -103,11 +104,11 @@ public class CardController {
    * @return ResponseEntity
    */
   @GetMapping("/{card-id}")
-  public ResponseEntity<CommonResponse<CardResponseDto>> getCard(
+  public ResponseEntity<CommonResponse<CardDetailResponseDto>> getCard(
       @PathVariable("card-id") Long cardId) {
 
     return ResponseEntity.ok(
-        CommonResponse.<CardResponseDto>builder()
+        CommonResponse.<CardDetailResponseDto>builder()
             .response(ResponseEnum.FIND_CARD)
             .data(cardService.getCard(cardId))
             .build());
@@ -153,27 +154,5 @@ public class CardController {
             .data(postResponseDto)
             .build());
   }
-
-  /**
-   * 카드 연관 게시물 다건 조회 controller
-   *
-   * @param cardId 유저 아이디
-   * @return PlanResponseDto : id, title
-   */
-  @GetMapping("/posts")
-  public ResponseEntity<CommonResponse<List<PostResponseDto>>> getPostList(
-      @PathVariable("column-id") Long columnId,
-      @RequestParam Long cardId) {
-    List<PostResponseDto> postResponseDtoList = cardService
-        .getPostList(cardId, columnId);
-
-    return ResponseEntity.ok(
-        CommonResponse.<List<PostResponseDto>>builder()
-            .response(ResponseEnum.GET_PLAN_LIST)
-            .data(postResponseDtoList)
-            .build()
-    );
-  }
-
 }
 

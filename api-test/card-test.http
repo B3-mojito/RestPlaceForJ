@@ -48,6 +48,6 @@ Content-Type: application/json
 
 
 ### 카드 연관포스트 조회
-GET http://localhost:8080/v1/columns/{{column_id}}/cards/posts?cardId={{card_id}}
+GET http://localhost:8080/v1/columns/{{column_id}}/cards/{{card_id}}
 Authorization: {{Authorization}}
 Content-Type: application/json
