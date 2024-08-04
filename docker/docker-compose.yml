@@ -3,7 +3,7 @@ services:
   backend:
     container_name: mojito-server
     build:
-      context: .
+      context: ..
     ports:
       - 8080:8080
 
