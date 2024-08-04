@@ -2,12 +2,15 @@ package com.sparta.restplaceforj.controller;
 
 import com.sparta.restplaceforj.common.CommonResponse;
 import com.sparta.restplaceforj.common.ResponseEnum;
+import com.sparta.restplaceforj.dto.AddCardRequestDto;
+import com.sparta.restplaceforj.dto.CardRequestDto;
 import com.sparta.restplaceforj.dto.ImageResponseDto;
 import com.sparta.restplaceforj.dto.PageResponseDto;
 import com.sparta.restplaceforj.dto.PostRequestDto;
 import com.sparta.restplaceforj.dto.PostResponseDto;
 import com.sparta.restplaceforj.security.UserDetailsImpl;
 import com.sparta.restplaceforj.service.PostService;
+import jakarta.validation.Valid;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -182,5 +185,27 @@ public class PostController {
             .data(imageResponseDto)
             .build()
     );
+  }
+
+  /**
+   * 게시물 카드에 추가  controller
+   *
+   * @param postId            게시물 아이디
+   * @param addCardRequestDto 저장할 데이터 id, address, memo
+   * @return PostResponseDto : id, userId, title, content, address, likesCount, viewsCount,
+   * themeEnum
+   */
+  @PostMapping("/{post-id}")
+  public ResponseEntity<CommonResponse<PostResponseDto>> cardAddPost(
+      @PathVariable("post-id") Long postId,
+      @RequestBody @Valid AddCardRequestDto addCardRequestDto) {
+
+    PostResponseDto postResponseDto = postService.cardAddPost(postId, addCardRequestDto);
+
+    return ResponseEntity.ok(
+        CommonResponse.<PostResponseDto>builder()
+            .response(ResponseEnum.ADD_POST)
+            .data(postResponseDto)
+            .build());
   }
 }

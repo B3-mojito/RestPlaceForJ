@@ -67,6 +67,9 @@ public class ColumnService {
     if (!column.getPlan().equals(planRepository.findByIdOrThrow(planId))) {
       throw new CommonException(ErrorEnum.BAD_REQUEST);
     }
+    if (column.getTitle().equals("미정")) {
+      throw new CommonException(ErrorEnum.BAD_REQUEST);
+    }
 
     column.updateColumn(columnRequestDto);
     columnRepository.save(column);

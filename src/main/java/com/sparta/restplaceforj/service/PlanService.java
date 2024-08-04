@@ -45,7 +45,7 @@ public class PlanService {
   public PlanResponseDto createPlan(PlanRequestDto planRequestDto, User user) {
     Plan plan = Plan.builder().title(planRequestDto.getTitle()).build();
     planRepository.save(plan);
-
+    columnRepository.save(Column.builder().title("미정").plan(plan).build());
     coworkerRepository.save(Coworker.builder()
         .plan(plan)
         .user(user)

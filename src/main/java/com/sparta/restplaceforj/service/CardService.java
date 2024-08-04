@@ -6,12 +6,8 @@ import com.sparta.restplaceforj.dto.CardResponseDto;
 import com.sparta.restplaceforj.dto.CardUpdateRequestDto;
 import com.sparta.restplaceforj.dto.PostResponseDto;
 import com.sparta.restplaceforj.entity.Card;
-import com.sparta.restplaceforj.entity.RelatedPost;
 import com.sparta.restplaceforj.entity.Column;
-import com.sparta.restplaceforj.entity.Post;
-import com.sparta.restplaceforj.exception.CommonException;
-import com.sparta.restplaceforj.exception.ErrorEnum;
-import com.sparta.restplaceforj.repository.CardPostRepository;
+import com.sparta.restplaceforj.repository.RelatedPostRepository;
 import com.sparta.restplaceforj.repository.CardRepository;
 import com.sparta.restplaceforj.repository.ColumnRepository;
 import com.sparta.restplaceforj.repository.PostRepository;
@@ -29,7 +25,7 @@ public class CardService {
   private final ColumnRepository columnRepository;
   private final CardRepository cardRepository;
   private final PostRepository postRepository;
-  private final CardPostRepository cardPostRepository;
+  private final RelatedPostRepository relatedPostRepository;
 
   /**
    * 카드 생성 로직
@@ -136,7 +132,7 @@ public class CardService {
    */
   public CardDetailResponseDto getCard(Long cardId) {
     Card card = cardRepository.findCardById(cardId);
-    List<PostResponseDto> postResponseDtoList = cardPostRepository.findPostsByCardId(cardId);
+    List<PostResponseDto> postResponseDtoList = relatedPostRepository.findPostsByCardId(cardId);
     return CardDetailResponseDto.builder()
         .id(cardId)
         .title(card.getTitle())
@@ -150,26 +146,6 @@ public class CardService {
   public void deleteCard(Long cardId) {
     Card card = cardRepository.findCardById(cardId);
     cardRepository.delete(card);
-  }
-
-  /**
-   * 카드 연관 게시물 추가
-   *
-   * @param
-   * @param cardId 카드 아이디
-   * @param postId 포스트 아이디
-   * @return CardResponseDto List<PlanResponseDto> : planId, title
-   */
-  @Transactional
-  public PostResponseDto cardAddPost(Long cardId, Long postId) {
-    Card card = cardRepository.findCardById(cardId);
-    Post post = postRepository.findByIdOrThrow(postId);
-    if (cardPostRepository.findPostsByCardId(cardId).equals(post)) {
-      throw new CommonException(ErrorEnum.BAD_REQUEST);
-    }
-    RelatedPost cardPost = RelatedPost.builder().card(card).post(post).build();
-    cardPostRepository.save(cardPost);
-    return PostResponseDto.builder().post(post).build();
   }
 }
 
