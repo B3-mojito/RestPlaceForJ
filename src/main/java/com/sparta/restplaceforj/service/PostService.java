@@ -137,10 +137,7 @@ public class PostService {
   public PageResponseDto<PostIdTitleDto> getPostTitleList(
       int page, int size, String placeName, String sortBy, String q) {
 
-    if (!(sortBy.equals("createAt") || sortBy.equals("viewsCount") ||
-        sortBy.equals("likesCount"))) {
-      throw new CommonException(ErrorEnum.SORT_NOT_FOUND);
-    }
+    sortByCheck(sortBy);
 
     Sort sort = Sort.by(Direction.DESC, sortBy);
 
@@ -237,7 +234,7 @@ public class PostService {
                      초 분 시 일 월 요일
     @Scheduled(cron = "0 40 14 * * *") -> 매일 오후 2시
     */
-  @Scheduled(cron = "${cloud.aws.cron}")
+  @Scheduled(cron = "0 0 0 * * *")
   @Transactional
   public void deleteUnNecessaryImage() {
     log.info(new Date() + "스케쥴러 실행");
@@ -289,5 +286,27 @@ public class PostService {
     return PostResponseDto.builder()
         .post(post)
         .build();
+  }
+  public PageResponseDto<PostIdTitleDto> getMyPostList(
+      int page, int size, String sortBy, long userId) {
+    sortByCheck(sortBy);
+
+    Sort sort = Sort.by(Direction.DESC, sortBy);
+
+    Pageable pageRequest = PageRequest.of(page, size, sort);
+
+    PageImpl<PostIdTitleDto> postIdTitleList = postDslRepository
+        .getMyPostList(pageRequest, userId);
+
+    return PageResponseDto.<PostIdTitleDto>builder()
+        .page(postIdTitleList)
+        .build();
+  }
+
+  private static void sortByCheck(String sortBy) {
+    if (!(sortBy.equals("createdAt") || sortBy.equals("viewsCount") ||
+        sortBy.equals("likesCount"))) {
+      throw new CommonException(ErrorEnum.SORT_NOT_FOUND);
+    }
   }
 }

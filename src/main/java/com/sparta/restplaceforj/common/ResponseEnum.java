@@ -16,12 +16,17 @@ public enum ResponseEnum implements Response {
   ADD_POST("연관 게시물 추가완료", HttpStatus.CREATED),
 
   //user
+  LOGIN_SUCCESS("로그인 성공", HttpStatus.OK),
+  LOGOUT_SUCCESS("로그아웃 성공", HttpStatus.OK),
   CREATE_USER("유저 생성 완료", HttpStatus.CREATED),
   DELETE_USER("유저 탈퇴 완료", HttpStatus.OK),
   GET_USER_PROFILE("유저 프로필 조회 완료", HttpStatus.OK),
   UPDATE_USER_PROFILE("유저 프로필 수정 완료", HttpStatus.OK),
   CREATE_USER_PROFILE_IMAGE("유저 프로필 업로드 완료", HttpStatus.CREATED),
   UPDATE_TOKEN("토큰 재발급 완료", HttpStatus.OK),
+  FORBIDDEN_ACCESS("접근할 수 없습니다.", HttpStatus.FORBIDDEN),
+  INVALID_ACCESS("권한이 없습니다.", HttpStatus.UNAUTHORIZED),
+  LOGIN_FAIL("로그인 실패", HttpStatus.UNAUTHORIZED),
 
 
   //post
@@ -31,6 +36,7 @@ public enum ResponseEnum implements Response {
   GET_POST_LIST("글 전체 조회 완료", HttpStatus.OK),
   GET_POST_ID_TITLE_LIST("글 아이디 제목 조회 완료", HttpStatus.OK),
   UPDATE_POST("글 수정 완료", HttpStatus.OK),
+  GET_MY_POST_LIST("본인 작성 게시물 조회 완료", HttpStatus.OK),
 
   //comment
   CREATE_COMMENT("댓글 생성 완료", HttpStatus.CREATED),
