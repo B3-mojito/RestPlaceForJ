@@ -8,7 +8,7 @@ on:
       - develop
 
 env:
-  DOCKER_IMAGE_TAG_NAME: livealone
+  DOCKER_IMAGE_TAG_NAME: livealone -i
 
 jobs:
   build-and-docker-push:
@@ -73,6 +73,7 @@ jobs:
               sudo docker stop $CONTAINER_ID
               sudo docker rm $CONTAINER_ID
             fi
+            sudo docker pull registry:5000/docker/poject
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_TAG_NAME }}:latest
             sudo docker run -d -p 8080:8080 \
                 -e ACCESS_KEY=${{ secrets.ACCESS_KEY }} \
