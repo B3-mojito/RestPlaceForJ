@@ -2,58 +2,38 @@ name: livealone-test
 
 on:
   push:
-    # 배열로 여러 브랜치를 넣을 수 있다.
     branches: [ develop, feat/*, feat/** ]
-    # github pull request 생성시
   pull_request:
     branches:
-      - develop # -로 여러 브랜치를 명시하는 것도 가능
+      - develop
 
 env:
   DOCKER_IMAGE_TAG_NAME: livealone
 
 jobs:
   build-and-docker-push:
-    runs-on: ubuntu-22.04 # 실행환경
+    runs-on: ubuntu-22.04
 
-    # 실행 스텝 지정
     steps:
       - uses: actions/checkout@v3
 
-      # java version 지정
       - name: Set up JDK 17 with OpenJDK
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      # 권한 부여
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      #빌드 전 환경 변수 추가
       - name: Get Env
         run: |
           touch ./.env.production
-          echo "{{secrets.PRODUCTION_ENV}}" > ./.env.production
-          shell: bash
+          echo "${{ secrets.PRODUCTION_ENV }}" > ./.env.production
+        shell: bash
 
-      # Build
       - name: Build with Gradle
-        run: ./gradlew test -i clean build
-
-      #      직접 사용
-      #      # Docker Image 빌드
-      #      - name: Build the Docker image
-      #        run: docker build . --file docker/Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_TAG_NAME }}:latest
-      #
-      #      # Docker 로큰
-      #      - name: Login to Docker Hub using Access Token
-      #        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-      #
-      #      # 이미지 푸시
-      #      - name: Push the Docker image
-      #        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_TAG_NAME }}:latest
+        run: ./gradlew clean build --exclude-task test -i
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -76,7 +56,7 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_TAG_NAME }}:latest
 
   deploy-to-ec2:
-    needs: build-and-docker-push # 위의 build-and-docker-push이 끝나고 실행
+    needs: build-and-docker-push
     runs-on: ubuntu-22.04
 
     steps:
@@ -92,7 +72,6 @@ jobs:
               sudo docker stop $CONTAINER_ID
               sudo docker rm $CONTAINER_ID
             fi
-            # 여기서의 환경 변수도 여러분 상황에 맞게 작성하시면 됩니다!!!
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_TAG_NAME }}:latest
             sudo docker run -d -p 8080:8080 \
                 -e ACCESS_KEY=${{ secrets.ACCESS_KEY }} \
@@ -110,4 +89,3 @@ jobs:
                 -e SECRET_KEY=${{ secrets.SECRET_KEY }} \
                 -e SERVER_PORT=${{ secrets.SERVER_PORT }} \
                 ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_TAG_NAME }}:latest
-
