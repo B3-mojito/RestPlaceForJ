@@ -1,80 +1,84 @@
 name: livealone-test
 
+# Trigger the workflow on push to specific branches or on pull request to 'develop'
 on:
   push:
-    branches: [ develop, feat/*, feat/** ]
+    branches: [ develop, feat/*, feat/** ]  # Specify the branches to watch for push events
   pull_request:
     branches:
-      - develop
+      - develop  # Specify the branch to watch for pull requests
 
+# Environment variable to set the Docker image tag name
 env:
   DOCKER_IMAGE_TAG_NAME: livealone
 
+# Define jobs to run
 jobs:
+  # Job to build the application and push Docker image
   build-and-docker-push:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-22.04  # Use Ubuntu 22.04 as the runner
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3  # Check out the code from the repository
 
       - name: Set up JDK 17 with OpenJDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v3  # Set up JDK 17 for building the project
         with:
           java-version: '17'
           distribution: 'temurin'
 
       - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+        run: chmod +x gradlew  # Grant execute permission for the Gradle wrapper script
 
       - name: Get Env
         run: |
-          touch ./.env.production
-          echo "${{ secrets.PRODUCTION_ENV }}" > ./.env.production
+          touch ./.env.production  # Create the .env.production file
+          echo "${{ secrets.PRODUCTION_ENV }}" > ./.env.production  # Add the production environment variables to the file
         shell: bash
 
       - name: Build with Gradle
-        run: ./gradlew clean build --exclude-task test -i
+        run: ./gradlew clean build --exclude-task test -i  # Build the project using Gradle, excluding tests
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v3  # Set up QEMU for multi-platform builds
 
       - name: Login to Docker Hub
-        uses: docker/login-action@v3
+        uses: docker/login-action@v3  # Log in to Docker Hub
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}  # Docker Hub username stored in secrets
+          password: ${{ secrets.DOCKERHUB_TOKEN }}  # Docker Hub token stored in secrets
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v3  # Set up Docker Buildx for advanced build features
 
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v6  # Build and push the Docker image
         with:
-          context: .
-          file: Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_TAG_NAME }}:latest
+          context: .  # Set the build context to the root of the repository
+          file: Dockerfile  # Specify the Dockerfile to use for the build
+          push: true  # Push the built image to Docker Hub
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_TAG_NAME }}:latest  # Tag the image with the username and image tag
 
-
+  # Job to deploy the Docker image to an EC2 instance
   deploy-to-ec2:
-    needs: build-and-docker-push # 위의 build-and-docker-push이 끝나고 실행
-    runs-on: ubuntu-22.04
+    needs: build-and-docker-push  # Run this job after the build-and-docker-push job
+    runs-on: ubuntu-22.04  # Use Ubuntu 22.04 as the runner
 
     steps:
       - name: Deploy to EC2
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.0.3  # Use the SSH action to deploy to the EC2 instance
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_KEY }}
-          script: |
-            CONTAINER_ID=$(sudo docker ps -q --filter "publish=8080-8080")
+          host: ${{ secrets.EC2_HOST }}  # EC2 host stored in secrets
+          username: ${{ secrets.EC2_USER }}  # EC2 username stored in secrets
+          key: ${{ secrets.EC2_KEY }}  # EC2 private key stored in secrets
+          script: |  # Script to run on the EC2 instance
+            CONTAINER_ID=$(sudo docker ps -q --filter "publish=8080-8080")  # Get the container ID of the running container on port 8080
             if [ ! -z "$CONTAINER_ID" ]; then
-              sudo docker stop $CONTAINER_ID
-              sudo docker rm $CONTAINER_ID
+              sudo docker stop $CONTAINER_ID  # Stop the running container
+              sudo docker rm $CONTAINER_ID  # Remove the stopped container
             fi
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_TAG_NAME }}:latest
-            sudo docker run -d -p 8080:8080 \
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_TAG_NAME }}:latest  # Pull the latest Docker image
+            sudo docker run -d -p 8080:8080 \  # Run a new container with the latest image
                 -e ACCESS_KEY=${{ secrets.ACCESS_KEY }} \
                 -e BUCKET_NAME=${{ secrets.BUCKET_NAME }} \
                 -e CRON=${{ secrets.CRON }} \
@@ -89,4 +93,6 @@ jobs:
                 -e REGION=${{ secrets.REGION }} \
                 -e SECRET_KEY=${{ secrets.SECRET_KEY }} \
                 -e SERVER_PORT=${{ secrets.SERVER_PORT }} \
-                ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_TAG_NAME }}:latest
+                ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_TAG_NAME }}:latest  # Use the latest image tag
+          command_timeout: 60m  # Increase the command timeout to 60 minutes
+          timeout: 60m  # Increase the step timeout to 60 minutes
