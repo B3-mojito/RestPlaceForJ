@@ -33,7 +33,7 @@ jobs:
 
       # Build
       - name: Build with Gradle
-        run: ./gradlew clean build
+        run: ./gradlew test -i clean build
 
       #      직접 사용
       #      # Docker Image 빌드
