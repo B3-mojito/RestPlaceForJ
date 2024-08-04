@@ -6,9 +6,7 @@ import com.sparta.restplaceforj.dto.CardDetailResponseDto;
 import com.sparta.restplaceforj.dto.CardRequestDto;
 import com.sparta.restplaceforj.dto.CardResponseDto;
 import com.sparta.restplaceforj.dto.CardUpdateRequestDto;
-import com.sparta.restplaceforj.dto.PlanResponseDto;
 import com.sparta.restplaceforj.dto.PostResponseDto;
-import com.sparta.restplaceforj.entity.Post;
 import com.sparta.restplaceforj.service.CardService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -130,28 +128,6 @@ public class CardController {
         CommonResponse.<CardResponseDto>builder()
             .response(ResponseEnum.DELETE_CARD)
             .data(null)
-            .build());
-  }
-
-  /**
-   * 카드 게시물 추가  controller
-   *
-   * @param cardId 카드 아이디
-   * @param postId 게시물 아이디
-   * @return PostResponseDto : id, userId, title, content, address, likesCount, viewsCount,
-   * themeEnum
-   */
-  @PostMapping("/{card-id}/posts/{post-id}")
-  public ResponseEntity<CommonResponse<PostResponseDto>> cardAddPost(
-      @PathVariable("card-id") Long cardId,
-      @PathVariable("post-id") Long postId) {
-
-    PostResponseDto postResponseDto = cardService.cardAddPost(cardId, postId);
-
-    return ResponseEntity.ok(
-        CommonResponse.<PostResponseDto>builder()
-            .response(ResponseEnum.ADD_POST)
-            .data(postResponseDto)
             .build());
   }
 }
