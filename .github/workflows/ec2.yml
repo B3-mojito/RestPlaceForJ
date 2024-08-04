@@ -31,6 +31,13 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      #빌드 전 환경 변수 추가
+      - name: Get Env
+        run: |
+          touch ./.env.production
+          echo "{{secrets.PRODUCTION_ENV}}" > ./.env.production
+          shell: bash
+
       # Build
       - name: Build with Gradle
         run: ./gradlew test -i clean build
@@ -103,3 +110,4 @@ jobs:
                 -e SECRET_KEY=${{ secrets.SECRET_KEY }} \
                 -e SERVER_PORT=${{ secrets.SERVER_PORT }} \
                 ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_TAG_NAME }}:latest
+
