@@ -55,33 +55,18 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_TAG_NAME }}:latest
 
+
   deploy-to-ec2:
-    needs: build-and-docker-push
+    needs: build-and-docker-push # 위의 build-and-docker-push이 끝나고 실행
     runs-on: ubuntu-22.04
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Create PEM file
-        run: |
-          echo "${{ secrets.EC2_KEY }}" > private_key.pem
-          chmod 600 private_key.pem
-
-      - name: Verify SSH connectivity
-        run: |
-          ssh -i private_key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'echo "SSH connection successful"'
-          if [ $? -ne 0 ]; then
-            echo "SSH connection failed"
-            exit 1
-          fi
-
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
-          key: private_key.pem
+          key: ${{ secrets.EC2_KEY }}
           script: |
             CONTAINER_ID=$(sudo docker ps -q --filter "publish=8080-8080")
             if [ ! -z "$CONTAINER_ID" ]; then
