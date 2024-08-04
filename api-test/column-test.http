@@ -1,0 +1,38 @@
+## Variables
+# @no-cookie-jar
+@plan_id = 2
+@column_id = 1
+@title = 하이요s5
+@title2 = 수정ㅎ
+@date = 2024-04-24
+@date2 = 2024-12-25
+
+### 컬럼 생성
+POST http://localhost:8080/v1/plans/{{plan_id}}/columns
+Content-Type: application/json
+
+{
+  "title": "{{title}}",
+  "date" : "{{date}}"
+}
+
+
+### 컬럼 수정
+# @no-cookie-jar
+PATCH http://localhost:8080/v1/plans/{{plan_id}}/columns/{{column_id}}
+Content-Type: application/json
+
+{
+  "title": "{{title}}",
+  "date" : "{{date2}}"
+}
+
+### 컬럼 삭제
+# @no-cookie-jar
+DELETE http://localhost:8080/v1/plans/{{plan_id}}/columns/{{column_id}}
+Content-Type: application/json
+
+### 컬럼 전체 조회
+# @no-cookie-jar
+GET http://localhost:8080/v1/plans/{{plan_id}}/columns
+Content-Type: application/json

@@ -1,7 +1,7 @@
 package com.sparta.restplaceforj.entity;
 
-import jakarta.persistence.*;
 import jakarta.persistence.Column;
+import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -15,10 +15,10 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class Timestamped {
 
-    @CreatedDate
-    @Column(updatable = false,nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime createAt;
+  @CreatedDate
+  @Column(updatable = false, nullable = false)
+  @Temporal(TemporalType.TIMESTAMP)
+  private LocalDateTime createdAt;
 
     @LastModifiedDate
     @Column

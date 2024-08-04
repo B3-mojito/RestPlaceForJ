@@ -1,14 +1,11 @@
 package com.sparta.restplaceforj.entity;
 
+import com.sparta.restplaceforj.dto.PlanRequestDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
-import java.util.List;
 
 @Getter
 @Entity
@@ -22,12 +19,12 @@ public class Plan {
 
     private String title;
 
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @OneToMany(mappedBy = "plan")
-    private List<Column> columnList;
-
     @Builder
-    public Plan(String title){
+    public Plan(String title) {
         this.title = title;
+    }
+
+    public void updatePlan(PlanRequestDto planRequestDto) {
+        this.title = planRequestDto.getTitle();
     }
 }

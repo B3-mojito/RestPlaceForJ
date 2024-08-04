@@ -25,10 +25,20 @@ repositories {
 
 dependencies {
 
+    // 이메일 인증
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    // Redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'io.lettuce:lettuce-core:6.2.1.RELEASE'
+
+    // aws
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
     // JWT
-    //compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
-    //runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
-    //runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+    compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
 
     // Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -42,8 +52,34 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // === QueryDsl  ===
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+// === ⭐ QueryDsl 빌드 옵션 (선택) ===
+
+// querydsl 설정부
+def generated = "src/main/generated"
+
+//querydsl QClass 파일 생성 위치 지정
+tasks.withType(JavaCompile) {
+    options.getGeneratedSourceOutputDirectory().set(file(generated))
+}
+
+//java source set 에 querydsl QClass 위치 추가
+sourceSets {
+    main.java.srcDirs += [generated]
+}
+
+//gradle clean 시에 QClass 디렉토리 삭제
+clean {
+    delete file(generated)
 }

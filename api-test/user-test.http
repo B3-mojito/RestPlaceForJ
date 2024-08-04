@@ -1,0 +1,94 @@
+
+### 유저 등록
+POST http://localhost:8080/v1/users
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}",
+  "name": "{{name}}",
+  "nickname": "{{nickname}}"
+}
+
+### 로그인
+POST http://localhost:8080/v1/users/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+> {%
+  client.global.set("Authorization", response.headers.valueOf("Authorization"));
+  client.log("Authorization: " + response.headers.valueOf("Authorization"));
+
+  client.global.set("RefreshToken", response.headers.valueOf("RefreshToken"));
+  client.log("RefreshToken: " + response.headers.valueOf("RefreshToken"));
+%}
+
+### 로그아웃
+POST http://localhost:8080/v1/users/logout
+Authorization: {{Authorization}}
+RefreshToken: {{RefreshToken}}
+
+
+> {%
+  client.global.clear("Authorization");
+  client.global.clear("RefreshToken");
+%}
+
+### 회원 탈퇴
+DELETE http://localhost:8080/v1/users
+Content-Type: application/json
+Authorization: {{Authorization}}
+RefreshToken: {{RefreshToken}}
+
+{
+  "password" : "{{password}}"
+}
+
+> {%
+  client.global.clear("Authorization");
+  client.global.clear("RefreshToken");
+%}
+
+### 유저 프로필 조회
+GET http://localhost:8080/v1/users/1
+Authorization: {{Authorization}}
+RefreshToken: {{RefreshToken}}
+
+
+> {%
+  client.global.clear("Authorization");
+  client.global.clear("RefreshToken");
+%}
+
+### 유저 프로필 수정
+PATCH http://localhost:8080/v1/users/3
+Authorization: {{Authorization}}
+RefreshToken: {{RefreshToken}}
+Content-Type: application/json
+
+{
+  "nickname": "수정 테스트 6",
+  "bio": "수정 테스트 6",
+  "currentPassword": "{{password}}",
+  "newPassword": "newpassword123!",
+  "confirmPassword": "newpassword123!"
+}
+
+> {%
+    client.global.clear("Authorization");
+    client.global.clear("RefreshToken");
+%}
+
+### 토큰 재발급
+POST http://localhost:8080/v1/users/reissue
+Authorization: {{Authorization}}
+RefreshToken: {{RefreshToken}}
+
+> {%
+    client.global.clear("Authorization");
+    client.global.clear("RefreshToken");
+%}
