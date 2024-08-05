@@ -75,7 +75,7 @@ jobs:
               sudo docker stop $CONTAINER_ID
               sudo docker rm $CONTAINER_ID
             fi
-            sudo docker pull ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE_TAG_NAME}:latest
+            sudo docker pull dobam/livealone:latest
 #            sudo docker run -d -p 8080:8080 \
 #                -e ACCESS_KEY=${ACCESS_KEY}  \
 #                -e BUCKET_NAME=${BUCKET_NAME}  \
