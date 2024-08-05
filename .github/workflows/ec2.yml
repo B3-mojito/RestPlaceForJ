@@ -107,4 +107,4 @@ jobs:
               -e REGION=${REGION}  \
               -e SECRET_KEY=${SECRET_KEY}  \
               -e SERVER_PORT=${SERVER_PORT}  \
-              ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE_TAG_NAME}:latest
+              ${DOCKER_IMAGE_TAG_NAME}:latest
