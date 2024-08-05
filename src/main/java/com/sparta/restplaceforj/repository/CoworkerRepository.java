@@ -9,8 +9,6 @@ import com.sparta.restplaceforj.exception.ErrorEnum;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.web.bind.annotation.RequestParam;
 
 public interface CoworkerRepository extends JpaRepository<Coworker, Long> {
 
@@ -21,4 +19,8 @@ public interface CoworkerRepository extends JpaRepository<Coworker, Long> {
   default Coworker findByPlanIdOrThrow(Long planId) {
     return findById(planId).orElseThrow(() -> new CommonException(ErrorEnum.USER_NOT_FOUND));
   }
+
+  boolean existsByUserIdAndPlanId(Long userId, Long planId);
+
+  boolean existsByUserId(Long userId);
 }
