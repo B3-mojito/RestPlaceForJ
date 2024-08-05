@@ -5,7 +5,7 @@ on:
     branches: [ develop, feat/*, feat/**, fix/**, refactor/** ]
   pull_request:
     branches:
-      - develop
+      - develop, main
 
 env:
   DOCKER_IMAGE_TAG_NAME: livealone
@@ -109,4 +109,4 @@ jobs:
               -e REGION=${REGION}  \
               -e SECRET_KEY=${SECRET_KEY}  \
               -e SERVER_PORT=${SERVER_PORT}  \
-              dobam/livealone:latest
+              ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE_TAG_NAME}:latest
