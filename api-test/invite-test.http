@@ -16,33 +16,21 @@ Content-Type: application/json
 %}
 
 ### 인증 코드 전송
-POST http://localhost:8080/v1/plans/4/invite
+POST http://localhost:8080/v1/plans/1/invite
 Content-Type: application/json
 Authorization: {{Authorization}}
-RefreshToken: {{RefreshToken}}
 
 {
   "email" : ""
 }
 
 
-> {%
-    client.global.clear("Authorization");
-    client.global.clear("RefreshToken");
-%}
-
 ### 인증 코드 확인, 공동 작업자 추가
-POST http://localhost:8080/v1/plans/2/authCode
+POST http://localhost:8080/v1/plans/1/authCode
 Content-Type: application/json
 Authorization: {{Authorization}}
-RefreshToken: {{RefreshToken}}
 
 {
   "authCode": ""
 }
 
-
-> {%
-    client.global.clear("Authorization");
-    client.global.clear("RefreshToken");
-%}
