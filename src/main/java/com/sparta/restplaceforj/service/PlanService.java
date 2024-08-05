@@ -41,10 +41,14 @@ public class PlanService {
     Plan plan = Plan.builder().title(planRequestDto.getTitle()).build();
     planRepository.save(plan);
 
-    coworkerRepository.save(Coworker.builder()
-        .plan(plan)
-        .user(user)
-        .build());
+    //플랜 생성시 유저를 공동 작업자로 추가
+    Coworker coworker = Coworker.builder()
+            .plan(plan)
+            .user(user)
+            .build();
+
+    coworkerRepository.save(coworker);
+
     //plan 생성시 미정의 컬럼이 생성
     Column column = Column.builder()
         .title("미정")
@@ -53,13 +57,7 @@ public class PlanService {
         .build();
 
     columnRepository.save(column);
-      /*
-       * 추후 유저 완성시 사용
-       coworkerRepository.save(Coworker.builder()
-       .plan(plan)
-       .user()
-       .build());
-      */
+
     return PlanResponseDto.builder()
 
         .title(plan.getTitle())
@@ -75,13 +73,16 @@ public class PlanService {
    * @return PlanResponseDto : id, title
    */
   @Transactional
-  public PlanResponseDto updateColumn(Long planId, PlanRequestDto planRequestDto, User user) {
-
+  public PlanResponseDto updatePlan(Long planId, PlanRequestDto planRequestDto, User user) {
+    //플랜 가져오기
     Plan plan = planRepository.findByIdOrThrow(planId);
-    Coworker coworker = coworkerRepository.findByPlanIdOrThrow(planId);
-    if (coworker.getUser().getId() != user.getId()) {
+
+    //유저가 공동작업자로 들어가 있는지 확인
+    if(!coworkerRepository.existsByUserIdAndPlanId(user.getId(), planId)) {
       throw new CommonException(ErrorEnum.BAD_REQUEST);
     }
+
+    //플랜 업데이트
     plan.updatePlan(planRequestDto);
 
     return PlanResponseDto.builder()
@@ -97,15 +98,17 @@ public class PlanService {
    * @param user   유저 객체
    */
   @Transactional
-  public void deleteColumn(Long planId, User user) {
-    if (!planRepository.existsById(planId)) {
-      throw new CommonException(ErrorEnum.PLAN_NOT_FOUND);
-    }
-    Coworker coworker = coworkerRepository.findByPlanIdOrThrow(planId);
-    if (coworker.getUser().getId() != user.getId()) {
+  public void deletePlan(Long planId, User user) {
+
+    // 존재하는 플랜인지 확인
+    Plan plan = planRepository.findByIdOrThrow(planId);
+
+    //유저가 공동작업자로 들어가 있는지 확인
+    if(!coworkerRepository.existsByUserIdAndPlanId(user.getId(), planId)) {
       throw new CommonException(ErrorEnum.BAD_REQUEST);
     }
-    planRepository.deleteById(planId);
+
+    planRepository.delete(plan);
   }
 
 
@@ -116,7 +119,9 @@ public class PlanService {
    * @return List<PlanResponseDto> : planId, title
    */
   public List<PlanResponseDto> getPlanList(Long userId) {
-    if (!userRepository.existsById(userId)) {
+
+    // 유저가 존재하는지 확인(마이페이지에서 플랜 조회시 사용)
+    if (!coworkerRepository.existsByUserId(userId)) {
       throw new CommonException(ErrorEnum.USER_NOT_FOUND);
     }
 
@@ -125,7 +130,7 @@ public class PlanService {
 
 
   /**
-   * 플랜 조회 로직
+   * 플랜 단건 조회 로직
    *
    * @param planId 플랜 아이디
    * @param user   유저 객체
@@ -133,11 +138,14 @@ public class PlanService {
    */
   public PlanResponseDto getPlan(Long planId, User user) {
 
+    // 플랜 가져오기
     Plan plan = planRepository.findByIdOrThrow(planId);
-    Coworker coworker = coworkerRepository.findByPlanIdOrThrow(planId);
-    if (user.getId() != coworker.getUser().getId()) {
+
+    //유저가 공동작업자로 들어가 있는지 확인
+    if(!coworkerRepository.existsByUserIdAndPlanId(user.getId(), planId)) {
       throw new CommonException(ErrorEnum.BAD_REQUEST);
     }
+
     return PlanResponseDto.builder()
         .id(plan.getId())
         .title(plan.getTitle())
