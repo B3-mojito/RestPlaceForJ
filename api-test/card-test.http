@@ -1,16 +1,15 @@
 ## Variables
 # @no-cookie-jar
-@user_id = 2
-@plan_id = 1
-@column_id = 2
-@card_id = 1
-@post_id = 6
-@title = 하이요
-@address = 제주시 아라동
-@password = asdfg1234!
-@email = asdf12345@naver.com
-@memo = 자러갑시다
-@placeName = 화장실
+@column-id = 1
+@card-id = 1
+@title = 정선여행
+@title2 = 수정용
+@address = 강원도정선
+@placename = 정선
+@memo = 물좋은정선
+@startedAt = 12:12
+@endedAt = 13:10
+
 
 ### 로그인
 POST http://localhost:8080/v1/users/login
@@ -29,25 +28,50 @@ Content-Type: application/json
   client.log("RefreshToken: " + response.headers.valueOf("RefreshToken"));
 %}
 
-### 카드 생성
-POST http://localhost:8080/v1/columns/{{column_id}}/cards
+
+
+
+### 카드 작성
+POST http://localhost:8080/v1/columns/{{column-id}}/cards
 Authorization: {{Authorization}}
 Content-Type: application/json
 
 {
   "title": "{{title}}",
   "address": "{{address}}",
-  "placeName": "{{placeName}}",
-  "memo": "{{memo}}"
+  "placeName": "{{placename}}",
+  "memo": "{{memo}}",
+  "startedAt": "{{startedAt}}",
+  "endedAt": "{{endedAt}}"
 }
 
-### 카드 연관포스트 저장
-POST http://localhost:8080/v1/columns/{{column_id}}/cards/{{card_id}}/posts/{{post_id}}
+### 카드 수정
+# @no-cookie-jar
+PATCH http://localhost:8080/v1/columns/{{column-id}}/cards/{{card-id}}
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+{
+  "title2": "{{title2}}",
+  "address": "{{address}}",
+  "placeName": "{{placename}}",
+  "memo": "{{memo}}",
+  "startedAt": "{{startedAt}}",
+  "endedAt": "{{endedAt}}"
+}
+
+### 카드 전체 조회
+GET http://localhost:8080/v1/columns/{{column-id}}/cards
 Authorization: {{Authorization}}
 Content-Type: application/json
 
 
-### 카드 연관포스트 조회
-GET http://localhost:8080/v1/columns/{{column_id}}/cards/{{card_id}}
+### 카드 단건 조회
+GET http://localhost:8080/v1/columns/{{column-id}}/cards/{{card-id}}
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+### 카드 삭제
+DELETE http://localhost:8080/v1/columns/{{column-id}}/cards/{{card-id}}
 Authorization: {{Authorization}}
 Content-Type: application/json

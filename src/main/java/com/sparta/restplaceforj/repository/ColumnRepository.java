@@ -4,9 +4,8 @@ import com.sparta.restplaceforj.dto.ColumnResponseDto;
 import com.sparta.restplaceforj.entity.Column;
 import com.sparta.restplaceforj.exception.CommonException;
 import com.sparta.restplaceforj.exception.ErrorEnum;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ColumnRepository extends JpaRepository<Column, Long> {
 
@@ -19,4 +18,9 @@ public interface ColumnRepository extends JpaRepository<Column, Long> {
   List<ColumnResponseDto> findByPlanId(Long planId);
 
   List<Column> findColumnsByPlanId(Long planId);
+
+  Column findByPlanIdAndDefaultValue(Long plan_id, Boolean defaultValue);
+
+  List<ColumnResponseDto> findByPlanId(Long planId);
+
 }

@@ -64,7 +64,7 @@ public class CardController {
    */
   @PatchMapping("/{card-id}")
   public ResponseEntity<CommonResponse<CardResponseDto>> updateCard(
-      @RequestParam("card-id") Long cardId,
+      @PathVariable("card-id") Long cardId,
       @RequestBody @Valid CardUpdateRequestDto cardUpdateRequestDto) {
 
     CardResponseDto cardResponseDto = cardService.updateCard(cardId, cardUpdateRequestDto);
@@ -85,7 +85,7 @@ public class CardController {
    */
   @GetMapping
   public ResponseEntity<CommonResponse<List<CardResponseDto>>> getCardList(
-      @RequestParam(value = "column-id") Long columnId) {
+      @PathVariable("column-id") Long columnId) {
 
     return ResponseEntity.ok(
         CommonResponse.<List<CardResponseDto>>builder()

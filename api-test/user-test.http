@@ -31,8 +31,6 @@ Content-Type: application/json
 ### 로그아웃
 POST http://localhost:8080/v1/users/logout
 Authorization: {{Authorization}}
-RefreshToken: {{RefreshToken}}
-
 
 > {%
   client.global.clear("Authorization");
@@ -43,7 +41,6 @@ RefreshToken: {{RefreshToken}}
 DELETE http://localhost:8080/v1/users
 Content-Type: application/json
 Authorization: {{Authorization}}
-RefreshToken: {{RefreshToken}}
 
 {
   "password" : "{{password}}"
@@ -57,7 +54,6 @@ RefreshToken: {{RefreshToken}}
 ### 유저 프로필 조회
 GET http://localhost:8080/v1/users/1
 Authorization: {{Authorization}}
-RefreshToken: {{RefreshToken}}
 
 
 > {%
@@ -68,7 +64,6 @@ RefreshToken: {{RefreshToken}}
 ### 유저 프로필 수정
 PATCH http://localhost:8080/v1/users/3
 Authorization: {{Authorization}}
-RefreshToken: {{RefreshToken}}
 Content-Type: application/json
 
 {
@@ -79,10 +74,6 @@ Content-Type: application/json
   "confirmPassword": "newpassword123!"
 }
 
-> {%
-  client.global.clear("Authorization");
-  client.global.clear("RefreshToken");
-%}
 
 ### 토큰 재발급
 POST http://localhost:8080/v1/users/reissue

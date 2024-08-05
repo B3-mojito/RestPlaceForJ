@@ -115,30 +115,16 @@ public class InviteService {
         User invitedUser = userRepository.findByEmailOrThrow(email);
         Plan plan = planRepository.findByIdOrThrow(planId);
 
-        Coworker coworker = addCoworker(invitedUser, plan);
-
-        return AuthCheckResponseDto.builder()
-                .coworkerId(coworker.getId())
-                .build();
-    }
-
-    // 초대자(로그인한 유저)를 공동작업자로 추가
-    @Transactional
-    public void addCoworkerItself(User user, Long planId) {
-        Plan plan = planRepository.findByIdOrThrow(planId);
-        addCoworker(user, plan);
-    }
-
-    // coworker 테이블에 추가
-    @Transactional
-    public Coworker addCoworker(User user, Plan plan) {
+        // 초대하려는 유저를 공동 작업자로 추가
         Coworker coworker = Coworker.builder()
-                .user(user)
+                .user(invitedUser)
                 .plan(plan)
                 .build();
 
         coworkerRepository.save(coworker);
 
-        return coworker;
+        return AuthCheckResponseDto.builder()
+                .coworkerId(coworker.getId())
+                .build();
     }
 }
