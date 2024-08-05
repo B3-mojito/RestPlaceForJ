@@ -65,7 +65,6 @@ public class InviteController {
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         String email = inviteService.verifyAuthCode(authCheckRequestDto.getAuthCode());
-        inviteService.addCoworkerItself(userDetails.getUser(), planId);
         AuthCheckResponseDto authCheckResponseDto = inviteService.createCoworker(planId, email);
 
 
