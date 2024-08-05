@@ -16,5 +16,7 @@ public interface CardRepository extends JpaRepository<Card, Long> {
 
   List<CardResponseDto> findAllByColumn(Column column);
 
-  List<Card> findByColumnId(Long columnId);
+  List<CardResponseDto> findByColumnId(Long columnId);
+
+  List<CardResponseDto> findByColumnIdIn(List<Long> columnIds);
 }

@@ -1,5 +1,6 @@
 package com.sparta.restplaceforj.service;
 
+import com.sparta.restplaceforj.dto.CardResponseDto;
 import com.sparta.restplaceforj.dto.PlanListDto;
 import com.sparta.restplaceforj.dto.PlanRequestDto;
 import com.sparta.restplaceforj.dto.PlanResponseDto;
@@ -15,7 +16,9 @@ import com.sparta.restplaceforj.repository.PlanRepository;
 import com.sparta.restplaceforj.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.Columns;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +31,8 @@ public class PlanService {
   private final ColumnRepository columnRepository;
   private final CoworkerRepository coworkerRepository;
   private final UserRepository userRepository;
+  private final ColumnRepository columnRepository;
+  private final CardRepository cardRepository;
 
   /**
    * 플랜 생성 메서드
@@ -150,5 +155,16 @@ public class PlanService {
         .id(plan.getId())
         .title(plan.getTitle())
         .build();
+  }
+
+  public List<CardResponseDto> getCardLists(Long planId, User user) {
+    Plan plan = planRepository.findByIdOrThrow(planId);
+    List<Column> columns = columnRepository.findColumnsByPlanId(planId);
+
+    List<Long> columnIds = columns.stream()
+        .map(Column::getId)
+        .collect(Collectors.toList());
+
+    return cardRepository.findByColumnIdIn(columnIds);
   }
 }

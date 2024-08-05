@@ -1,13 +1,16 @@
 package com.sparta.restplaceforj.service;
 
+import com.sparta.restplaceforj.dto.CardDetailResponseDto;
 import com.sparta.restplaceforj.dto.CardRequestDto;
 import com.sparta.restplaceforj.dto.CardResponseDto;
 import com.sparta.restplaceforj.dto.CardUpdateRequestDto;
+import com.sparta.restplaceforj.dto.PostResponseDto;
 import com.sparta.restplaceforj.entity.Card;
 import com.sparta.restplaceforj.entity.Column;
+import com.sparta.restplaceforj.repository.RelatedPostRepository;
 import com.sparta.restplaceforj.repository.CardRepository;
 import com.sparta.restplaceforj.repository.ColumnRepository;
-import java.time.LocalDateTime;
+import com.sparta.restplaceforj.repository.PostRepository;
 import java.time.LocalTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +24,8 @@ public class CardService {
 
   private final ColumnRepository columnRepository;
   private final CardRepository cardRepository;
+  private final PostRepository postRepository;
+  private final RelatedPostRepository relatedPostRepository;
 
   /**
    * 카드 생성 로직
@@ -45,7 +50,6 @@ public class CardService {
         .build();
 
     cardRepository.save(card);
-
     return CardResponseDto.builder()
         .id(card.getId())
         .title(card.getTitle())
@@ -116,14 +120,16 @@ public class CardService {
    * @param cardId
    * @return CardResponseDto
    */
-  public CardResponseDto getCard(Long cardId) {
+  public CardDetailResponseDto getCard(Long cardId) {
     Card card = cardRepository.findCardById(cardId);
-    return CardResponseDto.builder()
+    List<PostResponseDto> postResponseDtoList = relatedPostRepository.findPostsByCardId(cardId);
+    return CardDetailResponseDto.builder()
         .id(cardId)
         .title(card.getTitle())
         .address(card.getAddress())
         .placeName(card.getPlaceName())
         .memo(card.getMemo())
+        .postList(postResponseDtoList)
         .build();
   }
 
@@ -133,3 +139,4 @@ public class CardService {
     cardRepository.delete(card);
   }
 }
+

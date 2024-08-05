@@ -27,6 +27,7 @@ Content-Type: application/json
 
 ### 컬럼 생성
 POST http://localhost:8080/v1/plans/{{plan_id}}/columns
+Authorization: {{Authorization}}
 Content-Type: application/json
 Authorization: {{Authorization}}
 
@@ -39,6 +40,7 @@ Authorization: {{Authorization}}
 ### 컬럼 수정
 # @no-cookie-jar
 PATCH http://localhost:8080/v1/plans/{{plan_id}}/columns/{{column_id}}
+Authorization: {{Authorization}}
 Content-Type: application/json
 Authorization: {{Authorization}}
 
@@ -50,6 +52,7 @@ Authorization: {{Authorization}}
 ### 컬럼 삭제
 # @no-cookie-jar
 DELETE http://localhost:8080/v1/plans/{{plan_id}}/columns/{{column_id}}
+Authorization: {{Authorization}}
 Content-Type: application/json
 Authorization: {{Authorization}}
 

@@ -1,19 +1,28 @@
 package com.sparta.restplaceforj.service;
 
+import com.sparta.restplaceforj.dto.AddCardRequestDto;
 import com.sparta.restplaceforj.dto.ImageResponseDto;
 import com.sparta.restplaceforj.dto.PageResponseDto;
 import com.sparta.restplaceforj.dto.PostIdTitleDto;
 import com.sparta.restplaceforj.dto.PostRequestDto;
 import com.sparta.restplaceforj.dto.PostResponseDto;
+import com.sparta.restplaceforj.entity.Card;
+import com.sparta.restplaceforj.entity.Column;
 import com.sparta.restplaceforj.entity.Image;
 import com.sparta.restplaceforj.entity.Post;
+import com.sparta.restplaceforj.entity.RelatedPost;
 import com.sparta.restplaceforj.entity.ThemeEnum;
 import com.sparta.restplaceforj.entity.User;
 import com.sparta.restplaceforj.exception.CommonException;
 import com.sparta.restplaceforj.exception.ErrorEnum;
+import com.sparta.restplaceforj.repository.CardRepository;
+import com.sparta.restplaceforj.repository.ColumnRepository;
 import com.sparta.restplaceforj.repository.ImageRepository;
+import com.sparta.restplaceforj.repository.PlanRepository;
 import com.sparta.restplaceforj.repository.PostDslRepository;
 import com.sparta.restplaceforj.repository.PostRepository;
+import com.sparta.restplaceforj.repository.RelatedPostRepository;
+import com.sparta.restplaceforj.repository.UserRepository;
 import com.sparta.restplaceforj.s3.S3Service;
 import java.io.IOException;
 import java.util.Date;
@@ -44,6 +53,10 @@ public class PostService {
   private final PostDslRepository postDslRepository;
   private final ImageRepository imageRepository;
   private final S3Service s3Service;
+  private final CardRepository cardRepository;
+  private final RelatedPostRepository relatedPostRepository;
+  private final PlanRepository planRepository;
+  private final ColumnRepository columnRepository;
 
   /**
    * 글 생성
@@ -231,6 +244,49 @@ public class PostService {
 
   }
 
+  /**
+   * 카드 연관 게시물 추가
+   *
+   * @param
+   * @param postId            포스트 아이디
+   * @param addCardRequestDto 저장할 데이터 id, address, memo
+   * @return CardResponseDto List<PlanResponseDto> : planId, title
+   */
+  @Transactional
+  public PostResponseDto cardAddPost(Long postId, AddCardRequestDto addCardRequestDto) {
+    Long cardId = addCardRequestDto.getCardId();
+    if (cardId != null) {
+      Card card = cardRepository.findCardById(cardId);
+      Post post = postRepository.findByIdOrThrow(postId);
+
+      if (relatedPostRepository.findPostsByCardId(cardId).equals(post)) {
+        throw new CommonException(ErrorEnum.BAD_REQUEST);
+      }
+      RelatedPost cardPost = RelatedPost.builder()
+          .card(card)
+          .post(post)
+          .build();
+      relatedPostRepository.save(cardPost);
+      return PostResponseDto.builder()
+          .post(post)
+          .build();
+    }
+    Column column = columnRepository.findByPlanIdAndTitle(addCardRequestDto.getPlanId(), "미정");
+    Post post = postRepository.findByIdOrThrow(postId);
+    Card card = Card.builder()
+        .column(column)
+        .title(addCardRequestDto.getPlaceName())
+        .address(post.getAddress())
+        .placeName(post.getPlaceName())
+        .startedAt(addCardRequestDto.getStartedAt())
+        .endedAt(addCardRequestDto.getEndedAt())
+        .memo(addCardRequestDto.getMemo())
+        .build();
+    cardRepository.save(card);
+    return PostResponseDto.builder()
+        .post(post)
+        .build();
+  }
   public PageResponseDto<PostIdTitleDto> getMyPostList(
       int page, int size, String sortBy, long userId) {
     sortByCheck(sortBy);

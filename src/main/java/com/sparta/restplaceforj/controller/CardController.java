@@ -2,9 +2,11 @@ package com.sparta.restplaceforj.controller;
 
 import com.sparta.restplaceforj.common.CommonResponse;
 import com.sparta.restplaceforj.common.ResponseEnum;
+import com.sparta.restplaceforj.dto.CardDetailResponseDto;
 import com.sparta.restplaceforj.dto.CardRequestDto;
 import com.sparta.restplaceforj.dto.CardResponseDto;
 import com.sparta.restplaceforj.dto.CardUpdateRequestDto;
+import com.sparta.restplaceforj.dto.PostResponseDto;
 import com.sparta.restplaceforj.service.CardService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -100,11 +102,11 @@ public class CardController {
    * @return ResponseEntity
    */
   @GetMapping("/{card-id}")
-  public ResponseEntity<CommonResponse<CardResponseDto>> getCard(
+  public ResponseEntity<CommonResponse<CardDetailResponseDto>> getCard(
       @PathVariable("card-id") Long cardId) {
 
     return ResponseEntity.ok(
-        CommonResponse.<CardResponseDto>builder()
+        CommonResponse.<CardDetailResponseDto>builder()
             .response(ResponseEnum.FIND_CARD)
             .data(cardService.getCard(cardId))
             .build());
