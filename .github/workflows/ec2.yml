@@ -95,7 +95,6 @@ jobs:
             sudo docker run -d -p 8080:8080 \
               -e ACCESS_KEY=${ACCESS_KEY}  \
               -e BUCKET_NAME=${BUCKET_NAME}  \
-              -e CRON=${CRON}  \
               -e DATASOURCE_PASSWORD=${DATASOURCE_PASSWORD}  \
               -e DATASOURCE_URL=${DATASOURCE_URL}  \
               -e DATASOURCE_USERNAME=${DATASOURCE_USERNAME}  \
