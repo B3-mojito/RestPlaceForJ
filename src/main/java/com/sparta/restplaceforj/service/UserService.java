@@ -61,7 +61,7 @@ public class UserService {
     }
 
     /**
-     * 회원 탈퇴 controller
+     * 회원 탈퇴 메서드
      *
      * @param user
      * @param password
@@ -125,7 +125,7 @@ public class UserService {
 
 
     /**
-     * 유저 프로필 수정 controller
+     * 유저 프로필 수정 메서드
      *
      * @param userUpdateRequestDto : nickname, bio, currentPassword, newPassword, confirmPassword;
      * @param user
