@@ -2,7 +2,7 @@
 # @no-cookie-jar
 @column-id = 1
 @card-id = 1
-@title =정선여행
+@title = 정선여행
 @title2 = 수정용
 @address = 강원도정선
 @placename = 정선
@@ -42,8 +42,7 @@ Content-Type: application/json
   "placeName": "{{placename}}",
   "memo": "{{memo}}",
   "startedAt": "{{startedAt}}",
-  "endedAt": "{{endedAt}}",
-  "imageIdList": []
+  "endedAt": "{{endedAt}}"
 }
 
 ### 카드 수정
@@ -58,8 +57,7 @@ Content-Type: application/json
   "placeName": "{{placename}}",
   "memo": "{{memo}}",
   "startedAt": "{{startedAt}}",
-  "endedAt": "{{endedAt}}",
-  "imageIdList": []
+  "endedAt": "{{endedAt}}"
 }
 
 ### 카드 전체 조회
