@@ -10,6 +10,22 @@ on:
 env:
   DOCKER_IMAGE_TAG_NAME: livealone
   PRODUCTION_ENV: ${{ secrets.PRODUCTION_ENV }}
+  ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
+  BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+  CRON: ${{ secrets.CRON }}
+  DATASOURCE_PASSWORD: ${{ secrets.DATASOURCE_PASSWORD }}
+  DATASOURCE_URL: ${{ secrets.DATASOURCE_URL }}
+  DATASOURCE_USERNAME: ${{ secrets.DATASOURCE_USERNAME }}
+  EMAIL_ID: ${{ secrets.EMAIL_ID }}
+  JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+  REDIS_HOST: ${{ secrets.REDIS_HOST }}
+  REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+  REDIS_PORT: ${{ secrets.REDIS_PORT }}
+  REGION: ${{ secrets.REGION }}
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
+  SERVER_PORT: ${{ secrets.SERVER_PORT }}
+  DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+
 
 jobs:
   #  build-and-docker-push:
@@ -75,20 +91,20 @@ jobs:
               sudo docker stop $CONTAINER_ID
               sudo docker rm $CONTAINER_ID
             fi
-            sudo docker pull dobam/livealone:latest
-#            sudo docker run -d -p 8080:8080 \
-#                -e ACCESS_KEY=${ACCESS_KEY}  \
-#                -e BUCKET_NAME=${BUCKET_NAME}  \
-#                -e CRON=${CRON}  \
-#                -e DATASOURCE_PASSWORD=${DATASOURCE_PASSWORD}  \
-#                -e DATASOURCE_URL=${DATASOURCE_URL}  \
-#                -e DATASOURCE_USERNAME=${DATASOURCE_USERNAME}  \
-#                -e EMAIL_ID=${EMAIL_ID}  \
-#                -e JWT_SECRET_KEY=${JWT_SECRET_KEY}  \
-#                -e REDIS_HOST=${REDIS_HOST}  \
-#                -e REDIS_PASSWORD=${REDIS_PASSWORD}  \
-#                -e REDIS_PORT=${REDIS_PORT}  \
-#                -e REGION=${REGION}  \
-#                -e SECRET_KEY=${SECRET_KEY}  \
-#                -e SERVER_PORT=${SERVER_PORT}  \
-#                ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE_TAG_NAME}:latest
+            sudo docker pull ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE_TAG_NAME}:latest
+      #            sudo docker run -d -p 8080:8080 \
+      #                -e ACCESS_KEY=${ACCESS_KEY}  \
+      #                -e BUCKET_NAME=${BUCKET_NAME}  \
+      #                -e CRON=${CRON}  \
+      #                -e DATASOURCE_PASSWORD=${DATASOURCE_PASSWORD}  \
+      #                -e DATASOURCE_URL=${DATASOURCE_URL}  \
+      #                -e DATASOURCE_USERNAME=${DATASOURCE_USERNAME}  \
+      #                -e EMAIL_ID=${EMAIL_ID}  \
+      #                -e JWT_SECRET_KEY=${JWT_SECRET_KEY}  \
+      #                -e REDIS_HOST=${REDIS_HOST}  \
+      #                -e REDIS_PASSWORD=${REDIS_PASSWORD}  \
+      #                -e REDIS_PORT=${REDIS_PORT}  \
+      #                -e REGION=${REGION}  \
+      #                -e SECRET_KEY=${SECRET_KEY}  \
+      #                -e SERVER_PORT=${SERVER_PORT}  \
+      #                ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE_TAG_NAME}:latest
