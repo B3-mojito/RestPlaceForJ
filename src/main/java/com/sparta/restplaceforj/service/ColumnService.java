@@ -100,20 +100,18 @@ public class ColumnService {
       throw new CommonException(ErrorEnum.BAD_REQUEST);
     }
 
-    List<Column> defaultColumns = columnRepository.findOneByPlanAndDefaultValue(plan, Boolean.TRUE);
+    // 해당 플랜에서 미정 칼럼(디폴트 칼럼) 찾기
+    Column defaultColumn = columnRepository.findByPlanIdAndDefaultValue(plan.getId(), Boolean.TRUE);
 
-    if (defaultColumns.isEmpty()) {
+    // 삭제하려는 칼럼이 디폴트 칼럼일 때 예외처리
+    if (columnId.equals(defaultColumn.getId())) {
       throw new CommonException(ErrorEnum.BAD_REQUEST);
     }
 
-    Column defaultColumn = defaultColumns.get(0);
+    // 삭제할 칼럼에 있는 카드 리스트 가져오기
+    List<Card> cardList = cardRepository.findByColumnId(columnId);
 
-    if (column.equals(defaultColumn)) {
-      throw new CommonException(ErrorEnum.BAD_REQUEST);
-    }
-
-    List<Card> cardList = cardRepository.findByColumn(column);
-
+    // 카드를 미정 칼럼(디폴트 칼럼)으로 옮기기
     for (Card card : cardList) {
       card.changeColumn(defaultColumn);
     }
