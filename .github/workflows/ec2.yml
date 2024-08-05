@@ -88,9 +88,23 @@ jobs:
           script: |
             CONTAINER_ID=$(sudo docker ps -q --filter "publish=8080-8080")
             if [ -n "$CONTAINER_ID" ]; then
-            sudo docker stop $CONTAINER_ID
-            sudo docker rm $CONTAINER_ID
+              sudo docker stop $CONTAINER_ID
+              sudo docker rm $CONTAINER_ID
             fi
             sudo docker pull ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE_TAG_NAME}:latest
-            sudo docker run -d -p 8080:8080 dobam/livealone:latest
-
+            sudo docker run -d -p 8080:8080 \
+              -e ACCESS_KEY=${ACCESS_KEY}  \
+              -e BUCKET_NAME=${BUCKET_NAME}  \
+              -e CRON=${CRON}  \
+              -e DATASOURCE_PASSWORD=${DATASOURCE_PASSWORD}  \
+              -e DATASOURCE_URL=${DATASOURCE_URL}  \
+              -e DATASOURCE_USERNAME=${DATASOURCE_USERNAME}  \
+              -e EMAIL_ID=${EMAIL_ID}  \
+              -e JWT_SECRET_KEY=${JWT_SECRET_KEY}  \
+              -e REDIS_HOST=${REDIS_HOST}  \
+              -e REDIS_PASSWORD=${REDIS_PASSWORD}  \
+              -e REDIS_PORT=${REDIS_PORT}  \
+              -e REGION=${REGION}  \
+              -e SECRET_KEY=${SECRET_KEY}  \
+              -e SERVER_PORT=${SERVER_PORT}  \
+              ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE_TAG_NAME}:latest
