@@ -2,13 +2,10 @@ package com.sparta.restplaceforj.controller;
 
 import com.sparta.restplaceforj.common.CommonResponse;
 import com.sparta.restplaceforj.common.ResponseEnum;
-import com.sparta.restplaceforj.dto.CardRequestDto;
 import com.sparta.restplaceforj.dto.CardResponseDto;
 import com.sparta.restplaceforj.dto.ColumnResponseDto;
 import com.sparta.restplaceforj.dto.PlanRequestDto;
 import com.sparta.restplaceforj.dto.PlanResponseDto;
-import com.sparta.restplaceforj.dto.PostRequestDto;
-import com.sparta.restplaceforj.dto.PostResponseDto;
 import com.sparta.restplaceforj.security.UserDetailsImpl;
 import com.sparta.restplaceforj.service.PlanService;
 import jakarta.validation.Valid;
