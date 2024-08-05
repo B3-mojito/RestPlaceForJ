@@ -24,8 +24,9 @@ public enum ErrorEnum implements Response {
   EXPIRED_JWT("만료된 JWT 입니다.", HttpStatus.FORBIDDEN),
   NOT_FOUND_TOKEN("토큰을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   NOT_FOUND_AUTHENTICATION_INFO("인증 정보를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+
   //Post error
-  POST_NOT_FOUND("글를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+  POST_NOT_FOUND("글을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   THEME_NOT_FOUND("테마를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   SORT_NOT_FOUND("정렬 불가능 합니다.", HttpStatus.NOT_FOUND),
   ONLY_IMAGE("이미지 파일만 올릴 수 있습니다.", HttpStatus.FORBIDDEN),
