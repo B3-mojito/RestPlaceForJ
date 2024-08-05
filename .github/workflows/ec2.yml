@@ -1,80 +1,80 @@
 name: livealone-test
 
-  # 워크플로우를 특정 브랜치에 푸시 또는 풀 리퀘스트할 때 실행하도록 설정합니다.on:
+on:
   push:
-    branches: [ develop, feat/*, feat/** ] # develop, feat/*, feat/** 브랜치에 푸시할 때 실행
+    branches: [ develop, feat/*, feat/** ]
   pull_request:
     branches:
-      - develop # develop 브랜치에 대한 풀 리퀘스트일 때 실행
+      - develop
 
-  # 환경 변수 설정env:
-  DOCKER_IMAGE_TAG_NAME: livealone # Docker 이미지 태그 이름 설정
+env:
+  DOCKER_IMAGE_TAG_NAME: livealone
 
 jobs:
   build-and-docker-push:
-    runs-on: ubuntu-22.04 # Ubuntu 22.04에서 실행
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v3 # 코드 체크아웃
+        uses: actions/checkout@v3
 
       - name: Set up JDK 17 with OpenJDK
         uses: actions/setup-java@v3
         with:
-          java-version: '17' # JDK 17 설정
-          distribution: 'temurin' # OpenJDK 배포판 사용
+          java-version: '17'
+          distribution: 'temurin'
 
       - name: Grant execute permission for gradlew
-        run: chmod +x gradlew # gradlew에 실행 권한 부여
+        run: chmod +x gradlew
 
       - name: Get production environment variables
         run: |
           touch ./.env.production
           echo "${{ secrets.PRODUCTION_ENV }}" > ./.env.production
-        shell: bash # production 환경 변수를 가져와서 .env.production 파일에 저장
+        shell: bash
 
       - name: Build with Gradle
-        run: ./gradlew clean build --exclude-task test -i # Gradle을 사용하여 빌드 (테스트 제외)
+        run: ./gradlew clean build --exclude-task test -i
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3 # QEMU 설정 (크로스 플랫폼 빌드를 위해)
+        uses: docker/setup-qemu-action@v3
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }} # Docker Hub 사용자명
-          password: ${{ secrets.DOCKERHUB_TOKEN }} # Docker Hub 비밀번호
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3 # Docker Buildx 설정
+        uses: docker/setup-buildx-action@v3
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: . # 현재 디렉토리 컨텍스트
-          file: docker/Dockerfile # Dockerfile 경로
-          push: true # 빌드 후 이미지를 Docker Hub에 푸시
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_TAG_NAME }}:latest # Docker 이미지 태그
+          context: .
+          file: docker/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_TAG_NAME }}:latest
 
   deploy-to-ec2:
-    needs: build-and-docker-push # build-and-docker-push 작업이 끝난 후 실행
-    runs-on: ubuntu-22.04 # Ubuntu 22.04에서 실행
+    needs: build-and-docker-push
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.EC2_HOST }} # EC2 호스트
-          username: ${{ secrets.EC2_USER }} # EC2 사용자명
-          key: ${{ secrets.EC2_KEY }} # EC2 SSH 키
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
           script: |
             CONTAINER_ID=$(sudo docker ps -q --filter "publish=8080-8080")
             if [ -n "$CONTAINER_ID" ]; then
-              sudo docker stop $CONTAINER_ID # 현재 실행 중인 컨테이너 중지
-              sudo docker rm $CONTAINER_ID # 현재 실행 중인 컨테이너 삭제
+              sudo docker stop $CONTAINER_ID
+              sudo docker rm $CONTAINER_ID
             fi
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_TAG_NAME }}:latest # 최신 Docker 이미지 가져오기
-            sudo docker run -d -p 8080:8080 \ # Docker 컨테이너 실행 및 포트 매핑
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_TAG_NAME }}:latest
+            sudo docker run -d -p 8080:8080 \
                 -e ACCESS_KEY=${{ secrets.ACCESS_KEY }} \
                 -e BUCKET_NAME=${{ secrets.BUCKET_NAME }} \
                 -e CRON=${{ secrets.CRON }} \
@@ -89,4 +89,4 @@ jobs:
                 -e REGION=${{ secrets.REGION }} \
                 -e SECRET_KEY=${{ secrets.SECRET_KEY }} \
                 -e SERVER_PORT=${{ secrets.SERVER_PORT }} \
-                ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_TAG_NAME }}:latest # Docker 이미지 태그
+                ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_TAG_NAME }}:latest
