@@ -224,7 +224,7 @@ public class PostService {
                      초 분 시 일 월 요일
     @Scheduled(cron = "0 40 14 * * *") -> 매일 오후 2시
     */
-  @Scheduled(cron = "${cloud.aws.cron}")
+  @Scheduled(cron = "0 0 0 * * *")
   @Transactional
   public void deleteUnNecessaryImage() {
     log.info(new Date() + "스케쥴러 실행");
