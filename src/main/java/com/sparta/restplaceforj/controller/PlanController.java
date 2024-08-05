@@ -62,7 +62,7 @@ public class PlanController {
       @RequestBody @Valid PlanRequestDto planRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     PlanResponseDto planResponseDto = planService
-        .updateColumn(planId, planRequestDto, userDetails.getUser());
+        .updatePlan(planId, planRequestDto, userDetails.getUser());
 
     return ResponseEntity.ok(
         CommonResponse.<PlanResponseDto>builder()
@@ -83,7 +83,7 @@ public class PlanController {
       @PathVariable("plan-id") Long planId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-    planService.deleteColumn(planId, userDetails.getUser());
+    planService.deletePlan(planId, userDetails.getUser());
 
     return ResponseEntity.ok(
         CommonResponse.<ColumnResponseDto>builder()
@@ -116,7 +116,7 @@ public class PlanController {
 
 
   /**
-   * 플랜 조회 controller
+   * 플랜 단건 조회 controller
    *
    * @param planId      플랜 아이디
    * @param userDetails 유저 디테일
