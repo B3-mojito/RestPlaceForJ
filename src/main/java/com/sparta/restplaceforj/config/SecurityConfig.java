@@ -1,7 +1,10 @@
 package com.sparta.restplaceforj.config;
 
-import com.sparta.restplaceforj.jwt.*;
-import com.sparta.restplaceforj.repository.UserRepository;
+import com.sparta.restplaceforj.jwt.JwtAccessDeniedHandler;
+import com.sparta.restplaceforj.jwt.JwtAuthenticationEntryPoint;
+import com.sparta.restplaceforj.jwt.JwtAuthenticationFilter;
+import com.sparta.restplaceforj.jwt.JwtAuthorizationFilter;
+import com.sparta.restplaceforj.jwt.JwtLogoutHandler;
 import com.sparta.restplaceforj.security.UserDetailsServiceImpl;
 import com.sparta.restplaceforj.util.JwtUtil;
 import com.sparta.restplaceforj.util.RedisUtil;
@@ -31,7 +34,6 @@ public class SecurityConfig {
   private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
   private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
   private final JwtLogoutHandler jwtLogoutHandler;
-  private final UserRepository userRepository;
 
   // 인증처리를 위한 authenticationManager 처리 : username~Token 설정
   @Bean
@@ -49,8 +51,7 @@ public class SecurityConfig {
   //인증 필터
   @Bean
   public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-    JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil, redisUtil,
-        userRepository);
+    JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil, redisUtil);
     filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
     return filter;
   }
