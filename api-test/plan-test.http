@@ -60,8 +60,8 @@ GET http://localhost:8080/v1/plans/{{plan_id}}
 Authorization: {{Authorization}}
 Content-Type: application/json
 
-### 플랜id 카드 조회
-# @no-cookie-jar
+
+### 플랜Id로 플랜에 있는 카드 조회
 GET http://localhost:8080/v1/plans/{{plan_id}}/cards
 Authorization: {{Authorization}}
 Content-Type: application/json
