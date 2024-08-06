@@ -21,6 +21,4 @@ public interface ColumnRepository extends JpaRepository<Column, Long> {
 
   Column findByPlanIdAndDefaultValue(Long plan_id, Boolean defaultValue);
 
-  List<ColumnResponseDto> findByPlanId(Long planId);
-
 }
