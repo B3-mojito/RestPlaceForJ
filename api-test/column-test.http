@@ -1,15 +1,35 @@
 ## Variables
 # @no-cookie-jar
-@plan_id = 2
-@column_id = 1
-@title = 하이요s5
-@title2 = 수정ㅎ
-@date = 2024-04-24
-@date2 = 2024-12-25
+@plan_id = 1
+@column_id = 3
+@title = 유저 칼럼 테스트
+@title2 = 유저 칼럼 수정 테스트
+@date = 2024-08-05
+@date2 = 2024-08-22
+
+### 로그인
+POST http://localhost:8080/v1/users/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+> {%
+    client.global.set("Authorization", response.headers.valueOf("Authorization"));
+    client.log("Authorization: " + response.headers.valueOf("Authorization"));
+
+    client.global.set("RefreshToken", response.headers.valueOf("RefreshToken"));
+    client.log("RefreshToken: " + response.headers.valueOf("RefreshToken"));
+%}
+
 
 ### 컬럼 생성
 POST http://localhost:8080/v1/plans/{{plan_id}}/columns
+Authorization: {{Authorization}}
 Content-Type: application/json
+Authorization: {{Authorization}}
 
 {
   "title": "{{title}}",
@@ -20,7 +40,9 @@ Content-Type: application/json
 ### 컬럼 수정
 # @no-cookie-jar
 PATCH http://localhost:8080/v1/plans/{{plan_id}}/columns/{{column_id}}
+Authorization: {{Authorization}}
 Content-Type: application/json
+Authorization: {{Authorization}}
 
 {
   "title": "{{title}}",
@@ -30,9 +52,13 @@ Content-Type: application/json
 ### 컬럼 삭제
 # @no-cookie-jar
 DELETE http://localhost:8080/v1/plans/{{plan_id}}/columns/{{column_id}}
+Authorization: {{Authorization}}
 Content-Type: application/json
+Authorization: {{Authorization}}
+
 
 ### 컬럼 전체 조회
 # @no-cookie-jar
 GET http://localhost:8080/v1/plans/{{plan_id}}/columns
 Content-Type: application/json
+Authorization: {{Authorization}}

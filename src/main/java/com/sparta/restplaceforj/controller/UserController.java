@@ -32,10 +32,10 @@ public class UserController {
     private final KakaoService kakaoService;
 
     /**
-     * 유저 생성 controller
+     * 회원 가입 controller
      *
-     * @param userSignUpRequestDto 필드명: email, password, name, nickname
-     * @return userSignUpResponseDto 필드명: email, name, nickname;
+     * @param userSignUpRequestDto : email, password, name, nickname
+     * @return userSignUpResponseDto : email, name, nickname;
      */
     @PostMapping
     public ResponseEntity<CommonResponse<UserSignUpResponseDto>> createUser(
@@ -51,10 +51,10 @@ public class UserController {
 
 
     /**
-     * 유저 삭제 controller
+     * 회원 탈퇴 controller
      *
-     * @param userResignRequestDto 팔드명: password
-     * @return userResignResponseDto 필드명: email, role
+     * @param userResignRequestDto : password
+     * @return userResignResponseDto : email, role
      */
   @DeleteMapping
   public ResponseEntity<CommonResponse<UserResignResponseDto>> deleteUser(
@@ -75,10 +75,11 @@ public class UserController {
      * 유저 프로필 조회 controller
      *
      * @param userId
-     * @return UserProfileResponseDto 필드명:nickname, bio, profilePicture
+     * @return UserProfileResponseDto :nickname, bio, profilePicture
      */
     @GetMapping("/{user-id}")
-    public ResponseEntity<CommonResponse<UserProfileResponseDto>> getUserProfile(@PathVariable("user-id") Long userId) {
+    public ResponseEntity<CommonResponse<UserProfileResponseDto>> getUserProfile(
+            @PathVariable("user-id") Long userId) {
         UserProfileResponseDto userProfileResponseDto = userService.getUserProfile(userId);
         return ResponseEntity.ok(
                 CommonResponse.<UserProfileResponseDto>builder()
@@ -94,9 +95,9 @@ public class UserController {
      *
      * @param multipartFile
      * @param userDetails
-     * @return UpdateUserProfileImageResponseDto 필드명: profileImageUrl
+     * @return UpdateUserProfileImageResponseDto : profileImageUrl
      */
-    @PostMapping("/profileImage/{user-id}")
+    @PostMapping("/{user-id}/profileImage")
     public ResponseEntity<CommonResponse<UpdateUserProfileImageResponseDto>> createUserProfileImage(
             @RequestParam("images") MultipartFile multipartFile,
             @AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -115,9 +116,9 @@ public class UserController {
     /**
      * 유저 프로필 수정 controller
      *
-     * @param userUpdateRequestDto 필드명: nickname, bio, currentPassword, newPassword, confirmPassword;
+     * @param userUpdateRequestDto : nickname, bio, currentPassword, newPassword, confirmPassword;
      * @param userDetails
-     * @return UserProfileResponseDto 필드명:nickname, bio, profilePicture
+     * @return UserProfileResponseDto :nickname, bio, profilePicture
      */
     @PatchMapping("/{user-id}")
     public ResponseEntity<CommonResponse<UserProfileResponseDto>> updateUserProfile(

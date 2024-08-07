@@ -24,10 +24,13 @@ public enum ErrorEnum implements Response {
   EXPIRED_JWT("만료된 JWT 입니다.", HttpStatus.FORBIDDEN),
   NOT_FOUND_TOKEN("토큰을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   NOT_FOUND_AUTHENTICATION_INFO("인증 정보를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+
   //Post error
-  POST_NOT_FOUND("글를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+  POST_NOT_FOUND("글을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   THEME_NOT_FOUND("테마를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   SORT_NOT_FOUND("정렬 불가능 합니다.", HttpStatus.NOT_FOUND),
+  ONLY_IMAGE("이미지 파일만 올릴 수 있습니다.", HttpStatus.FORBIDDEN),
+  IMAGE_NOT_FOUND("이미지 파일을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   POST_MISMATCH("작성자만 삭제 가능합니다.", HttpStatus.FORBIDDEN),
 
   //comment
@@ -42,14 +45,24 @@ public enum ErrorEnum implements Response {
   //Plan error
   PLAN_NOT_FOUND("플랜을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
+  //Invitation error
+  INVALID_AUTH_CODE("잘못된 인증 코드입니다.", HttpStatus.UNAUTHORIZED),
+  DUPLICATE_INVITATION("이미 공동 작업자로 참여하고 있는 유저입니다.", HttpStatus.CONFLICT),
+  SELF_INVITATION_ERROR("본인은 초대할 수 없습니다.", HttpStatus.BAD_REQUEST),
+
   // Column errors
   COLUMN_NOT_FOUND("컬럼을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
+  //Column move
+  DEFAULT_COLUMN_NOT_FOUND("디폴트 카드가 없습니다.", HttpStatus.NOT_FOUND),
+  MULTIPLE_DEFAULT_COLUMN("디폴트 카드가 중복되었습니다.", HttpStatus.BAD_REQUEST),
 
   // Card errors
   CARD_NOT_FOUND("카드를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
 
+  // Global errors
+  VALID_ERROR("잘못된 접근 값입니다.", HttpStatus.BAD_REQUEST),
   GLOBAL_ERROR("처리하지 않은 예외", HttpStatus.INTERNAL_SERVER_ERROR);
 
 

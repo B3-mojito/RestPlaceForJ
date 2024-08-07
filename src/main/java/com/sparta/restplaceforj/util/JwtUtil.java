@@ -1,4 +1,4 @@
-package com.sparta.restplaceforj.jwt;
+package com.sparta.restplaceforj.util;
 
 import com.sparta.restplaceforj.entity.UserRole;
 import com.sparta.restplaceforj.exception.ErrorEnum;
@@ -21,8 +21,6 @@ public class JwtUtil {
 
     // accessToken 토큰 헤더
     public static final String AUTH_ACCESS_HEADER = "Authorization";
-    // refreshToken 토큰 헤더
-    public static final String AUTH_REFRESH_HEADER = "RefreshToken";
     // 사용자 권한 키
     public static final String AUTHORIZATION_KEY = "auth";
     // Token 식별자
@@ -30,7 +28,7 @@ public class JwtUtil {
     // accessToken 만료 시간 (60분)
     private final long ACCESS_TOKEN_EXPIRE_TIME = 60 * 60 * 1000L;
     // refreshToken 만료 시간 (2주)
-    private final long REFRESH_TOKEN_EXPIRE_TIME = 14 * 24 * 60 * 60 * 1000L;
+    public static long REFRESH_TOKEN_EXPIRE_TIME = 14 * 24 * 60 * 60 * 1000L;
 
     @Value("${jwt.secret.key}")
     private String secretKey;
@@ -70,14 +68,6 @@ public class JwtUtil {
 
     public String getAccessTokenFromHeader(HttpServletRequest request) {
         String accessToken = request.getHeader(AUTH_ACCESS_HEADER);
-        if (StringUtils.hasText(accessToken) && accessToken.startsWith(BEARER_PREFIX)) {
-            return accessToken.substring(BEARER_PREFIX.length());
-        }
-        return null;
-    }
-
-    public String getRefreshTokenFromHeader(HttpServletRequest request) {
-        String accessToken = request.getHeader(AUTH_REFRESH_HEADER);
         if (StringUtils.hasText(accessToken) && accessToken.startsWith(BEARER_PREFIX)) {
             return accessToken.substring(BEARER_PREFIX.length());
         }

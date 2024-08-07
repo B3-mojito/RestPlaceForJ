@@ -9,7 +9,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,6 +48,9 @@ public class Post extends Timestamped {
   @Enumerated(EnumType.STRING)
   private ThemeEnum themeEnum;
 
+  @OneToMany(mappedBy = "post")
+  private List<Image> imageList;
+
   @Builder
   public Post(PostRequestDto requestDto, User user) {
     this.user = user;
@@ -53,6 +59,7 @@ public class Post extends Timestamped {
     this.address = requestDto.getAddress();
     this.themeEnum = ThemeEnum.valueOf(requestDto.getTheme());
     this.placeName = requestDto.getPlaceName();
+    this.imageList = new ArrayList<>();
   }
 
   public void update(PostRequestDto postRequestDto) {
@@ -83,5 +90,11 @@ public class Post extends Timestamped {
 
   public void addViewToPost() {
     viewsCount++;
+  }
+
+  //양방향 추가 메서드
+  public void addImages(Image image) {
+    imageList.add(image);
+    image.setPost(this);
   }
 }

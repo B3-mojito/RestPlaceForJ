@@ -21,7 +21,7 @@ public class User extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String nickname;
 
@@ -34,7 +34,7 @@ public class User extends Timestamped {
     private String bio;
 
     @Setter
-    private String profilePicture;
+    private String profileImage;
 
     @Enumerated(value = EnumType.STRING)
     private UserStatus userStatus;
@@ -44,8 +44,6 @@ public class User extends Timestamped {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
-    @Setter
-    private String refreshToken;
 
     @Builder
     public User(String nickname, String name, String email, String password) {
@@ -57,7 +55,7 @@ public class User extends Timestamped {
         this.userStatus = UserStatus.ACTIVE;
     }
 
-      public void setUserStatus(UserStatus userStatus) {
+    public void setUserStatus(UserStatus userStatus) {
         this.userStatus = userStatus;
         this.authUserAt = LocalDateTime.now();
     }

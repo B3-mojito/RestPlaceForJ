@@ -1,13 +1,16 @@
 package com.sparta.restplaceforj.service;
 
+import com.sparta.restplaceforj.dto.CardDetailResponseDto;
 import com.sparta.restplaceforj.dto.CardRequestDto;
 import com.sparta.restplaceforj.dto.CardResponseDto;
 import com.sparta.restplaceforj.dto.CardUpdateRequestDto;
+import com.sparta.restplaceforj.dto.PostResponseDto;
 import com.sparta.restplaceforj.entity.Card;
 import com.sparta.restplaceforj.entity.Column;
+import com.sparta.restplaceforj.repository.RelatedPostRepository;
 import com.sparta.restplaceforj.repository.CardRepository;
 import com.sparta.restplaceforj.repository.ColumnRepository;
-import java.time.LocalDateTime;
+import com.sparta.restplaceforj.repository.PostRepository;
 import java.time.LocalTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +24,8 @@ public class CardService {
 
   private final ColumnRepository columnRepository;
   private final CardRepository cardRepository;
+  private final PostRepository postRepository;
+  private final RelatedPostRepository relatedPostRepository;
 
   /**
    * 카드 생성 로직
@@ -30,8 +35,10 @@ public class CardService {
    * @param cardRequestDto
    * @return CardResponseDto
    */
+  @Transactional
   public CardResponseDto createCard(Long columId, CardRequestDto cardRequestDto) {
     Column column = columnRepository.findByIdOrThrow(columId);
+
     Card card = Card.builder()
         .column(column)
         .title(cardRequestDto.getTitle())
@@ -41,8 +48,17 @@ public class CardService {
         .endedAt(cardRequestDto.getEndedAt())
         .memo(cardRequestDto.getMemo())
         .build();
+
     cardRepository.save(card);
-    return CardResponseDto.builder().id(card.getId()).build();
+    return CardResponseDto.builder()
+        .id(card.getId())
+        .title(card.getTitle())
+        .address(card.getAddress())
+        .placeName(card.getPlaceName())
+        .startedAt(card.getStartedAt())
+        .endedAt(card.getEndedAt())
+        .memo(card.getMemo())
+        .build();
   }
 
   /**
@@ -52,37 +68,17 @@ public class CardService {
    * @param cardUpdateRequestDto
    * @return CardResponseDto
    */
-
+  @Transactional
   public CardResponseDto updateCard(Long cardId, CardUpdateRequestDto cardUpdateRequestDto) {
 
     Card card = cardRepository.findCardById(cardId);
 
-    String title = card.getTitle();
-    if (cardUpdateRequestDto.getTitle() != null) {
-      title = cardUpdateRequestDto.getTitle();
-    }
-
-    String address = card.getAddress();
-    if (cardUpdateRequestDto.getAddress() != null) {
-      address = cardUpdateRequestDto.getAddress();
-    }
-
-    String placeName = card.getPlaceName();
-    if (cardUpdateRequestDto.getPlaceName() != null) {
-      placeName = cardUpdateRequestDto.getPlaceName();
-    }
-    LocalTime startedAt = card.getStartedAt();
-    if (cardUpdateRequestDto.getStartedAt() != null) {
-      startedAt = cardUpdateRequestDto.getStartedAt();
-    }
-    LocalTime endedAt = card.getEndedAt();
-    if (cardUpdateRequestDto.getEndedAt() != null) {
-      endedAt = cardUpdateRequestDto.getEndedAt();
-    }
-    String memo = card.getMemo();
-    if (cardUpdateRequestDto.getMemo() != null) {
-      memo = cardUpdateRequestDto.getMemo();
-    }
+    String title = cardUpdateRequestDto.getTitle() != null? cardUpdateRequestDto.getTitle() : card.getTitle();
+    String address = cardUpdateRequestDto.getAddress() != null? cardUpdateRequestDto.getAddress() : card.getAddress();
+    String placeName = cardUpdateRequestDto.getPlaceName() != null? cardUpdateRequestDto.getPlaceName() : card.getPlaceName();
+    LocalTime startedAt = cardUpdateRequestDto.getStartedAt() != null? cardUpdateRequestDto.getStartedAt() : card.getStartedAt();
+    LocalTime endedAt = cardUpdateRequestDto.getEndedAt() != null? cardUpdateRequestDto.getEndedAt() : card.getEndedAt();
+    String memo = cardUpdateRequestDto.getMemo() != null? cardUpdateRequestDto.getMemo() : card.getMemo();
 
     card.builder()
         .title(title)
@@ -95,7 +91,15 @@ public class CardService {
 
     cardRepository.save(card);
 
-    return CardResponseDto.builder().id(card.getId()).build();
+    return CardResponseDto.builder()
+        .id(card.getId())
+        .title(card.getTitle())
+        .address(card.getAddress())
+        .placeName(card.getPlaceName())
+        .startedAt(card.getStartedAt())
+        .endedAt(card.getEndedAt())
+        .memo(card.getMemo())
+        .build();
   }
 
   /**
@@ -116,19 +120,23 @@ public class CardService {
    * @param cardId
    * @return CardResponseDto
    */
-  public CardResponseDto getCard(Long cardId) {
+  public CardDetailResponseDto getCard(Long cardId) {
     Card card = cardRepository.findCardById(cardId);
-    return CardResponseDto.builder()
+    List<PostResponseDto> postResponseDtoList = relatedPostRepository.findPostsByCardId(cardId);
+    return CardDetailResponseDto.builder()
         .id(cardId)
         .title(card.getTitle())
         .address(card.getAddress())
         .placeName(card.getPlaceName())
         .memo(card.getMemo())
+        .postList(postResponseDtoList)
         .build();
   }
 
+  @Transactional
   public void deleteCard(Long cardId) {
     Card card = cardRepository.findCardById(cardId);
     cardRepository.delete(card);
   }
 }
+

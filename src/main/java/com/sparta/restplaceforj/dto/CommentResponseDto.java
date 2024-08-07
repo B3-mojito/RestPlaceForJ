@@ -17,11 +17,17 @@ public class CommentResponseDto {
 
   private final long likesCount;
 
+  private final String nickName;
+
+  private final String profileImage;
+
   @Builder
   public CommentResponseDto(Comment comment) {
     id = comment.getId();
     postId = comment.getPost().getId();
     userId = comment.getUser().getId();
+    nickName = comment.getUser().getNickname();
+    profileImage = comment.getUser().getProfileImage();
     content = comment.getContent();
     likesCount = comment.getLikesCount();
   }
