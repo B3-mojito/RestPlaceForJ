@@ -1,11 +1,11 @@
 name: livealone-test
 
 on:
-  push:
-    branches: [ develop, feat/*, feat/**, fix/**, refactor/** ]
+  #  push:
+  #    branches: [ develop, feat/*, feat/**, fix/**, refactor/** ]
   pull_request:
     branches:
-      - develop, main
+      - develop
 
 env:
   DOCKER_IMAGE_TAG_NAME: livealone
