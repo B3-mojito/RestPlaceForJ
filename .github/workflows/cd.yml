@@ -1,8 +1,7 @@
 name: livealone-test
 
 on:
-  #  push:
-  #    branches: [ develop, feat/*, feat/**, fix/**, refactor/** ]
+
   pull_request:
     branches:
       - develop
