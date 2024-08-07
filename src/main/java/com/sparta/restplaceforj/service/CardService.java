@@ -91,7 +91,15 @@ public class CardService {
 
     cardRepository.save(card);
 
-    return CardResponseDto.builder().id(card.getId()).build();
+    return CardResponseDto.builder()
+        .id(card.getId())
+        .title(card.getTitle())
+        .address(card.getAddress())
+        .placeName(card.getPlaceName())
+        .startedAt(card.getStartedAt())
+        .endedAt(card.getEndedAt())
+        .memo(card.getMemo())
+        .build();
   }
 
   /**
@@ -125,6 +133,7 @@ public class CardService {
         .build();
   }
 
+  @Transactional
   public void deleteCard(Long cardId) {
     Card card = cardRepository.findCardById(cardId);
     cardRepository.delete(card);

@@ -1,10 +1,7 @@
 package com.sparta.restplaceforj.config;
 
-import com.sparta.restplaceforj.jwt.JwtAccessDeniedHandler;
-import com.sparta.restplaceforj.jwt.JwtAuthenticationEntryPoint;
-import com.sparta.restplaceforj.jwt.JwtAuthenticationFilter;
-import com.sparta.restplaceforj.jwt.JwtAuthorizationFilter;
-import com.sparta.restplaceforj.jwt.JwtLogoutHandler;
+import com.sparta.restplaceforj.jwt.*;
+import com.sparta.restplaceforj.repository.UserRepository;
 import com.sparta.restplaceforj.security.UserDetailsServiceImpl;
 import com.sparta.restplaceforj.util.JwtUtil;
 import com.sparta.restplaceforj.util.RedisUtil;
@@ -48,13 +45,13 @@ public class SecurityConfig {
     return new BCryptPasswordEncoder();
   }
 
-  //인증 필터
-  @Bean
-  public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-    JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil, redisUtil);
-    filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
-    return filter;
-  }
+    //인증 필터
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil, redisUtil);
+        filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
+        return filter;
+    }
 
   //인가 필터
   @Bean

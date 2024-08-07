@@ -31,11 +31,7 @@ public class Column {
 
   @OnDelete(action = OnDeleteAction.CASCADE)
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "plan_id")
   private Plan plan;
-
-  @OneToMany(mappedBy = "column", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Card> cards = new ArrayList<>();
 
   @Builder
   public Column(String title, LocalDate date, Plan plan, Boolean defaultValue) {
