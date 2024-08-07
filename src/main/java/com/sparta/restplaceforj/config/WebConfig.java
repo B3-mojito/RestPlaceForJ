@@ -12,7 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**")
         .allowedOrigins("http://localhost:3000")  // Replace with your frontend URL
-        .allowedOrigins("http://15.164.59.0/:3000")  // Replace with your frontend URL
+        .allowedOrigins("http://15.164.59.0:8080")
         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
         .allowedHeaders(JwtUtil.AUTH_ACCESS_HEADER, "Content-Type")
         .exposedHeaders(JwtUtil.AUTH_ACCESS_HEADER)  // Expose the Authorization header
