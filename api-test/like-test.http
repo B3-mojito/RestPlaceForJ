@@ -6,10 +6,11 @@
 @contentType_post = post
 @contentType_comment = comment
 
-
+//로컬테스트는 localhost 입력
+@host = 15.164.59.0
 
 ### 로그인
-POST http://localhost:8080/v1/users/login
+POST http://{{host}}:8080/v1/users/login
 Content-Type: application/json
 
 {
@@ -28,7 +29,7 @@ Content-Type: application/json
 
 
 ### 좋아요 작성 - post
-POST http://localhost:8080/posts/2/likes
+POST http://{{host}}:8080/posts/2/likes
 Authorization:{{Authorization}}
 Content-Type: application/json
 
@@ -37,7 +38,7 @@ Content-Type: application/json
 
 
 ### 좋아요 작성 - comment
-POST http://localhost:8080/comments/1/likes
+POST http://{{host}}:8080/comments/1/likes
 Authorization:{{Authorization}}
 Content-Type: application/json
 
