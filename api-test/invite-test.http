@@ -1,5 +1,8 @@
+//로컬테스트는 localhost 입력
+@host = 15.164.59.0
+
 ### 로그인
-POST http://localhost:8080/v1/users/login
+POST http://{{host}}:8080/v1/users/login
 Content-Type: application/json
 
 {
@@ -8,25 +11,25 @@ Content-Type: application/json
 }
 
 > {%
-    client.global.set("Authorization", response.headers.valueOf("Authorization"));
-    client.log("Authorization: " + response.headers.valueOf("Authorization"));
+  client.global.set("Authorization", response.headers.valueOf("Authorization"));
+  client.log("Authorization: " + response.headers.valueOf("Authorization"));
 
-    client.global.set("RefreshToken", response.headers.valueOf("RefreshToken"));
-    client.log("RefreshToken: " + response.headers.valueOf("RefreshToken"));
+  client.global.set("RefreshToken", response.headers.valueOf("RefreshToken"));
+  client.log("RefreshToken: " + response.headers.valueOf("RefreshToken"));
 %}
 
 ### 인증 코드 전송
-POST http://localhost:8080/v1/plans/1/invite
+POST http://{{host}}:8080/v1/plans/1/invite
 Content-Type: application/json
 Authorization: {{Authorization}}
 
 {
-  "email" : ""
+  "email": ""
 }
 
 
 ### 인증 코드 확인, 공동 작업자 추가
-POST http://localhost:8080/v1/plans/1/authCode
+POST http://{{host}}:8080/v1/plans/1/authCode
 Content-Type: application/json
 Authorization: {{Authorization}}
 

@@ -1,7 +1,7 @@
 ## Variables
 
 
-@post-id = 7
+@post-id = 2
 
 @title = title12
 @content = content
@@ -20,11 +20,17 @@
 #createdAt    viewsCount   likesCount
 @sort-by = viewsCount
 @q =
+//로컬테스트는 localhost 입력
+@host = 15.164.59.0
 
+
+.
+.0
+.A-IM:
 
 #
 ### 로그인
-POST http://localhost:8080/v1/users/login
+POST http://{{host}}:8080/v1/users/login
 Content-Type: application/json
 
 {
@@ -44,7 +50,7 @@ Content-Type: application/json
 
 
 ### 글 작성
-POST http://localhost:8080/v1/posts
+POST http://{{host}}:8080/v1/posts
 Authorization:{{Authorization}}
 Content-Type: application/json
 
@@ -60,18 +66,18 @@ Content-Type: application/json
 
 
 ### 글 삭제
-DELETE localhost:8080/v1/posts/{{post-id}}
+DELETE {{host}}:8080/v1/posts/{{post-id}}
 Authorization:{{Authorization}}
 
 
 ### 글 조회 (장소명으로 그룹지어 조회)
-GET localhost:8080/v1/posts/place-name
-    ?page=1&theme={{theme}}&region={{region}}
+GET {{host}}:8080/v1/posts/place-name
+    ?page=0&theme={{theme}}&region={{region}}
 Authorization:{{Authorization}}
 
 
 ### 글 아이디 제목 조회
-GET localhost:8080/v1/posts
+GET {{host}}:8080/v1/posts
     ?place-name={{place-name}}&page=0&q={{q}}&sort-by={{sort-by}}
 Authorization:{{Authorization}}
 
@@ -79,7 +85,7 @@ Authorization:{{Authorization}}
 
 
 ### 내가 쓴 글 아이디 제목 조회(param: size=5, sort-by=createAt, page=0 디폴트 값)
-GET localhost:8080/v1/users/{{user-id}}/posts
+GET {{host}}:8080/v1/users/{{user-id}}/posts
 #    &sort-by={{sort-by}}
 Authorization:{{Authorization}}
 
@@ -87,7 +93,7 @@ Authorization:{{Authorization}}
 
 
 ### 글 수정
-PATCH localhost:8080/v1/posts/{{post-id}}
+PATCH {{host}}:8080/v1/posts/{{post-id}}
 Authorization:{{Authorization}}
 Content-Type: application/json
 
@@ -99,5 +105,5 @@ Content-Type: application/json
 
 
 ### 글 단권 조회
-GET localhost:8080/v1/posts/{{post-id}}
+GET {{host}}:8080/v1/posts/{{post-id}}
 Authorization:{{Authorization}}
