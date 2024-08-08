@@ -18,11 +18,9 @@ import com.sparta.restplaceforj.exception.ErrorEnum;
 import com.sparta.restplaceforj.repository.CardRepository;
 import com.sparta.restplaceforj.repository.ColumnRepository;
 import com.sparta.restplaceforj.repository.ImageRepository;
-import com.sparta.restplaceforj.repository.PlanRepository;
 import com.sparta.restplaceforj.repository.PostDslRepository;
 import com.sparta.restplaceforj.repository.PostRepository;
 import com.sparta.restplaceforj.repository.RelatedPostRepository;
-import com.sparta.restplaceforj.repository.UserRepository;
 import com.sparta.restplaceforj.s3.S3Service;
 import java.io.IOException;
 import java.util.Date;
@@ -55,7 +53,6 @@ public class PostService {
   private final S3Service s3Service;
   private final CardRepository cardRepository;
   private final RelatedPostRepository relatedPostRepository;
-  private final PlanRepository planRepository;
   private final ColumnRepository columnRepository;
 
   /**
@@ -256,7 +253,7 @@ public class PostService {
   public PostResponseDto cardAddPost(Long postId, AddCardRequestDto addCardRequestDto) {
     Long cardId = addCardRequestDto.getCardId();
     if (cardId != null) {
-      Card card = cardRepository.findCardById(cardId);
+      Card card = cardRepository.findByIdOrThrow(cardId);
       Post post = postRepository.findByIdOrThrow(postId);
 
       if (relatedPostRepository.findPostsByCardId(cardId).equals(post)) {
@@ -287,6 +284,7 @@ public class PostService {
         .post(post)
         .build();
   }
+
   public PageResponseDto<PostIdTitleDto> getMyPostList(
       int page, int size, String sortBy, long userId) {
     sortByCheck(sortBy);
