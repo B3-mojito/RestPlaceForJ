@@ -44,6 +44,7 @@ public class UserController {
   public ResponseEntity<CommonResponse<UserSignUpResponseDto>> createUser(
       @RequestBody @Valid UserSignUpRequestDto userSignUpRequestDto) {
     UserSignUpResponseDto userSignUpResponseDto = userService.createUser(userSignUpRequestDto);
+
     return ResponseEntity.ok(
         CommonResponse.<UserSignUpResponseDto>builder()
             .response(ResponseEnum.CREATE_USER)
@@ -63,8 +64,8 @@ public class UserController {
   public ResponseEntity<CommonResponse<UserResignResponseDto>> deleteUser(
       @AuthenticationPrincipal UserDetailsImpl userDetails,
       @RequestBody UserResignRequestDto userResignRequestDto) {
-    UserResignResponseDto userResignResponseDto = userService.deleteUser(userDetails.getUser(),
-        userResignRequestDto.getPassword());
+    UserResignResponseDto userResignResponseDto = userService
+        .deleteUser(userDetails.getUser(), userResignRequestDto.getPassword());
 
     return ResponseEntity.ok(
         CommonResponse.<UserResignResponseDto>builder()
@@ -106,8 +107,8 @@ public class UserController {
       @RequestParam("images") MultipartFile multipartFile,
       @AuthenticationPrincipal UserDetailsImpl userDetails,
       @PathVariable("user-id") Long userId) throws IOException {
-    UpdateUserProfileImageResponseDto updateUserProfileImageResponseDto = userService.updateUserProfileImage(
-        multipartFile, userDetails.getUser(), userId);
+    UpdateUserProfileImageResponseDto updateUserProfileImageResponseDto = userService
+        .updateUserProfileImage(multipartFile, userDetails.getUser(), userId);
     return ResponseEntity.ok(
         CommonResponse.<UpdateUserProfileImageResponseDto>builder()
             .response(ResponseEnum.CREATE_USER_PROFILE_IMAGE)
