@@ -10,6 +10,7 @@ import com.sparta.restplaceforj.entity.Plan;
 import com.sparta.restplaceforj.entity.User;
 import com.sparta.restplaceforj.exception.CommonException;
 import com.sparta.restplaceforj.exception.ErrorEnum;
+import com.sparta.restplaceforj.repository.CardRepository;
 import com.sparta.restplaceforj.repository.ColumnRepository;
 import com.sparta.restplaceforj.repository.CoworkerRepository;
 import com.sparta.restplaceforj.repository.PlanRepository;
@@ -31,7 +32,6 @@ public class PlanService {
   private final ColumnRepository columnRepository;
   private final CoworkerRepository coworkerRepository;
   private final UserRepository userRepository;
-  private final ColumnRepository columnRepository;
   private final CardRepository cardRepository;
 
   /**
@@ -48,9 +48,9 @@ public class PlanService {
 
     //플랜 생성시 유저를 공동 작업자로 추가
     Coworker coworker = Coworker.builder()
-            .plan(plan)
-            .user(user)
-            .build();
+        .plan(plan)
+        .user(user)
+        .build();
 
     coworkerRepository.save(coworker);
 
@@ -83,7 +83,7 @@ public class PlanService {
     Plan plan = planRepository.findByIdOrThrow(planId);
 
     //유저가 공동작업자로 들어가 있는지 확인
-    if(!coworkerRepository.existsByUserIdAndPlanId(user.getId(), planId)) {
+    if (!coworkerRepository.existsByUserIdAndPlanId(user.getId(), planId)) {
       throw new CommonException(ErrorEnum.BAD_REQUEST);
     }
 
@@ -109,7 +109,7 @@ public class PlanService {
     Plan plan = planRepository.findByIdOrThrow(planId);
 
     //유저가 공동작업자로 들어가 있는지 확인
-    if(!coworkerRepository.existsByUserIdAndPlanId(user.getId(), planId)) {
+    if (!coworkerRepository.existsByUserIdAndPlanId(user.getId(), planId)) {
       throw new CommonException(ErrorEnum.BAD_REQUEST);
     }
 
@@ -147,7 +147,7 @@ public class PlanService {
     Plan plan = planRepository.findByIdOrThrow(planId);
 
     //유저가 공동작업자로 들어가 있는지 확인
-    if(!coworkerRepository.existsByUserIdAndPlanId(user.getId(), planId)) {
+    if (!coworkerRepository.existsByUserIdAndPlanId(user.getId(), planId)) {
       throw new CommonException(ErrorEnum.BAD_REQUEST);
     }
 

@@ -79,14 +79,14 @@ public class PlanController {
    * @return CommonResponse : null
    */
   @DeleteMapping("/{plan-id}")
-  public ResponseEntity<CommonResponse<ColumnResponseDto>> deletePlan(
+  public ResponseEntity<CommonResponse<PlanResponseDto>> deletePlan(
       @PathVariable("plan-id") Long planId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
     planService.deletePlan(planId, userDetails.getUser());
 
     return ResponseEntity.ok(
-        CommonResponse.<ColumnResponseDto>builder()
+        CommonResponse.<PlanResponseDto>builder()
             .response(ResponseEnum.DELETE_PLAN)
             .data(null)
             .build()
