@@ -39,8 +39,7 @@ public class InviteController {
             @PathVariable("plan-id") Long planId,
             @AuthenticationPrincipal UserDetailsImpl userDetails) throws MessagingException {
 
-        inviteService.checkEmailInvalidation(emailRequestDto.getEmail(), userDetails.getUser(), planId);
-        inviteService.sendEmail(emailRequestDto.getEmail());
+        inviteService.sendEmail(emailRequestDto.getEmail(), planId, userDetails.getUser());
 
         return ResponseEntity.ok(
                 CommonResponse.builder()
@@ -53,19 +52,16 @@ public class InviteController {
     /**
      * 인증번호 유효성 검사, 공동작업자로 추가 controller
      *
-     * @param authCheckRequestDto : authCode
      * @param planId
-     * @param userDetails
+     * @param authCode
      * @return coworkerId
      */
-    @PostMapping("/authCode")
+    @PostMapping
     public ResponseEntity<CommonResponse<AuthCheckResponseDto>> AuthCheckAndCreateCoworker(
-            @RequestBody AuthCheckRequestDto authCheckRequestDto,
             @PathVariable("plan-id") Long planId,
-            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+            @RequestParam("authCode") String authCode) {
 
-        String email = inviteService.verifyAuthCode(authCheckRequestDto.getAuthCode());
-        AuthCheckResponseDto authCheckResponseDto = inviteService.createCoworker(planId, email);
+        AuthCheckResponseDto authCheckResponseDto = inviteService.createCoworker(planId, authCode);
 
 
         return ResponseEntity.ok(

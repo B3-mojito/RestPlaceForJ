@@ -1,52 +1,41 @@
 package com.sparta.restplaceforj.util;
 
-import com.amazonaws.util.Base64;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
-import jakarta.annotation.PostConstruct;
+import com.sparta.restplaceforj.exception.CommonException;
+import com.sparta.restplaceforj.exception.ErrorEnum;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
-import java.util.Date;
+import java.security.SecureRandom;
 
-@Slf4j(topic = "JwtUtil")
+
+@Slf4j(topic = "AuthCodeUtil")
 @Component
+@RequiredArgsConstructor
 public class AuthCodeUtil {
 
-    public static final String SECRET_KEY = "secret_key ";
     public static final Long EXPIRATION_TIME = 30 * 60 * 1000L; // 30분 유효기간
+    private final RedisUtil redisUtil;
 
-    @Value("${jwt.secret.key}")
-    private String secretKey;
-    private Key key;
-    private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-
-    @PostConstruct
-    public void init() {
-        byte[] bytes = Base64.decode(secretKey);
-        key = Keys.hmacShaKeyFor(bytes);
+    public String createAuthCode() {
+        SecureRandom random = new SecureRandom();
+        int code = random.nextInt(900000) + 100000; // 100000 ~ 999999 사이의 숫자
+        return String.valueOf(code);
     }
 
-    public String createAuthCode(String email) {
-        Date date = new Date();
+    public String checkAuthCodeInvalidation(String authCode) {
+        if (!redisUtil.existData(authCode)) {
+            throw new CommonException(ErrorEnum.INVALID_AUTH_CODE);
+        }
 
-        return Jwts.builder()
-                .setSubject(email)
-                .setExpiration(new Date(date.getTime() + EXPIRATION_TIME))
-                .setIssuedAt(date)
-                .signWith(key, signatureAlgorithm)
-                .compact();
+        // 인증 코드로 유저 이메일 가져오기
+        String email = redisUtil.getValues(authCode);
+
+        // redis에서 인증 코드 삭제
+        redisUtil.deleteValue(authCode);
+
+        return email;
     }
 
-    public String getEmailFromAuthCode(String authCode) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(authCode)
-                .getBody()
-                .getSubject();
-    }
+
 }
