@@ -107,9 +107,7 @@ public class ImageService {
 
   /*
     일정 시간이 지난 후 연관관계가 없는 이미지는 자동으로 삭제
-                     초 분 시 일 월 요일
-    @Scheduled(cron = "0 40 14 * * *") -> 매일 오후 2시
-    */
+                     초 분 시 일 월 요일  -> 오전 12시 마다 실행*/
   @Scheduled(cron = "0 0 0 * * *")
   @Transactional
   public void deleteUnNecessaryImage() {
