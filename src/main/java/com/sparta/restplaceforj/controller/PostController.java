@@ -3,7 +3,6 @@ package com.sparta.restplaceforj.controller;
 import com.sparta.restplaceforj.common.CommonResponse;
 import com.sparta.restplaceforj.common.ResponseEnum;
 import com.sparta.restplaceforj.dto.AddCardRequestDto;
-import com.sparta.restplaceforj.dto.CardRequestDto;
 import com.sparta.restplaceforj.dto.ImageResponseDto;
 import com.sparta.restplaceforj.dto.PageResponseDto;
 import com.sparta.restplaceforj.dto.PostIdTitleDto;
@@ -229,7 +228,7 @@ public class PostController {
    * @return PostResponseDto : id, userId, title, content, address, likesCount, viewsCount,
    * themeEnum
    */
-  @PostMapping("/{post-id}")
+  @PostMapping("/posts/{post-id}")
   public ResponseEntity<CommonResponse<PostResponseDto>> cardAddPost(
       @PathVariable("post-id") Long postId,
       @RequestBody @Valid AddCardRequestDto addCardRequestDto) {
