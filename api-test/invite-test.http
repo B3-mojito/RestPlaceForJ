@@ -1,5 +1,6 @@
 //로컬테스트는 localhost 입력
 @host = 15.164.59.0
+@plan-id = 1
 
 ### 로그인
 POST http://{{host}}:8080/v1/users/login
@@ -19,7 +20,7 @@ Content-Type: application/json
 %}
 
 ### 인증 코드 전송
-POST http://{{host}}:8080/v1/plans/1/invite
+POST http://{{host}}:8080/v1/plans/{{plan-id}}/invite
 Content-Type: application/json
 Authorization: {{Authorization}}
 
@@ -29,7 +30,7 @@ Authorization: {{Authorization}}
 
 
 ### 인증 코드 확인, 공동 작업자 추가
-POST http://{{host}}:8080/v1/plans/1?authCode=
+POST http://{{host}}:8080/v1/plans/{{plan-id}}?authCode=
 Content-Type: application/json
 Authorization: {{Authorization}}
 
