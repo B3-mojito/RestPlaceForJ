@@ -53,6 +53,7 @@ jwt:
 
 server:
   port: ${SERVER_PORT}
+
 kakao:
   secret:
     key: ${KAKAO_KEY}

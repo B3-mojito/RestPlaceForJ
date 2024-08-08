@@ -17,6 +17,7 @@ public enum ResponseEnum implements Response {
 
   //user
   LOGIN_SUCCESS("로그인 성공", HttpStatus.OK),
+  KAKAO_LOGIN_SUCCESS("로그인 성공", HttpStatus.OK),
   LOGOUT_SUCCESS("로그아웃 성공", HttpStatus.OK),
   CREATE_USER("유저 생성 완료", HttpStatus.CREATED),
   DELETE_USER("유저 탈퇴 완료", HttpStatus.OK),

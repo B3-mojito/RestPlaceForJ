@@ -1,6 +1,7 @@
 package com.sparta.restplaceforj.dto;
 
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ public class KakaoUserInfoDto {
     private String nickname;
     private String email;
 
+    @Builder
     public KakaoUserInfoDto(Long id, String nickname, String email) {
         this.id = id;
         this.nickname = nickname;

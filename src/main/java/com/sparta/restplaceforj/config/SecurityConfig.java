@@ -76,6 +76,7 @@ public class SecurityConfig {
             .permitAll() // resources 접근 허용 설정
             .requestMatchers("/v1/users").permitAll()
             .requestMatchers("/v1/users/login").permitAll()
+                .requestMatchers("/v1/users/kakao/callback").permitAll()
             .requestMatchers("/v1/posts/**").permitAll()
             .anyRequest().authenticated() // 그 외 모든 요청 인증처리
     );

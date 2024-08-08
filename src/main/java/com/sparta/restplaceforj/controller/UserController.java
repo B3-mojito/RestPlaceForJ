@@ -7,11 +7,11 @@ import com.sparta.restplaceforj.dto.UserResignRequestDto;
 import com.sparta.restplaceforj.dto.UserResignResponseDto;
 import com.sparta.restplaceforj.dto.UserSignUpRequestDto;
 import com.sparta.restplaceforj.dto.UserSignUpResponseDto;
-import com.sparta.restplaceforj.jwt.JwtUtil;
 import com.sparta.restplaceforj.security.UserDetailsImpl;
 import com.sparta.restplaceforj.dto.*;
 import com.sparta.restplaceforj.service.KakaoService;
 import com.sparta.restplaceforj.service.UserService;
+import com.sparta.restplaceforj.util.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -135,15 +135,15 @@ public class UserController {
     }
 
     @GetMapping("/kakao/callback")
-    public String kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
-        String token = kakaoService.kakaoLogin(code);
+    public ResponseEntity<CommonResponse> kakaoLogin(@RequestParam String code,
+                                                     HttpServletResponse response) throws JsonProcessingException {
+        kakaoService.kakaoLogin(code, response);
 
-        Cookie cookie = new Cookie(JwtUtil.AUTH_ACCESS_HEADER, token);
-        cookie.setPath("/");
-        response.addCookie(cookie);
-
-        return "redirect:/";
-        // 메인페이지로 redirect
+        return ResponseEntity.ok(
+                CommonResponse.<UserProfileResponseDto>builder()
+                        .response(ResponseEnum.KAKAO_LOGIN_SUCCESS)
+                        .build()
+        );
 
     }
 
