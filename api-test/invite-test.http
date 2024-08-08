@@ -29,11 +29,8 @@ Authorization: {{Authorization}}
 
 
 ### 인증 코드 확인, 공동 작업자 추가
-POST http://{{host}}:8080/v1/plans/1/authCode
+POST http://{{host}}:8080/v1/plans/1?authCode=
 Content-Type: application/json
 Authorization: {{Authorization}}
 
-{
-  "authCode": ""
-}
 
