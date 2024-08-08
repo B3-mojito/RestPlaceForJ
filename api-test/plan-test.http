@@ -7,8 +7,11 @@
 @name = 하이요2
 @nickname = 하이요24
 
+//로컬테스트는 {{host}} 입력
+@host = 15.164.59.0
+
 ### 로그인
-POST http://localhost:8080/v1/users/login
+POST http://{{host}}:8080/v1/users/login
 Content-Type: application/json
 
 {
@@ -25,7 +28,7 @@ Content-Type: application/json
 %}
 
 ### 플랜 생성
-POST http://localhost:8080/v1/plans
+POST http://{{host}}:8080/v1/plans
 Authorization: {{Authorization}}
 Content-Type: application/json
 
@@ -34,7 +37,7 @@ Content-Type: application/json
 }
 
 ### 플랜 수정
-PATCH http://localhost:8080/v1/plans/{{plan_id}}
+PATCH http://{{host}}:8080/v1/plans/{{plan_id}}
 Authorization: {{Authorization}}
 Content-Type: application/json
 
@@ -44,24 +47,24 @@ Content-Type: application/json
 
 
 ### 플랜 삭제
-DELETE http://localhost:8080/v1/plans/{{plan_id}}
+DELETE http://{{host}}:8080/v1/plans/{{plan_id}}
 Authorization: {{Authorization}}
 Content-Type: application/json
 
 
 ### 플랜 전체 조회
-GET http://localhost:8080/v1/plans?userId={{user_id}}
+GET http://{{host}}:8080/v1/plans?userId={{user_id}}
 Authorization: {{Authorization}}
 Content-Type: application/json
 
 
 ### 플랜 조회
-GET http://localhost:8080/v1/plans/{{plan_id}}
+GET http://{{host}}:8080/v1/plans/{{plan_id}}
 Authorization: {{Authorization}}
 Content-Type: application/json
 
 
 ### 플랜Id로 플랜에 있는 카드 조회
-GET http://localhost:8080/v1/plans/{{plan_id}}/cards
+GET http://{{host}}:8080/v1/plans/{{plan_id}}/cards
 Authorization: {{Authorization}}
 Content-Type: application/json

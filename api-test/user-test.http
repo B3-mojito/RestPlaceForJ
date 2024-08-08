@@ -1,6 +1,8 @@
+//로컬테스트는 {{host}} 입력
+@host = 15.164.59.0
 
 ### 유저 등록
-POST http://localhost:8080/v1/users
+POST http://{{host}}:8080/v1/users
 Content-Type: application/json
 
 {
@@ -12,7 +14,7 @@ Content-Type: application/json
 
 ### 로그인
 # @no-cookie-jar
-POST http://localhost:8080/v1/users/login
+POST http://{{host}}:8080/v1/users/login
 Content-Type: application/json
 
 {
@@ -29,7 +31,7 @@ Content-Type: application/json
 %}
 
 ### 로그아웃
-POST http://localhost:8080/v1/users/logout
+POST http://{{host}}:8080/v1/users/logout
 Authorization: {{Authorization}}
 
 > {%
@@ -38,7 +40,7 @@ Authorization: {{Authorization}}
 %}
 
 ### 회원 탈퇴
-DELETE http://localhost:8080/v1/users
+DELETE http://{{host}}:8080/v1/users
 Content-Type: application/json
 Authorization: {{Authorization}}
 
@@ -52,7 +54,7 @@ Authorization: {{Authorization}}
 %}
 
 ### 유저 프로필 조회
-GET http://localhost:8080/v1/users/1
+GET http://{{host}}:8080/v1/users/1
 Authorization: {{Authorization}}
 
 
@@ -62,7 +64,7 @@ Authorization: {{Authorization}}
 %}
 
 ### 유저 프로필 수정
-PATCH http://localhost:8080/v1/users/3
+PATCH http://{{host}}:8080/v1/users/3
 Authorization: {{Authorization}}
 Content-Type: application/json
 
@@ -76,7 +78,7 @@ Content-Type: application/json
 
 
 ### 토큰 재발급
-POST http://localhost:8080/v1/users/reissue
+POST http://{{host}}:8080/v1/users/reissue
 Authorization: {{Authorization}}
 RefreshToken: {{RefreshToken}}
 

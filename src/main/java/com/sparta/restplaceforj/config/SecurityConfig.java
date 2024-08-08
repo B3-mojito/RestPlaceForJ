@@ -1,7 +1,10 @@
 package com.sparta.restplaceforj.config;
 
-import com.sparta.restplaceforj.jwt.*;
-import com.sparta.restplaceforj.repository.UserRepository;
+import com.sparta.restplaceforj.jwt.JwtAccessDeniedHandler;
+import com.sparta.restplaceforj.jwt.JwtAuthenticationEntryPoint;
+import com.sparta.restplaceforj.jwt.JwtAuthenticationFilter;
+import com.sparta.restplaceforj.jwt.JwtAuthorizationFilter;
+import com.sparta.restplaceforj.jwt.JwtLogoutHandler;
 import com.sparta.restplaceforj.security.UserDetailsServiceImpl;
 import com.sparta.restplaceforj.util.JwtUtil;
 import com.sparta.restplaceforj.util.RedisUtil;
@@ -45,13 +48,13 @@ public class SecurityConfig {
     return new BCryptPasswordEncoder();
   }
 
-    //인증 필터
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil, redisUtil);
-        filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
-        return filter;
-    }
+  //인증 필터
+  @Bean
+  public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
+    JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil, redisUtil);
+    filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
+    return filter;
+  }
 
   //인가 필터
   @Bean
@@ -78,6 +81,10 @@ public class SecurityConfig {
             .requestMatchers("/v1/users/login").permitAll()
                 .requestMatchers("/v1/users/kakao/callback").permitAll()
             .requestMatchers("/v1/posts/**").permitAll()
+            .requestMatchers("/swagger-ui/**", "/swagger-ui.html",
+                "/v3/api-docs/**", "/swagger/", "/swagger-resources/")
+            .permitAll()
+
             .anyRequest().authenticated() // 그 외 모든 요청 인증처리
     );
 
