@@ -5,8 +5,8 @@ on:
   pull_request:
     branches:
       - develop
-#    types:
-#      - closed  # PR이 닫힐 때만 워크플로우가 실행됨
+    types:
+      - closed  # PR이 닫힐 때만 워크플로우가 실행됨
 
 env:
   DOCKER_IMAGE_TAG_NAME: livealone
@@ -32,7 +32,7 @@ env:
 jobs:
   build-and-docker-push:
     runs-on: ubuntu-22.04
-    #    if: github.event.pull_request.merged == true  # PR이 병합된 경우에만 작업 실행
+    if: github.event.pull_request.merged == true  # PR이 병합된 경우에만 작업 실행
 
     steps:
       - name: Check out the repository
