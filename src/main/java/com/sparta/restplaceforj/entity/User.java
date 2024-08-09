@@ -44,6 +44,8 @@ public class User extends Timestamped {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
+    private Long kakaoId;
+
 
     @Builder
     public User(String nickname, String name, String email, String password) {
@@ -55,6 +57,16 @@ public class User extends Timestamped {
         this.userStatus = UserStatus.ACTIVE;
     }
 
+    public User(String nickname, String name, String email, String password, Long kakaoId) {
+        this.nickname = nickname;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.userRole = UserRole.USER;
+        this.userStatus = UserStatus.ACTIVE;
+        this.kakaoId = kakaoId;
+    }
+
     public void setUserStatus(UserStatus userStatus) {
         this.userStatus = userStatus;
         this.authUserAt = LocalDateTime.now();
@@ -63,5 +75,10 @@ public class User extends Timestamped {
         this.nickname = nickname;
         this.bio = bio;
         this.password = password;
+    }
+
+    public User updateKakao(Long kakaoId) {
+        this.kakaoId = kakaoId;
+        return this;
     }
 }

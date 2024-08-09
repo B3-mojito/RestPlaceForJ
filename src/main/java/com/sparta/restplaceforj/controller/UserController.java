@@ -1,5 +1,6 @@
 package com.sparta.restplaceforj.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sparta.restplaceforj.common.CommonResponse;
 import com.sparta.restplaceforj.common.ResponseEnum;
 import com.sparta.restplaceforj.dto.UpdateUserProfileImageResponseDto;
@@ -10,7 +11,9 @@ import com.sparta.restplaceforj.dto.UserSignUpRequestDto;
 import com.sparta.restplaceforj.dto.UserSignUpResponseDto;
 import com.sparta.restplaceforj.dto.UserUpdateRequestDto;
 import com.sparta.restplaceforj.security.UserDetailsImpl;
+import com.sparta.restplaceforj.service.KakaoService;
 import com.sparta.restplaceforj.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +36,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserController {
 
   private final UserService userService;
+  private final KakaoService kakaoService;
 
   /**
    * 회원 가입 controller
@@ -140,4 +144,17 @@ public class UserController {
     );
   }
 
+  @GetMapping("/kakao/callback")
+  public ResponseEntity<CommonResponse> kakaoLogin(@RequestParam String code,
+      HttpServletResponse response) throws JsonProcessingException {
+    kakaoService.kakaoLogin(code, response);
+
+    return ResponseEntity.ok(
+        CommonResponse.<UserProfileResponseDto>builder()
+            .response(ResponseEnum.KAKAO_LOGIN_SUCCESS)
+            .data(null)
+            .build()
+    );
+
+  }
 }

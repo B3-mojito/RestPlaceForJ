@@ -24,6 +24,7 @@ env:
   SECRET_KEY: ${{ secrets.SECRET_KEY }}
   SERVER_PORT: ${{ secrets.SERVER_PORT }}
   DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  KAKAO_KEY: ${{ secrets.KAKAO_KEY}}
 
 
 jobs:
