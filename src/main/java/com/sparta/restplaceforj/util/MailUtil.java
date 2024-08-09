@@ -24,7 +24,7 @@ public class MailUtil {
 
     public MimeMessage createEmailForm(String toEmail, Long planId, String authCode) throws MessagingException {
 
-        String inviteLink = "http://localhost:3000/v1/plans/" + planId + "?authCode=" + authCode;
+        String inviteLink = "http://localhost:8080/v1/plans/" + planId + "/invite?authCode=" + authCode;
 
         // 메세지 설정
         MimeMessage message = mailSender.createMimeMessage();

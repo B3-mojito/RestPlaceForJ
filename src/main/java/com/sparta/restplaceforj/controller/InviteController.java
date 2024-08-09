@@ -13,13 +13,14 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
 
-@RestController
+@Controller
 @RequiredArgsConstructor
-@RequestMapping("/v1/plans/{plan-id}")
+@RequestMapping("/v1/plans/{plan-id}/invite")
 public class InviteController {
 
     private final InviteService inviteService;
@@ -33,7 +34,8 @@ public class InviteController {
      * @param userDetails
      * @return null
      */
-    @PostMapping("/invite")
+    @ResponseBody
+    @PostMapping
     public ResponseEntity<CommonResponse> checkEmailAndSendAuthCode(
             @RequestBody @Valid EmailRequestDto emailRequestDto,
             @PathVariable("plan-id") Long planId,
@@ -56,25 +58,14 @@ public class InviteController {
      * @param authCode
      * @return coworkerId
      */
-    @PostMapping
-    public ResponseEntity<CommonResponse<AuthCheckResponseDto>> AuthCheckAndCreateCoworker(
+    @GetMapping
+    public String AuthCheckAndCreateCoworker(
             @PathVariable("plan-id") Long planId,
-            @RequestParam("authCode") String authCode) {
+            @RequestParam String authCode) {
 
-        AuthCheckResponseDto authCheckResponseDto = inviteService.createCoworker(planId, authCode);
+        inviteService.createCoworker(planId, authCode);
 
-
-        return ResponseEntity.ok(
-                CommonResponse.<AuthCheckResponseDto>builder()
-                        .response(ResponseEnum.CREATE_COWORKER)
-                        .data(authCheckResponseDto)
-                        .build()
-        );
+        return "redirect:http://localhost:3000/home";
     }
-
-
-
-
-
 
 }
