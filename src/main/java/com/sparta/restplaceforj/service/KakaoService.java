@@ -90,10 +90,7 @@ public class KakaoService {
                 .body(body);
 
         // HTTP 요청 보내기
-        ResponseEntity<String> response = restTemplate.exchange(
-                requestEntity,
-                String.class
-        );
+        ResponseEntity<String> response = restTemplate.exchange(requestEntity, String.class);
 
         // HTTP 응답 (JSON) -> 액세스 토큰 파싱
         JsonNode jsonNode = new ObjectMapper().readTree(response.getBody());
