@@ -39,6 +39,11 @@ public enum ResponseEnum implements Response {
   UPDATE_POST("글 수정 완료", HttpStatus.OK),
   GET_MY_POST_LIST("본인 작성 게시물 조회 완료", HttpStatus.OK),
 
+  //image
+  CREATE_IMAGE("사진 저장 완료", HttpStatus.CREATED),
+  GET_IMAGE("사진 조회 완료", HttpStatus.OK),
+  DELETE_IMAGE("사진 삭제 완료", HttpStatus.OK),
+
   //comment
   CREATE_COMMENT("댓글 생성 완료", HttpStatus.CREATED),
   GET_COMMENT_LIST("댓글 조회 완료", HttpStatus.OK),

@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CardRepository extends JpaRepository<Card, Long> {
 
-  default Card findCardById(Long id) {
+  default Card findByIdOrThrow(Long id) {
     return findById(id).orElseThrow(() -> new CommonException(ErrorEnum.CARD_NOT_FOUND));
   }
 
