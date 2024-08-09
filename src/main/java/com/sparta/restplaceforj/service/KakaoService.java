@@ -41,6 +41,9 @@ public class KakaoService {
     @Value("${kakao.secret.key}")
     public String kakaoKey;
 
+    private static final String CONTENT_TYPE = "application/x-www-form-urlencoded;charset=utf-8";
+    private static final String GRANT_TYPE = "authorization_code";
+    private static final String REDIRECT_URI = "http://localhost:8080/v1/users/kakao/callback";
 
     public void kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
         // 1. "인가 코드"로 "유저 인포에 접근할 수 있도록 하는 액세스 토큰" 요청
@@ -75,13 +78,13 @@ public class KakaoService {
 
         // HTTP Header 생성
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+        headers.add("Content-type", CONTENT_TYPE);
 
         // HTTP Body 생성
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("grant_type", "authorization_code");
+        body.add("grant_type", GRANT_TYPE);
         body.add("client_id", kakaoKey);
-        body.add("redirect_uri", "http://localhost:8080/v1/users/kakao/callback");
+        body.add("redirect_uri", REDIRECT_URI);
         body.add("code", code);
 
         RequestEntity<MultiValueMap<String, String>> requestEntity = RequestEntity
@@ -109,7 +112,7 @@ public class KakaoService {
         // HTTP Header 생성
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken);
-        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+        headers.add("Content-type", CONTENT_TYPE);
 
         RequestEntity<MultiValueMap<String, String>> requestEntity = RequestEntity
                 .post(uri)
