@@ -20,7 +20,6 @@ import com.sparta.restplaceforj.repository.ImageRepository;
 import com.sparta.restplaceforj.repository.PostDslRepository;
 import com.sparta.restplaceforj.repository.PostRepository;
 import com.sparta.restplaceforj.repository.RelatedPostRepository;
-import com.sparta.restplaceforj.s3.S3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageImpl;
@@ -43,7 +42,6 @@ public class PostService {
   private final PostRepository postRepository;
   private final PostDslRepository postDslRepository;
   private final ImageRepository imageRepository;
-  private final S3Service s3Service;
   private final CardRepository cardRepository;
   private final RelatedPostRepository relatedPostRepository;
   private final ColumnRepository columnRepository;
