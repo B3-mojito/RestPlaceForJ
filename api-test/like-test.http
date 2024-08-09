@@ -29,7 +29,7 @@ Content-Type: application/json
 
 
 ### 좋아요 작성 - post
-POST http://{{host}}:8080/posts/2/likes
+POST http://{{host}}:8080/v1/posts/2/likes
 Authorization:{{Authorization}}
 Content-Type: application/json
 
@@ -38,7 +38,7 @@ Content-Type: application/json
 
 
 ### 좋아요 작성 - comment
-POST http://{{host}}:8080/comments/1/likes
+POST http://{{host}}:8080/v1/comments/1/likes
 Authorization:{{Authorization}}
 Content-Type: application/json
 

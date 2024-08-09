@@ -1,7 +1,6 @@
 package com.sparta.restplaceforj.service;
 
 import com.sparta.restplaceforj.dto.AddCardRequestDto;
-import com.sparta.restplaceforj.dto.ImageResponseDto;
 import com.sparta.restplaceforj.dto.PageResponseDto;
 import com.sparta.restplaceforj.dto.PostIdTitleDto;
 import com.sparta.restplaceforj.dto.PostRequestDto;
@@ -21,11 +20,6 @@ import com.sparta.restplaceforj.repository.ImageRepository;
 import com.sparta.restplaceforj.repository.PostDslRepository;
 import com.sparta.restplaceforj.repository.PostRepository;
 import com.sparta.restplaceforj.repository.RelatedPostRepository;
-import com.sparta.restplaceforj.s3.S3Service;
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageImpl;
@@ -33,10 +27,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 추천글 서비스.
@@ -50,7 +42,6 @@ public class PostService {
   private final PostRepository postRepository;
   private final PostDslRepository postDslRepository;
   private final ImageRepository imageRepository;
-  private final S3Service s3Service;
   private final CardRepository cardRepository;
   private final RelatedPostRepository relatedPostRepository;
   private final ColumnRepository columnRepository;
@@ -183,62 +174,6 @@ public class PostService {
     return PostResponseDto.builder()
         .post(post)
         .build();
-  }
-
-  @Transactional
-  public ImageResponseDto createPostImage(MultipartFile multipartFile)
-      throws IOException {
-
-    //원본 이름
-    String originalFileName = multipartFile.getOriginalFilename();
-    //파일 확장자 추출
-    String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
-
-    imageCheck(ext);
-
-    // 중복을 방지하기위한 S3 저장하는 이름
-    String changedFileName = changeImageName(ext);
-    //저장 후 경로
-    String path = s3Service.upload(multipartFile, changedFileName);
-
-    Image image = Image.builder()
-        .originalFileName(originalFileName)
-        .changedFileName(changedFileName)
-        .path(path)
-        .build();
-
-    imageRepository.save(image);
-
-    return ImageResponseDto.builder()
-        .image(image)
-        .build();
-  }
-
-  private static void imageCheck(String ext) {
-    if (!(ext.equals(".jpg") || ext.equals(".jpeg") || ext.equals(".png"))) {
-      throw new CommonException(ErrorEnum.ONLY_IMAGE);
-    }
-  }
-
-  //uuid 를 이용해서 중복없는 이름 만든다.
-  private String changeImageName(String ext) {
-    final String uuid = UUID.randomUUID().toString();
-    return uuid + ext;
-  }
-
-  /*
-    일정 시간이 지난 후 연관관계가 없는 이미지는 자동으로 삭제
-                     초 분 시 일 월 요일
-    @Scheduled(cron = "0 40 14 * * *") -> 매일 오후 2시
-    */
-  @Scheduled(cron = "0 0 0 * * *")
-  @Transactional
-  public void deleteUnNecessaryImage() {
-    log.info(new Date() + "스케쥴러 실행");
-    List<Image> images = imageRepository.findByPostIsNull();
-    List<Image> deletedImageList = s3Service.deleteUnNecessaryImage(images);
-    imageRepository.deleteAll(deletedImageList);
-
   }
 
   /**
