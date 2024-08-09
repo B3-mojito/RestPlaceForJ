@@ -1,0 +1,49 @@
+## Variables
+
+
+//로컬테스트는 localhost 입력
+#@host = 15.164.59.0
+@host = localhost
+
+### 로그인
+POST {{host}}:8080/v1/users/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+> {%
+  client.global.set("Authorization", response.headers.valueOf("Authorization"));
+  client.log("Authorization: " + response.headers.valueOf("Authorization"));
+
+  client.global.set("RefreshToken", response.headers.valueOf("RefreshToken"));
+  client.log("RefreshToken: " + response.headers.valueOf("RefreshToken"));
+%}
+
+
+
+
+### 이미지 생성
+POST {{host}}:8080/v1/images
+Authorization: {{Authorization}}
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="images"; filename="sparta.png"
+Content-Type: image/png
+
+< /Users/dobam/Downloads/sparta.png
+--boundary--
+
+
+### 이미지 조회
+GET {{host}}:8080/v1/images/8
+Authorization: {{Authorization}}
+
+
+### 이미지 삭제
+DELETE {{host}}:8080/v1/images/7
+Authorization: {{Authorization}}
+
