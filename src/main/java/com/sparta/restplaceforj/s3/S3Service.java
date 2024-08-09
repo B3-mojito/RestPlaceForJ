@@ -26,17 +26,6 @@ public class S3Service {
 
   private final AmazonS3 amazonS3;
 
-  public String upload(MultipartFile multipartFile) throws IOException {
-    String s3FileName = UUID.randomUUID() + "-" + multipartFile.getOriginalFilename();
-
-    ObjectMetadata objMeta = new ObjectMetadata();
-    objMeta.setContentLength(multipartFile.getInputStream().available());
-
-    amazonS3.putObject(bucket, s3FileName, multipartFile.getInputStream(), objMeta);
-
-    return amazonS3.getUrl(bucket, s3FileName).toString();
-  }
-
   public String upload(MultipartFile multipartFile, String changedImageName)
       throws IOException {
 
