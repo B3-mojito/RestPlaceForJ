@@ -203,7 +203,7 @@ public class PostController {
    * @return PostResponseDto : id, userId, title, content, address, likesCount, viewsCount,
    * themeEnum
    */
-  @PostMapping("/{post-id}")
+  @PostMapping("/posts/{post-id}")
   public ResponseEntity<CommonResponse<PostResponseDto>> cardAddPost(
       @PathVariable("post-id") Long postId,
       @RequestBody @Valid AddCardRequestDto addCardRequestDto) {
