@@ -3,8 +3,6 @@ package com.sparta.restplaceforj.controller;
 
 import com.sparta.restplaceforj.common.CommonResponse;
 import com.sparta.restplaceforj.common.ResponseEnum;
-import com.sparta.restplaceforj.dto.AuthCheckRequestDto;
-import com.sparta.restplaceforj.dto.AuthCheckResponseDto;
 import com.sparta.restplaceforj.dto.EmailRequestDto;
 import com.sparta.restplaceforj.security.UserDetailsImpl;
 import com.sparta.restplaceforj.service.InviteService;
