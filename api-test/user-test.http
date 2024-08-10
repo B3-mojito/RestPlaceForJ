@@ -1,5 +1,5 @@
 //로컬테스트는 {{host}} 입력
-@host = 15.164.59.0
+@host = localhost
 
 ### 유저 등록
 POST http://{{host}}:8080/v1/users
@@ -64,7 +64,7 @@ Authorization: {{Authorization}}
 %}
 
 ### 유저 프로필 수정
-PATCH http://{{host}}:8080/v1/users/3
+PATCH http://{{host}}:8080/v1/users/2
 Authorization: {{Authorization}}
 Content-Type: application/json
 
