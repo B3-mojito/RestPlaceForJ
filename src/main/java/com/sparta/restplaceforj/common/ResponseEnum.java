@@ -17,6 +17,7 @@ public enum ResponseEnum implements Response {
 
   //user
   LOGIN_SUCCESS("로그인 성공", HttpStatus.OK),
+  KAKAO_LOGIN_SUCCESS("로그인 성공", HttpStatus.OK),
   LOGOUT_SUCCESS("로그아웃 성공", HttpStatus.OK),
   CREATE_USER("유저 생성 완료", HttpStatus.CREATED),
   DELETE_USER("유저 탈퇴 완료", HttpStatus.OK),
@@ -37,6 +38,11 @@ public enum ResponseEnum implements Response {
   GET_POST_ID_TITLE_LIST("글 아이디 제목 조회 완료", HttpStatus.OK),
   UPDATE_POST("글 수정 완료", HttpStatus.OK),
   GET_MY_POST_LIST("본인 작성 게시물 조회 완료", HttpStatus.OK),
+
+  //image
+  CREATE_IMAGE("사진 저장 완료", HttpStatus.CREATED),
+  GET_IMAGE("사진 조회 완료", HttpStatus.OK),
+  DELETE_IMAGE("사진 삭제 완료", HttpStatus.OK),
 
   //comment
   CREATE_COMMENT("댓글 생성 완료", HttpStatus.CREATED),

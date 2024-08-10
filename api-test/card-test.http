@@ -9,10 +9,11 @@
 @memo = 물좋은정선
 @startedAt = 12:12
 @endedAt = 13:10
-
+//로컬테스트는 localhost 입력
+@host = 15.164.59.0
 
 ### 로그인
-POST http://localhost:8080/v1/users/login
+POST http://{{host}}:8080/v1/users/login
 Content-Type: application/json
 
 {
@@ -32,7 +33,7 @@ Content-Type: application/json
 
 
 ### 카드 작성
-POST http://localhost:8080/v1/columns/{{column-id}}/cards
+POST http://{{host}}:8080/v1/columns/{{column-id}}/cards
 Authorization: {{Authorization}}
 Content-Type: application/json
 
@@ -47,7 +48,7 @@ Content-Type: application/json
 
 ### 카드 수정
 # @no-cookie-jar
-PATCH http://localhost:8080/v1/columns/{{column-id}}/cards/{{card-id}}
+PATCH http://{{host}}:8080/v1/columns/{{column-id}}/cards/{{card-id}}
 Authorization: {{Authorization}}
 Content-Type: application/json
 
@@ -61,17 +62,17 @@ Content-Type: application/json
 }
 
 ### 카드 전체 조회
-GET http://localhost:8080/v1/columns/{{column-id}}/cards
+GET http://{{host}}:8080/v1/columns/{{column-id}}/cards
 Authorization: {{Authorization}}
 Content-Type: application/json
 
 
 ### 카드 단건 조회
-GET http://localhost:8080/v1/columns/{{column-id}}/cards/{{card-id}}
+GET http://{{host}}:8080/v1/columns/{{column-id}}/cards/{{card-id}}
 Authorization: {{Authorization}}
 Content-Type: application/json
 
 ### 카드 삭제
-DELETE http://localhost:8080/v1/columns/{{column-id}}/cards/{{card-id}}
+DELETE http://{{host}}:8080/v1/columns/{{column-id}}/cards/{{card-id}}
 Authorization: {{Authorization}}
 Content-Type: application/json
