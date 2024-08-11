@@ -1,9 +1,10 @@
-//로컬테스트는 localhost 입력
-@host = localhost
-@plan-id = 10
+//로드 밸런싱 적용한 주소
+#@host = http://mojito-as-lb-1-346761212.ap-northeast-2.elb.amazonaws.com
+//로컬테스트는 localhost:8080 입력
+@host = localhost:8080
 
 ### 로그인
-POST http://{{host}}:8080/v1/users/login
+POST http://{{host}}/v1/users/login
 Content-Type: application/json
 
 {
@@ -20,7 +21,7 @@ Content-Type: application/json
 %}
 
 ### 인증 코드 전송
-POST http://{{host}}:8080/v1/plans/{{plan-id}}/invite
+POST http://{{host}}/v1/plans/{{plan-id}}/invite
 Content-Type: application/json
 Authorization: {{Authorization}}
 
@@ -30,7 +31,7 @@ Authorization: {{Authorization}}
 
 
 ### 인증 코드 확인, 공동 작업자 추가
-GET http://{{host}}:8080/v1/plans/{{plan-id}}/invite?authCode=
+GET http://{{host}}/v1/plans/{{plan-id}}/invite?authCode=
 Content-Type: application/json
 Authorization: {{Authorization}}
 
