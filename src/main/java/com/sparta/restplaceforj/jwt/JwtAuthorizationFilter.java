@@ -37,7 +37,14 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
       FilterChain filterChain) throws ServletException, IOException {
-    log.info("accessToken 검증 시도, ip: {}", request.getRemoteAddr());
+    String clientIp = getClientIp(request);
+    String requestUrl = getFullRequestUrl(request);
+    String httpMethod = request.getMethod();
+    String userAgent = request.getHeader("User-Agent");
+
+    log.info("accessToken 검증 시도. IP: {}, URL: {}, Method: {}, User-Agent: {}",
+        clientIp, requestUrl, httpMethod, userAgent);
+
     String accessToken = jwtUtil.getAccessTokenFromHeader(request);
 
     if (StringUtils.hasText(accessToken)) {
@@ -69,8 +76,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
   // accessToken이 유효하지 않은 경우, 리프레시 토큰 검증 및 엑세스토큰 재발급
   public void validateAndAuthenticateWithRefreshToken(HttpServletRequest request,
-      HttpServletResponse response,
-      String email) {
+      HttpServletResponse response, String email) {
     log.info("refreshToken 검증 시도, ip: {} ", request.getRemoteAddr());
     String refreshToken = redisUtil.getValues(email)
         .substring(BEARER_PREFIX.length());
@@ -116,5 +122,21 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
   private Authentication createAuthentication(String email) {
     UserDetails userDetails = userDetailsService.loadUserByUsername(email);
     return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+  }
+
+  private String getClientIp(HttpServletRequest request) {
+    String clientIp = request.getHeader("X-Forwarded-For");
+    if (clientIp == null || clientIp.isEmpty()) {
+      clientIp = request.getRemoteAddr();
+    }
+    return clientIp;
+  }
+
+  private String getFullRequestUrl(HttpServletRequest request) {
+    StringBuilder requestUrl = new StringBuilder(request.getRequestURL());
+    if (request.getQueryString() != null) {
+      requestUrl.append("?").append(request.getQueryString());
+    }
+    return requestUrl.toString();
   }
 }
