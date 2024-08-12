@@ -7,11 +7,13 @@
 @date = 2024-08-05
 @date2 = 2024-08-22
 
-//로컬테스트는 localhost 입력
-@host = 15.164.59.0
+//로드 밸런싱 적용한 주소
+#@host = http://mojito-as-lb-1-346761212.ap-northeast-2.elb.amazonaws.com
+//로컬테스트는 localhost:8080 입력
+@host = localhost:8080
 
 ### 로그인
-POST http://{{host}}:8080/v1/users/login
+POST http://{{host}}/v1/users/login
 Content-Type: application/json
 
 {
@@ -29,7 +31,7 @@ Content-Type: application/json
 
 
 ### 컬럼 생성
-POST http://{{host}}:8080/v1/plans/{{plan_id}}/columns
+POST http://{{host}}/v1/plans/{{plan_id}}/columns
 Authorization: {{Authorization}}
 Content-Type: application/json
 Authorization: {{Authorization}}
@@ -42,7 +44,7 @@ Authorization: {{Authorization}}
 
 ### 컬럼 수정
 # @no-cookie-jar
-PATCH http://{{host}}:8080/v1/plans/{{plan_id}}/columns/{{column_id}}
+PATCH http://{{host}}/v1/plans/{{plan_id}}/columns/{{column_id}}
 Authorization: {{Authorization}}
 Content-Type: application/json
 Authorization: {{Authorization}}
@@ -54,7 +56,7 @@ Authorization: {{Authorization}}
 
 ### 컬럼 삭제
 # @no-cookie-jar
-DELETE http://{{host}}:8080/v1/plans/{{plan_id}}/columns/{{column_id}}
+DELETE http://{{host}}/v1/plans/{{plan_id}}/columns/{{column_id}}
 Authorization: {{Authorization}}
 Content-Type: application/json
 Authorization: {{Authorization}}
@@ -62,6 +64,6 @@ Authorization: {{Authorization}}
 
 ### 컬럼 전체 조회
 # @no-cookie-jar
-GET http://{{host}}:8080/v1/plans/{{plan_id}}/columns
+GET http://{{host}}/v1/plans/{{plan_id}}/columns
 Content-Type: application/json
 Authorization: {{Authorization}}

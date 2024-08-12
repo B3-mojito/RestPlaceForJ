@@ -1,8 +1,10 @@
-//로컬테스트는 {{host}} 입력
-@host = 15.164.59.0
+//로드 밸런싱 적용한 주소 
+#@host = http://mojito-as-lb-1-346761212.ap-northeast-2.elb.amazonaws.com
+//로컬테스트는 localhost:8080 입력
+@host = localhost:8080
 
 ### 유저 등록
-POST http://{{host}}:8080/v1/users
+POST http://{{host}}/v1/users
 Content-Type: application/json
 
 {
@@ -14,7 +16,7 @@ Content-Type: application/json
 
 ### 로그인
 # @no-cookie-jar
-POST http://{{host}}:8080/v1/users/login
+POST http://{{host}}/v1/users/login
 Content-Type: application/json
 
 {
@@ -31,7 +33,7 @@ Content-Type: application/json
 %}
 
 ### 로그아웃
-POST http://{{host}}:8080/v1/users/logout
+POST http://{{host}}/v1/users/logout
 Authorization: {{Authorization}}
 
 > {%
@@ -40,7 +42,7 @@ Authorization: {{Authorization}}
 %}
 
 ### 회원 탈퇴
-DELETE http://{{host}}:8080/v1/users
+DELETE http://{{host}}/v1/users
 Content-Type: application/json
 Authorization: {{Authorization}}
 
@@ -54,7 +56,7 @@ Authorization: {{Authorization}}
 %}
 
 ### 유저 프로필 조회
-GET http://{{host}}:8080/v1/users/1
+GET http://{{host}}/v1/users/1
 Authorization: {{Authorization}}
 
 
@@ -64,7 +66,7 @@ Authorization: {{Authorization}}
 %}
 
 ### 유저 프로필 수정
-PATCH http://{{host}}:8080/v1/users/3
+PATCH http://{{host}}/v1/users/3
 Authorization: {{Authorization}}
 Content-Type: application/json
 
@@ -78,7 +80,7 @@ Content-Type: application/json
 
 
 ### 토큰 재발급
-POST http://{{host}}:8080/v1/users/reissue
+POST http://{{host}}/v1/users/reissue
 Authorization: {{Authorization}}
 RefreshToken: {{RefreshToken}}
 

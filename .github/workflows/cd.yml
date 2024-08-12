@@ -1,10 +1,12 @@
-name: livealone-test
+name: develop ci/cd
 
 on:
 
   pull_request:
     branches:
       - develop
+    types:
+      - closed  # PR이 닫힐 때만 워크플로우가 실행됨
 
 env:
   DOCKER_IMAGE_TAG_NAME: livealone
@@ -30,6 +32,7 @@ env:
 jobs:
   build-and-docker-push:
     runs-on: ubuntu-22.04
+    if: github.event.pull_request.merged == true  # PR이 병합된 경우에만 작업 실행
 
     steps:
       - name: Check out the repository
@@ -83,7 +86,7 @@ jobs:
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
-          envs: PRODUCTION_ENV, DOCKER_IMAGE_TAG_NAME, DOCKERHUB_USERNAME, ACCESS_KEY, BUCKET_NAME, CRON, DATASOURCE_PASSWORD, DATASOURCE_URL, DATASOURCE_USERNAME, EMAIL_ID, JWT_SECRET_KEY, REDIS_HOST, REDIS_PASSWORD, REDIS_PORT, REGION, SECRET_KEY, SERVER_PORT
+          envs: PRODUCTION_ENV, DOCKER_IMAGE_TAG_NAME, DOCKERHUB_USERNAME, ACCESS_KEY, BUCKET_NAME, CRON, DATASOURCE_PASSWORD, DATASOURCE_URL, DATASOURCE_USERNAME, EMAIL_ID, JWT_SECRET_KEY, REDIS_HOST, REDIS_PASSWORD, REDIS_PORT, REGION, SECRET_KEY, SERVER_PORT, KAKAO_KEY
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
@@ -109,4 +112,5 @@ jobs:
               -e REGION=${REGION}  \
               -e SECRET_KEY=${SECRET_KEY}  \
               -e SERVER_PORT=${SERVER_PORT}  \
+              -e KAKAO_KEY=${KAKAO_KEY}  \
               ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE_TAG_NAME}:latest
