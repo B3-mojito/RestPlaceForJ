@@ -83,7 +83,7 @@ public class UserService {
   @Transactional
   public UserResignResponseDto deleteUser(User user, String password) {
     if (user.getUserStatus() == UserStatus.DEACTIVATE) {
-      throw new CommonException(ErrorEnum.BAD_REQUEST);
+      throw new CommonException(ErrorEnum.ALREADY_DEACTIVATE);
     }
 
     if (!passwordEncoder.matches(password, user.getPassword())) {
