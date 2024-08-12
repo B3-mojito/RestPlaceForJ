@@ -18,6 +18,7 @@ public enum ErrorEnum implements Response {
   INVALID_ACCESS("권한이 없습니다.", HttpStatus.UNAUTHORIZED),
   FORBIDDEN_ACCESS("접근할 수 없습니다.", HttpStatus.FORBIDDEN),
   BAD_PASSWORD("비밀번호가 일치하지 않습니다.", HttpStatus.NOT_FOUND),
+  ALREADY_DEACTIVATE("이미 탈퇴한 회원입니다.", HttpStatus.BAD_REQUEST),
 
   //auth error
   INVALID_JWT("유효하지 않는 JWT 입니다.", HttpStatus.UNAUTHORIZED),

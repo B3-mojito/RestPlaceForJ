@@ -1,6 +1,6 @@
 package com.sparta.restplaceforj.config;
 
-import com.sparta.restplaceforj.util.JwtUtil;
+import com.sparta.restplaceforj.provider.JwtProvider;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

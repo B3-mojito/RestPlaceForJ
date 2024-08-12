@@ -6,8 +6,8 @@ import com.sparta.restplaceforj.exception.CommonException;
 import com.sparta.restplaceforj.exception.ErrorEnum;
 import com.sparta.restplaceforj.security.UserDetailsImpl;
 import com.sparta.restplaceforj.security.UserDetailsServiceImpl;
-import com.sparta.restplaceforj.util.JwtUtil;
-import com.sparta.restplaceforj.util.RedisUtil;
+import com.sparta.restplaceforj.provider.JwtProvider;
+import com.sparta.restplaceforj.provider.RedisProvider;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -25,29 +25,29 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-import static com.sparta.restplaceforj.util.JwtUtil.BEARER_PREFIX;
+import static com.sparta.restplaceforj.provider.JwtProvider.BEARER_PREFIX;
 
 @Slf4j(topic = "JwtAuthorizationFilter")
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
-    private final JwtUtil jwtUtil;
-    private final RedisUtil redisUtil;
+    private final JwtProvider jwtProvider;
+    private final RedisProvider redisProvider;
     private final UserDetailsServiceImpl userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         log.info("accessToken 검증 시도");
-        String accessToken = jwtUtil.getAccessTokenFromHeader(request);
+        String accessToken = jwtProvider.getAccessTokenFromHeader(request);
 
         if (StringUtils.hasText(accessToken)) {
-            if (jwtUtil.validateToken(request, accessToken)) {
+            if (jwtProvider.validateToken(request, accessToken)) {
                 log.info("유효한 accessToken");
                 authenticateWithAccessToken(accessToken);
             } else {
                 log.info("유효하지 않은 accessToken");
-                Claims claims = jwtUtil.getUserInfoFromToken(accessToken);
+                Claims claims = jwtProvider.getUserInfoFromToken(accessToken);
                 String email = claims.getSubject();
                 validateAndAuthenticateWithRefreshToken(request, response, email);
             }
@@ -58,7 +58,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     // accessToken이 유효
     public void authenticateWithAccessToken(String token) {
-        Claims info = jwtUtil.getUserInfoFromToken(token);
+        Claims info = jwtProvider.getUserInfoFromToken(token);
 
         try {
             setAuthentication(info.getSubject());
@@ -73,23 +73,23 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                                                         HttpServletResponse response,
                                                         String email) {
         log.info("refreshToken 검증 시도");
-        String refreshToken = redisUtil.getValues(email)
+        String refreshToken = redisProvider.getValues(email)
                 .substring(BEARER_PREFIX.length());
 
         // 리프레시 토큰이 null이 아니고, 유효한 토큰인지 확인
-        if (StringUtils.hasText(refreshToken) && jwtUtil.validateToken(request, refreshToken)) {
+        if (StringUtils.hasText(refreshToken) && jwtProvider.validateToken(request, refreshToken)) {
 
             log.info("유효한 refreshToken");
             // 유저 객체 가져오기
-            Claims info = jwtUtil.getUserInfoFromToken(refreshToken);
+            Claims info = jwtProvider.getUserInfoFromToken(refreshToken);
             UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(
                     info.getSubject());
             User user = userDetails.getUser();
 
             // accessToken 생성
             UserRole role = user.getUserRole();
-            String newAccessToken = jwtUtil.createAccessToken(info.getSubject(), role);
-            jwtUtil.setHeaderAccessToken(response, newAccessToken);
+            String newAccessToken = jwtProvider.createAccessToken(info.getSubject(), role);
+            jwtProvider.setHeaderAccessToken(response, newAccessToken);
 
             try {
                 //Athentication 설정

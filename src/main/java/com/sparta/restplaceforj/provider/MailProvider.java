@@ -1,4 +1,4 @@
-package com.sparta.restplaceforj.util;
+package com.sparta.restplaceforj.provider;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Slf4j(topic = "MailUtil")
 @Component
 @RequiredArgsConstructor
-public class MailUtil {
+public class MailProvider {
 
     private final JavaMailSender mailSender;
 
