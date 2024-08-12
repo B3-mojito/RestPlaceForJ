@@ -147,6 +147,8 @@ public class UserService {
     userRepository.save(user);
 
     return UpdateUserProfileImageResponseDto.builder()
+        .userId(user.getId())
+        .email(user.getEmail())
         .profileImage(path)
         .build();
   }
