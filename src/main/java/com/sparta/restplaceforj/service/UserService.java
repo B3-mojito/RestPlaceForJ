@@ -90,7 +90,7 @@ public class UserService {
       throw new CommonException(ErrorEnum.BAD_PASSWORD);
     }
 
-    user.setUserStatus(UserStatus.DEACTIVATE);
+    user.setUserStatusDeactivate(UserStatus.DEACTIVATE);
     userRepository.save(user);
 
     return UserResignResponseDto.builder()
