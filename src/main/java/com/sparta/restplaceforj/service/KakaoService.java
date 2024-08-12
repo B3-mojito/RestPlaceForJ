@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.restplaceforj.dto.KakaoUserInfoDto;
 import com.sparta.restplaceforj.entity.User;
 import com.sparta.restplaceforj.repository.UserRepository;
-import com.sparta.restplaceforj.util.JwtUtil;
-import com.sparta.restplaceforj.util.RedisUtil;
+import com.sparta.restplaceforj.provider.JwtProvider;
+import com.sparta.restplaceforj.provider.RedisProvider;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import java.net.URI;
@@ -37,8 +37,8 @@ public class KakaoService {
   private final PasswordEncoder passwordEncoder;
   private final UserRepository userRepository;
   private final RestTemplate restTemplate;
-  private final JwtUtil jwtUtil;
-  private final RedisUtil redisUtil;
+  private final JwtProvider jwtProvider;
+  private final RedisProvider redisProvider;
   @Value("${kakao.secret.key}")
   public String kakaoKey;
 
@@ -55,8 +55,8 @@ public class KakaoService {
     User kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo);
 
     // 4. Jwt access 토큰 반환 및 헤더에 토큰 담기
-    String createdToken = jwtUtil.createAccessToken(kakaoUser.getEmail(), kakaoUser.getUserRole());
-    response.addHeader(JwtUtil.AUTH_ACCESS_HEADER, createdToken);
+    String createdToken = jwtProvider.createAccessToken(kakaoUser.getEmail(), kakaoUser.getUserRole());
+    response.addHeader(JwtProvider.AUTH_ACCESS_HEADER, createdToken);
 
     // 5. refreshToken 설정
     registerRefreshToken(kakaoUserInfo);
@@ -177,9 +177,9 @@ public class KakaoService {
   // 리프레시 토큰 레디스에 저장
   private void registerRefreshToken(KakaoUserInfoDto kakaoUserInfo) {
     String email = kakaoUserInfo.getEmail();
-    String refreshToken = jwtUtil.createRefreshToken(email);
+    String refreshToken = jwtProvider.createRefreshToken(email);
 
-    redisUtil.setValuesWithTimeout(email, refreshToken, jwtUtil.REFRESH_TOKEN_EXPIRE_TIME);
+    redisProvider.setValuesWithTimeout(email, refreshToken, jwtProvider.REFRESH_TOKEN_EXPIRE_TIME);
   }
 
 

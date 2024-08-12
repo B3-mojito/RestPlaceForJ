@@ -10,10 +10,10 @@ import com.sparta.restplaceforj.entity.User;
 import com.sparta.restplaceforj.entity.UserStatus;
 import com.sparta.restplaceforj.exception.CommonException;
 import com.sparta.restplaceforj.exception.ErrorEnum;
+import com.sparta.restplaceforj.provider.ImageProvider;
 import com.sparta.restplaceforj.repository.UserRepository;
 import com.sparta.restplaceforj.s3.S3Service;
 import java.io.IOException;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,17 +28,7 @@ public class UserService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
   private final S3Service s3Service;
-
-  /**
-   * 사진 파일만 업로드 가능하게 이미지 파일 체크
-   *
-   * @param ext 확장자 명
-   */
-  private static void imageCheck(String ext) {
-    if (!(ext.equals(".jpg") || ext.equals(".jpeg") || ext.equals(".png"))) {
-      throw new CommonException(ErrorEnum.ONLY_IMAGE);
-    }
-  }
+  private final ImageProvider imageProvider;
 
   /**
    * 회원 가입 메서드
@@ -135,9 +125,9 @@ public class UserService {
     // 파일 확장자 추출
     String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
     // jpg, png, jpeg만 업로드 가능
-    imageCheck(ext);
+    imageProvider.imageCheck(ext);
     // 중복을 방지하기위한 S3 저장하는 이름
-    String changedFileName = changeImageName(ext);
+    String changedFileName = imageProvider.changeImageName(ext);
 
     // s3에 업로드
     String path = s3Service.upload(multipartFile, changedFileName);
@@ -209,11 +199,5 @@ public class UserService {
         .bio(user.getBio())
         .nickname(user.getNickname())
         .build();
-  }
-
-  //uuid 를 이용해서 중복없는 이름 만든다.
-  private String changeImageName(String ext) {
-    final String uuid = UUID.randomUUID().toString();
-    return uuid + ext;
   }
 }
