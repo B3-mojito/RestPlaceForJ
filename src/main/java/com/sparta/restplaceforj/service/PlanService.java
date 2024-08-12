@@ -24,7 +24,6 @@ public class PlanService {
   private final PlanRepository planRepository;
   private final ColumnRepository columnRepository;
   private final CoworkerRepository coworkerRepository;
-  private final UserRepository userRepository;
   private final CardRepository cardRepository;
 
   /**

@@ -11,8 +11,8 @@ public class WebConfig implements WebMvcConfigurer {
   @Override
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**")
-        .allowedOrigins("http://localhost:3000",
-            "http://15.164.59.0:8080")  // Replace with your frontend URL
+        .allowedOrigins(
+            "http://mojito-as-lb-1-346761212.ap-northeast-2.elb.amazonaws.com")  // Replace with your frontend URL
         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "PATCH")
         .allowedHeaders(JwtUtil.AUTH_ACCESS_HEADER, "Content-Type")
         .exposedHeaders(JwtUtil.AUTH_ACCESS_HEADER)  // Expose the Authorization header

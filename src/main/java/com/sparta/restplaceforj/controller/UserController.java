@@ -104,7 +104,7 @@ public class UserController {
    * @param userDetails 로그인 유저 객체
    * @return UserProfileResponseDto :nickname, bio, profilePicture
    */
-  @GetMapping("/myPage")
+  @GetMapping("/{user-id}/myPage")
   public ResponseEntity<CommonResponse<UserProfileResponseDto>> getMyProfile(
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     UserProfileResponseDto userProfileResponseDto = userService.getUserProfile(userDetails.getUser()
