@@ -1,4 +1,4 @@
-package com.sparta.restplaceforj.util;
+package com.sparta.restplaceforj.provider;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,7 @@ import java.time.Duration;
 @Transactional(readOnly = true)
 @Component
 @RequiredArgsConstructor
-public class RedisUtil {
+public class RedisProvider {
     private final StringRedisTemplate stringRedisTemplate;
 
     // key를 통해 value 가져오기

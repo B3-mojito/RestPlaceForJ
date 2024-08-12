@@ -6,5 +6,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class UpdateUserProfileImageResponseDto {
+    Long userId;
+    String email;
     String profileImage;
 }

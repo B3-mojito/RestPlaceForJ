@@ -1,12 +1,12 @@
 ## Variables
 
-
-//로컬테스트는 localhost 입력
-#@host = 15.164.59.0
-@host = localhost
+//로드 밸런싱 적용한 주소
+#@host = http://mojito-as-lb-1-346761212.ap-northeast-2.elb.amazonaws.com
+//로컬테스트는 localhost:8080 입력
+@host = localhost:8080
 
 ### 로그인
-POST {{host}}:8080/v1/users/login
+POST {{host}}/v1/users/login
 Content-Type: application/json
 
 {
@@ -26,7 +26,7 @@ Content-Type: application/json
 
 
 ### 이미지 생성
-POST {{host}}:8080/v1/images
+POST {{host}}/v1/images
 Authorization: {{Authorization}}
 Content-Type: multipart/form-data; boundary=boundary
 
@@ -39,11 +39,11 @@ Content-Type: image/png
 
 
 ### 이미지 조회
-GET {{host}}:8080/v1/images/8
+GET {{host}}/v1/images/8
 Authorization: {{Authorization}}
 
 
 ### 이미지 삭제
-DELETE {{host}}:8080/v1/images/7
+DELETE {{host}}/v1/images/7
 Authorization: {{Authorization}}
 

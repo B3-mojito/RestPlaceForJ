@@ -67,7 +67,7 @@ public class User extends Timestamped {
         this.kakaoId = kakaoId;
     }
 
-    public void setUserStatus(UserStatus userStatus) {
+    public void setUserStatusDeactivate(UserStatus userStatus) {
         this.userStatus = userStatus;
         this.authUserAt = LocalDateTime.now();
     }
