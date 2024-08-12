@@ -1,5 +1,7 @@
 package com.sparta.restplaceforj.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sparta.restplaceforj.dto.CardUpdateRequestDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -38,15 +40,24 @@ public class Card {
   private Column column;
 
   private String placeName;
-
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
   private LocalTime startedAt;
-
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
   private LocalTime endedAt;
 
   private String memo;
 
   public void changeColumn(Column column) {
     this.column = column;
+  }
+
+  public void updateCard(CardUpdateRequestDto cardUpdateRequestDto) {
+    this.title = cardUpdateRequestDto.getTitle();
+    this.address = cardUpdateRequestDto.getAddress();
+    this.placeName = cardUpdateRequestDto.getPlaceName();
+    this.startedAt = cardUpdateRequestDto.getStartedAt();
+    this.endedAt = cardUpdateRequestDto.getEndedAt();
+    this.memo = cardUpdateRequestDto.getMemo();
   }
 
   @Builder

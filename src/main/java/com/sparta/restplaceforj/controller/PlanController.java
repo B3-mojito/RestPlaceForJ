@@ -114,6 +114,25 @@ public class PlanController {
     );
   }
 
+  /**
+   * 플랜 본인 다건 조회 controller
+   *
+   * @param userDetails 유저 아이디
+   * @return PlanResponseDto : id, title
+   */
+  @GetMapping("/myPlans")
+  public ResponseEntity<CommonResponse<List<PlanResponseDto>>> getMyPlanList(
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    List<PlanResponseDto> planResponseDtoList = planService
+        .getPlanList(userDetails.getUser().getId());
+
+    return ResponseEntity.ok(
+        CommonResponse.<List<PlanResponseDto>>builder()
+            .response(ResponseEnum.GET_PLAN_LIST)
+            .data(planResponseDtoList)
+            .build()
+    );
+  }
 
   /**
    * 플랜 단건 조회 controller

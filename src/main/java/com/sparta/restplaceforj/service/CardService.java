@@ -73,30 +73,23 @@ public class CardService {
 
     Card card = cardRepository.findByIdOrThrow(cardId);
 
-    String title =
-        cardUpdateRequestDto.getTitle() != null ? cardUpdateRequestDto.getTitle() : card.getTitle();
-    String address = cardUpdateRequestDto.getAddress() != null ? cardUpdateRequestDto.getAddress()
-        : card.getAddress();
-    String placeName =
-        cardUpdateRequestDto.getPlaceName() != null ? cardUpdateRequestDto.getPlaceName()
-            : card.getPlaceName();
-    LocalTime startedAt =
-        cardUpdateRequestDto.getStartedAt() != null ? cardUpdateRequestDto.getStartedAt()
-            : card.getStartedAt();
-    LocalTime endedAt =
-        cardUpdateRequestDto.getEndedAt() != null ? cardUpdateRequestDto.getEndedAt()
-            : card.getEndedAt();
-    String memo =
-        cardUpdateRequestDto.getMemo() != null ? cardUpdateRequestDto.getMemo() : card.getMemo();
+//    String title =
+//        cardUpdateRequestDto.getTitle() != null ? cardUpdateRequestDto.getTitle() : card.getTitle();
+//    String address = cardUpdateRequestDto.getAddress() != null ? cardUpdateRequestDto.getAddress()
+//        : card.getAddress();
+//    String placeName =
+//        cardUpdateRequestDto.getPlaceName() != null ? cardUpdateRequestDto.getPlaceName()
+//            : card.getPlaceName();
+//    LocalTime startedAt =
+//        cardUpdateRequestDto.getStartedAt() != null ? cardUpdateRequestDto.getStartedAt()
+//            : card.getStartedAt();
+//    LocalTime endedAt =
+//        cardUpdateRequestDto.getEndedAt() != null ? cardUpdateRequestDto.getEndedAt()
+//            : card.getEndedAt();
+//    String memo =
+//        cardUpdateRequestDto.getMemo() != null ? cardUpdateRequestDto.getMemo() : card.getMemo();
 
-    card.builder()
-        .title(title)
-        .address(address)
-        .placeName(placeName)
-        .startedAt(startedAt)
-        .endedAt(endedAt)
-        .memo(memo)
-        .build();
+    card.updateCard(cardUpdateRequestDto);
 
     cardRepository.save(card);
 
@@ -146,6 +139,21 @@ public class CardService {
   public void deleteCard(Long cardId) {
     Card card = cardRepository.findByIdOrThrow(cardId);
     cardRepository.delete(card);
+  }
+
+  /**
+   * 카드 컬럼 이동
+   *
+   * @param cardId
+   * @param columnId
+   * @return CardResponseDto
+   */
+  @Transactional
+  public void updateCardColumn(Long cardId, Long columnId) {
+    Column column = columnRepository.findByIdOrThrow(columnId);
+    Card card = cardRepository.findByIdOrThrow(cardId);
+    card.changeColumn(column);
+    cardRepository.save(card);
   }
 }
 

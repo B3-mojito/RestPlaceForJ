@@ -130,5 +130,25 @@ public class CardController {
             .data(null)
             .build());
   }
+
+  /**
+   * 카드 컬럼 이동  controller
+   *
+   * @param cardId
+   * @return ResponseEntity
+   */
+  @PatchMapping("/{card-id}/moveColumn")
+  public ResponseEntity<CommonResponse<CardResponseDto>> updateCardColumn(
+      @PathVariable("card-id") Long cardId,
+      @PathVariable("column-id") Long columnId) {
+
+    cardService.updateCardColumn(cardId, columnId);
+
+    return ResponseEntity.ok(
+        CommonResponse.<CardResponseDto>builder()
+            .response(ResponseEnum.MOVE_CARD)
+            .data(null)
+            .build());
+  }
 }
 

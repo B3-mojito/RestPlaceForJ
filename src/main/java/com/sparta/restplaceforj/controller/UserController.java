@@ -98,6 +98,24 @@ public class UserController {
     );
   }
 
+  /**
+   * 마이페이지 프로필 조회 controller
+   *
+   * @param userDetails 로그인 유저 객체
+   * @return UserProfileResponseDto :nickname, bio, profilePicture
+   */
+  @GetMapping("/myPage")
+  public ResponseEntity<CommonResponse<UserProfileResponseDto>> getMyProfile(
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    UserProfileResponseDto userProfileResponseDto = userService.getUserProfile(userDetails.getUser()
+        .getId());
+    return ResponseEntity.ok(
+        CommonResponse.<UserProfileResponseDto>builder()
+            .response(ResponseEnum.GET_USER_PROFILE)
+            .data(userProfileResponseDto)
+            .build()
+    );
+  }
 
   /**
    * 유저 프로필 사진 업로드 controller
