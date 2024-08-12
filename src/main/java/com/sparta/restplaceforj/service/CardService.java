@@ -73,38 +73,8 @@ public class CardService {
   public CardResponseDto updateCard(Long cardId, CardUpdateRequestDto cardUpdateRequestDto) {
 
     Card card = cardRepository.findByIdOrThrow(cardId);
-    String title = cardUpdateRequestDto.getTitle();
-    String address = cardUpdateRequestDto.getAddress();
-    String placeName = cardUpdateRequestDto.getPlaceName();
-    LocalTime startedAt = cardUpdateRequestDto.getStartedAt();
-    LocalTime endedAt = cardUpdateRequestDto.getEndedAt();
-    String memo = cardUpdateRequestDto.getMemo();
-    if (cardUpdateRequestDto.getTitle() == null) {
-      title = card.getTitle();
-    }
-    if (cardUpdateRequestDto.getAddress() == null) {
-      address = card.getAddress();
-    }
-    if (cardUpdateRequestDto.getPlaceName() == null) {
-      placeName = card.getPlaceName();
-    }
-    if (cardUpdateRequestDto.getStartedAt() == null) {
-      startedAt = card.getStartedAt();
-    }
-    if (cardUpdateRequestDto.getEndedAt() == null) {
-      endedAt = card.getEndedAt();
-    }
-    if (cardUpdateRequestDto.getMemo() == null) {
-      memo = card.getMemo();
-    }
-    card.updateCard(CardUpdateRequestDto.builder()
-        .title(title)
-        .address(address)
-        .placeName(placeName)
-        .startedAt(startedAt)
-        .endedAt(endedAt)
-        .memo(memo)
-        .build());
+
+    card.updateCard(cardUpdateRequestDto);
 
     cardRepository.save(card);
 
