@@ -52,36 +52,24 @@ public class Card {
   }
 
   public void updateCard(CardUpdateRequestDto cardUpdateRequestDto) {
-    String title = cardUpdateRequestDto.getTitle();
-    String address = cardUpdateRequestDto.getAddress();
-    String placeName = cardUpdateRequestDto.getPlaceName();
-    LocalTime startedAt = cardUpdateRequestDto.getStartedAt();
-    LocalTime endedAt = cardUpdateRequestDto.getEndedAt();
-    String memo = cardUpdateRequestDto.getMemo();
-    if (cardUpdateRequestDto.getTitle() == null) {
-      title = this.getTitle();
+    if (cardUpdateRequestDto.getTitle() != null) {
+      this.title = cardUpdateRequestDto.getTitle();
     }
-    if (cardUpdateRequestDto.getAddress() == null) {
-      address = this.getAddress();
+    if (cardUpdateRequestDto.getAddress() != null) {
+      this.address = cardUpdateRequestDto.getAddress();
     }
-    if (cardUpdateRequestDto.getPlaceName() == null) {
-      placeName = this.getPlaceName();
+    if (cardUpdateRequestDto.getPlaceName() != null) {
+      this.placeName = cardUpdateRequestDto.getPlaceName();
     }
-    if (cardUpdateRequestDto.getStartedAt() == null) {
-      startedAt = this.getStartedAt();
+    if (cardUpdateRequestDto.getStartedAt() != null) {
+      this.startedAt = cardUpdateRequestDto.getStartedAt();
     }
-    if (cardUpdateRequestDto.getEndedAt() == null) {
-      endedAt = this.getEndedAt();
+    if (cardUpdateRequestDto.getEndedAt() != null) {
+      this.endedAt = cardUpdateRequestDto.getEndedAt();
     }
-    if (cardUpdateRequestDto.getMemo() == null) {
-      memo = this.getMemo();
+    if (cardUpdateRequestDto.getMemo() != null) {
+      this.memo = cardUpdateRequestDto.getMemo();
     }
-    this.title = title;
-    this.address = address;
-    this.placeName = placeName;
-    this.startedAt = startedAt;
-    this.endedAt = endedAt;
-    this.memo = memo;
   }
 
   @Builder
