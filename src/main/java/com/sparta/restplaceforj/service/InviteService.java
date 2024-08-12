@@ -10,9 +10,9 @@ import com.sparta.restplaceforj.exception.ErrorEnum;
 import com.sparta.restplaceforj.repository.CoworkerRepository;
 import com.sparta.restplaceforj.repository.PlanRepository;
 import com.sparta.restplaceforj.repository.UserRepository;
-import com.sparta.restplaceforj.util.AuthCodeUtil;
-import com.sparta.restplaceforj.util.MailUtil;
-import com.sparta.restplaceforj.util.RedisUtil;
+import com.sparta.restplaceforj.provider.AuthCodeProvider;
+import com.sparta.restplaceforj.provider.MailProvider;
+import com.sparta.restplaceforj.provider.RedisProvider;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,9 +29,9 @@ public class InviteService {
     private final UserRepository userRepository;
     private final PlanRepository planRepository;
     private final CoworkerRepository coworkerRepository;
-    private final RedisUtil redisUtil;
-    private final AuthCodeUtil authCodeUtil;
-    private final MailUtil mailUtil;
+    private final RedisProvider redisProvider;
+    private final AuthCodeProvider authCodeProvider;
+    private final MailProvider mailProvider;
 
     // 1.1 이메일 송신
     public void sendEmail(String toEmail, Long planId, User user) throws MessagingException {
@@ -39,13 +39,13 @@ public class InviteService {
         checkEmailInvalidation(toEmail, user, planId);
 
         // 인증 코드 생성
-        String authCode = authCodeUtil.createAuthCode();
+        String authCode = authCodeProvider.createAuthCode();
 
         // 송신
-        mailUtil.sendMail(toEmail, planId, authCode);
+        mailProvider.sendMail(toEmail, planId, authCode);
 
         // redis에 송신할 이메일 주소, 인증 코드, 만료 기한(30분) 설정
-        redisUtil.setValuesWithTimeout(authCode, toEmail, AuthCodeUtil.EXPIRATION_TIME);
+        redisProvider.setValuesWithTimeout(authCode, toEmail, AuthCodeProvider.EXPIRATION_TIME);
     }
 
     // 1.2 유효성 검사
@@ -71,7 +71,7 @@ public class InviteService {
     @Transactional
     public AuthCheckResponseDto createCoworker(Long planId, String authCode) {
         // authCode 유효성 검사, 유저의 이메일 가져오기
-        String email = authCodeUtil.checkAuthCodeInvalidation(authCode);
+        String email = authCodeProvider.checkAuthCodeInvalidation(authCode);
 
         User invitedUser = userRepository.findByEmailOrThrow(email);
         Plan plan = planRepository.findByIdOrThrow(planId);

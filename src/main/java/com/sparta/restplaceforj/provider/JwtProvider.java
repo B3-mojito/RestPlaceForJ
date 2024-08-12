@@ -1,4 +1,4 @@
-package com.sparta.restplaceforj.util;
+package com.sparta.restplaceforj.provider;
 
 import com.sparta.restplaceforj.entity.UserRole;
 import com.sparta.restplaceforj.exception.ErrorEnum;
@@ -17,7 +17,7 @@ import org.springframework.util.StringUtils;
 
 @Component
 @Slf4j(topic = "JwtUtil")
-public class JwtUtil {
+public class JwtProvider {
 
     // accessToken 토큰 헤더
     public static final String AUTH_ACCESS_HEADER = "Authorization";
