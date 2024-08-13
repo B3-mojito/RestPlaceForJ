@@ -26,7 +26,7 @@ public class JwtProvider {
   // Token 식별자
   public static final String BEARER_PREFIX = "Bearer ";
   // accessToken 만료 시간 (60분)
-  private final long ACCESS_TOKEN_EXPIRE_TIME = 1 * 10 * 1000L;
+  private final long ACCESS_TOKEN_EXPIRE_TIME = 60 * 60 * 1000L;
   // refreshToken 만료 시간 (2주)
   public static long REFRESH_TOKEN_EXPIRE_TIME = 14 * 24 * 60 * 60 * 1000L;
 
