@@ -6,6 +6,7 @@ import com.sparta.restplaceforj.dto.CardResponseDto;
 import com.sparta.restplaceforj.dto.ColumnResponseDto;
 import com.sparta.restplaceforj.dto.PlanRequestDto;
 import com.sparta.restplaceforj.dto.PlanResponseDto;
+import com.sparta.restplaceforj.dto.UserImageResponseDto;
 import com.sparta.restplaceforj.security.UserDetailsImpl;
 import com.sparta.restplaceforj.service.PlanService;
 import jakarta.validation.Valid;
@@ -172,6 +173,28 @@ public class PlanController {
 
     return ResponseEntity.ok(
         CommonResponse.<List<CardResponseDto>>builder()
+            .response(ResponseEnum.GET_PLAN)
+            .data(cardResponseDto)
+            .build()
+    );
+  }
+
+  /**
+   * 플랜에 있는 유저이미지 조회 controller
+   *
+   * @param planId      플랜 아이디
+   * @param userDetails 유저 디테일
+   * @return PlanResponseDto : id, title
+   */
+  @GetMapping("/{plan-id}/images")
+  public ResponseEntity<CommonResponse<List<UserImageResponseDto>>> getUserImageLists(
+      @PathVariable("plan-id") Long planId,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    List<UserImageResponseDto> cardResponseDto = planService
+        .getUserImageLists(planId, userDetails.getUser());
+
+    return ResponseEntity.ok(
+        CommonResponse.<List<UserImageResponseDto>>builder()
             .response(ResponseEnum.GET_PLAN)
             .data(cardResponseDto)
             .build()
