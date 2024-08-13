@@ -134,7 +134,7 @@ public class PostController {
    * @param sortBy      정렬 기준
    * @return PageResponseDto : placeNameList, size, page, totalPages, totalElements
    */
-  @GetMapping("/users/{user-id}/posts")
+  @GetMapping("/users/myPosts")
   public ResponseEntity<CommonResponse<PageResponseDto<PostIdTitleDto>>> getMyPostList(
       @AuthenticationPrincipal UserDetailsImpl userDetails,
       @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size,

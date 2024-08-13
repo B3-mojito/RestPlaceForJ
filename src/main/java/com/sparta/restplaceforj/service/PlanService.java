@@ -40,9 +40,9 @@ public class PlanService {
 
     //플랜 생성시 유저를 공동 작업자로 추가
     Coworker coworker = Coworker.builder()
-            .plan(plan)
-            .user(user)
-            .build();
+        .plan(plan)
+        .user(user)
+        .build();
 
     coworkerRepository.save(coworker);
 
@@ -75,7 +75,7 @@ public class PlanService {
     Plan plan = planRepository.findByIdOrThrow(planId);
 
     //유저가 공동작업자로 들어가 있는지 확인
-    if(!coworkerRepository.existsByUserIdAndPlanId(user.getId(), planId)) {
+    if (!coworkerRepository.existsByUserIdAndPlanId(user.getId(), planId)) {
       throw new CommonException(ErrorEnum.BAD_REQUEST);
     }
 
@@ -101,7 +101,7 @@ public class PlanService {
     Plan plan = planRepository.findByIdOrThrow(planId);
 
     //유저가 공동작업자로 들어가 있는지 확인
-    if(!coworkerRepository.existsByUserIdAndPlanId(user.getId(), planId)) {
+    if (!coworkerRepository.existsByUserIdAndPlanId(user.getId(), planId)) {
       throw new CommonException(ErrorEnum.BAD_REQUEST);
     }
 
@@ -139,7 +139,7 @@ public class PlanService {
     Plan plan = planRepository.findByIdOrThrow(planId);
 
     //유저가 공동작업자로 들어가 있는지 확인
-    if(!coworkerRepository.existsByUserIdAndPlanId(user.getId(), planId)) {
+    if (!coworkerRepository.existsByUserIdAndPlanId(user.getId(), planId)) {
       throw new CommonException(ErrorEnum.BAD_REQUEST);
     }
 

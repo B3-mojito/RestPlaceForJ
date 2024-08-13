@@ -16,7 +16,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Entity
-@Table(name = "card_posts")
+@Table(name = "related_post")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RelatedPost {
 

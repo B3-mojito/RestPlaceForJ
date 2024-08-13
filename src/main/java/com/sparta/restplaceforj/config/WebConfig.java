@@ -11,11 +11,11 @@ public class WebConfig implements WebMvcConfigurer {
   @Override
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**")
-        .allowedOrigins("http://localhost:3000")  // Replace with your frontend URL
-        .allowedOrigins("http://15.164.59.0:8080")
-        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+        .allowedOrigins("https://www.restplaceforj.com",
+            "http://mojito-as-lb-1-346761212.ap-northeast-2.elb.amazonaws.com")
+        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "PATCH")
         .allowedHeaders(JwtProvider.AUTH_ACCESS_HEADER, "Content-Type")
-        .exposedHeaders(JwtProvider.AUTH_ACCESS_HEADER)  // Expose the Authorization header
+        .exposedHeaders(JwtProvider.AUTH_ACCESS_HEADER)
         .allowCredentials(true);
   }
 }

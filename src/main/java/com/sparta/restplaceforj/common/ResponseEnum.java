@@ -14,6 +14,7 @@ public enum ResponseEnum implements Response {
   FIND_CARD("카드 조회 완료", HttpStatus.OK),
   DELETE_CARD("카트 삭제 완료", HttpStatus.OK),
   ADD_POST("연관 게시물 추가완료", HttpStatus.CREATED),
+  MOVE_CARD("컬럼간 카드 이동완료", HttpStatus.OK),
 
   //user
   LOGIN_SUCCESS("로그인 성공", HttpStatus.OK),
@@ -74,7 +75,8 @@ public enum ResponseEnum implements Response {
   CREATE_COLUMN("컬럼 생성 완료", HttpStatus.CREATED),
   UPDATE_COLUMN("컬럼 수정 완료", HttpStatus.OK),
   DELETE_COLUMN("컬럼 삭제 완료", HttpStatus.OK),
-  GET_COLUMN("컬럼 조회 성공", HttpStatus.OK);
+  GET_COLUMN("컬럼 조회 성공", HttpStatus.OK),
+  ;
 
   private final String message;
   private final HttpStatus httpStatus;
