@@ -57,7 +57,7 @@ public class PlanService {
     columnRepository.save(column);
 
     return PlanResponseDto.builder()
-
+        .id(user.getId())
         .title(plan.getTitle())
         .build();
   }
@@ -162,6 +162,6 @@ public class PlanService {
 
   public List<UserImageResponseDto> getUserImageLists(Long planId, User user) {
     return coworkerRepository.findUsersByPlanId(planId);
-    
+
   }
 }

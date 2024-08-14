@@ -22,7 +22,8 @@ public enum ErrorEnum implements Response {
 
   //auth error
   INVALID_JWT("유효하지 않는 JWT 입니다.", HttpStatus.UNAUTHORIZED),
-  EXPIRED_JWT("만료된 JWT 입니다.", HttpStatus.FORBIDDEN),
+  EXPIRED_ACCESS_TOKEN("만료된 access token 입니다.", HttpStatus.FORBIDDEN),
+  EXPIRED_REFRESH_TOKEN("만료된 refresh token 입니다.", HttpStatus.FORBIDDEN),
   NOT_FOUND_TOKEN("토큰을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   NOT_FOUND_AUTHENTICATION_INFO("인증 정보를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 

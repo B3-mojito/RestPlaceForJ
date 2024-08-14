@@ -47,14 +47,14 @@ public class ImageController {
   /**
    * 사진 조회 api.
    *
-   * @param imageId 조회할 사진 아이디
+   * @param postId 조회할 사진 아이디
    * @return ImageResponseDto : id, path, originalFileName, changedFiledName
    */
-  @GetMapping("/{image-id}")
+  @GetMapping("/{post-id}")
   public ResponseEntity<CommonResponse<ImageResponseDto>> getImage(
-      @PathVariable("image-id") long imageId) {
+      @PathVariable("post-id") long postId) {
 
-    ImageResponseDto imageResponseDto = imageService.getImage(imageId);
+    ImageResponseDto imageResponseDto = imageService.getImage(postId);
 
     return ResponseEntity.ok(
         CommonResponse.<ImageResponseDto>builder()

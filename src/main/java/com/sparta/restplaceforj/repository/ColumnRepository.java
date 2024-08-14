@@ -15,7 +15,7 @@ public interface ColumnRepository extends JpaRepository<Column, Long> {
 
   Column findByPlanIdAndTitle(Long planId, String title) throws CommonException;
 
-  List<ColumnResponseDto> findByPlanId(Long planId);
+  List<ColumnResponseDto> findByPlanIdOrderByDate(Long planId);
 
   List<Column> findColumnsByPlanId(Long planId);
 

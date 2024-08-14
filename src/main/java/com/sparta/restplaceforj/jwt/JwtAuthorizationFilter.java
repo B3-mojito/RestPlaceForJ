@@ -1,18 +1,22 @@
 package com.sparta.restplaceforj.jwt;
 
+import static com.sparta.restplaceforj.provider.JwtProvider.BEARER_PREFIX;
+
 import com.sparta.restplaceforj.entity.User;
 import com.sparta.restplaceforj.entity.UserRole;
 import com.sparta.restplaceforj.exception.CommonException;
 import com.sparta.restplaceforj.exception.ErrorEnum;
-import com.sparta.restplaceforj.security.UserDetailsImpl;
-import com.sparta.restplaceforj.security.UserDetailsServiceImpl;
 import com.sparta.restplaceforj.provider.JwtProvider;
 import com.sparta.restplaceforj.provider.RedisProvider;
+import com.sparta.restplaceforj.security.UserDetailsImpl;
+import com.sparta.restplaceforj.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,10 +26,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
-
-import static com.sparta.restplaceforj.provider.JwtProvider.BEARER_PREFIX;
 
 @Slf4j(topic = "JwtAuthorizationFilter")
 @RequiredArgsConstructor
@@ -38,18 +38,21 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
       FilterChain filterChain) throws ServletException, IOException {
-    String accessToken = jwtProvider.getAccessTokenFromHeader(request);
+    String accessToken = jwtProvider.getTokenFromHeader(request, JwtProvider.AUTH_ACCESS_HEADER);
 
-    if (StringUtils.hasText(accessToken)) {
-      if (jwtProvider.validateToken(request, accessToken)) {
-        log.info("유효한 accessToken");
-        authenticateWithAccessToken(accessToken);
-      } else {
-        log.info("유효하지 않은 accessToken");
-        Claims claims = jwtProvider.getUserInfoFromToken(accessToken);
-        String email = claims.getSubject();
-        validateAndAuthenticateWithRefreshToken(request, response, email);
+    try {
+      if (StringUtils.hasText(accessToken)) {
+        if (jwtProvider.validateToken(request, accessToken)) {
+          log.info("유효한 accessToken");
+          authenticateWithAccessToken(accessToken);
+        } else {
+          log.info("유효하지 않은 accessToken");
+          Claims claims = jwtProvider.getUserInfoFromToken(accessToken);
+          String email = claims.getSubject();
+          validateAndAuthenticateWithRefreshToken(request, response, email);
+        }
       }
+    } catch (ExpiredJwtException e) {
     }
 
     filterChain.doFilter(request, response);
@@ -69,8 +72,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
   // accessToken이 유효하지 않은 경우, 리프레시 토큰 검증 및 엑세스토큰 재발급
   public void validateAndAuthenticateWithRefreshToken(HttpServletRequest request,
-      HttpServletResponse response,
-      String email) {
+      HttpServletResponse response, String email) {
     log.info("refreshToken 검증 시도");
     String refreshToken = redisProvider.getValues(email)
         .substring(BEARER_PREFIX.length());

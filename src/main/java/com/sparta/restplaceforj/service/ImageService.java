@@ -67,11 +67,11 @@ public class ImageService {
   /**
    * 사진 조회.
    *
-   * @param imageId 조회할 사진 아이디
+   * @param postId 조회할 사진 아이디
    * @return ImageResponseDto : id, path, originalFileName, changedFileName
    */
-  public ImageResponseDto getImage(long imageId) {
-    Image image = imageRepository.findByIdOrThrow(imageId);
+  public ImageResponseDto getImage(long postId) {
+    Image image = imageRepository.findByPostId(postId);
     return ImageResponseDto.builder()
         .image(image)
         .build();
