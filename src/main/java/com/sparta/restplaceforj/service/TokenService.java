@@ -30,7 +30,7 @@ public class TokenService {
    */
   public User validateAndGetUserFromRefreshToken(HttpServletRequest request) {
     // refreshToken 가져오기
-    String refreshToken = jwtProvider.getRefreshTokenFromHeader(request);
+    String refreshToken = jwtProvider.getTokenFromHeader(request, JwtProvider.AUTH_REFRESH_HEADER);
     if (refreshToken == null) {
       throw new CommonException(ErrorEnum.INVALID_JWT);
     }

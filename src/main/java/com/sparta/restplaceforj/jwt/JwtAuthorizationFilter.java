@@ -38,8 +38,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
       FilterChain filterChain) throws ServletException, IOException {
-    String accessToken = jwtProvider.getAccessTokenFromHeader(request);
-    String refreshToken = jwtProvider.getRefreshTokenFromHeader(request);
+    String accessToken = jwtProvider.getTokenFromHeader(request, JwtProvider.AUTH_ACCESS_HEADER);
 
     try {
       if (StringUtils.hasText(accessToken)) {
@@ -73,8 +72,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
   // accessToken이 유효하지 않은 경우, 리프레시 토큰 검증 및 엑세스토큰 재발급
   public void validateAndAuthenticateWithRefreshToken(HttpServletRequest request,
-      HttpServletResponse response,
-      String email) {
+      HttpServletResponse response, String email) {
     log.info("refreshToken 검증 시도");
     String refreshToken = redisProvider.getValues(email)
         .substring(BEARER_PREFIX.length());

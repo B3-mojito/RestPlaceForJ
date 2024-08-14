@@ -72,20 +72,13 @@ public class JwtProvider {
         .compact();
   }
 
-  public String getAccessTokenFromHeader(HttpServletRequest request) {
-    String accessToken = request.getHeader(AUTH_ACCESS_HEADER);
-    if (StringUtils.hasText(accessToken) && accessToken.startsWith(BEARER_PREFIX)) {
-      return accessToken.substring(BEARER_PREFIX.length());
+  public String getTokenFromHeader(HttpServletRequest request, String HEADER) {
+    String token = request.getHeader(HEADER);
+    if (!(StringUtils.hasText(token) && token.startsWith(BEARER_PREFIX))) {
+      return null;
     }
-    return null;
-  }
+    return token.substring(BEARER_PREFIX.length());
 
-  public String getRefreshTokenFromHeader(HttpServletRequest request) {
-    String refreshToken = request.getHeader(AUTH_REFRESH_HEADER);
-    if (StringUtils.hasText(refreshToken) && refreshToken.startsWith(BEARER_PREFIX)) {
-      return refreshToken.substring(BEARER_PREFIX.length());
-    }
-    return null;
   }
 
   public boolean validateToken(HttpServletRequest request, String token) {
@@ -95,9 +88,6 @@ public class JwtProvider {
     } catch (SecurityException | MalformedJwtException | SignatureException e) {
       log.error("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.");
       request.setAttribute("jwtException", ErrorEnum.INVALID_JWT);
-//    } catch (ExpiredJwtException e) {
-//      log.error("Expired JWT token, 만료된 JWT token 입니다.");
-//      request.setAttribute("jwtException", ErrorEnum.EXPIRED_JWT);
     } catch (UnsupportedJwtException e) {
       log.error("Unsupported JWT token, 지원되지 않는 JWT 토큰 입니다.");
       request.setAttribute("jwtException", ErrorEnum.EXPIRED_ACCESS_TOKEN);
