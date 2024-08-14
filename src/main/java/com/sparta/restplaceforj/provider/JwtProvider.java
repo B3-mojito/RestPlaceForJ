@@ -2,7 +2,12 @@ package com.sparta.restplaceforj.provider;
 
 import com.sparta.restplaceforj.entity.UserRole;
 import com.sparta.restplaceforj.exception.ErrorEnum;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,14 +26,15 @@ public class JwtProvider {
 
   // accessToken 토큰 헤더
   public static final String AUTH_ACCESS_HEADER = "Authorization";
+  public static final String AUTH_REFRESH_HEADER = "RefreshToken";
   // 사용자 권한 키
   public static final String AUTHORIZATION_KEY = "auth";
   // Token 식별자
   public static final String BEARER_PREFIX = "Bearer ";
   // accessToken 만료 시간 (60분)
-  private final long ACCESS_TOKEN_EXPIRE_TIME = 60 * 60 * 1000L;
+  private static final long ACCESS_TOKEN_EXPIRE_TIME = 60 * 60 * 1000L;
   // refreshToken 만료 시간 (2주)
-  public static long REFRESH_TOKEN_EXPIRE_TIME = 14 * 24 * 60 * 60 * 1000L;
+  public static final long REFRESH_TOKEN_EXPIRE_TIME = 14 * 24 * 60 * 60 * 1000L;
 
   @Value("${jwt.secret.key}")
   private String secretKey;
@@ -66,12 +72,13 @@ public class JwtProvider {
         .compact();
   }
 
-  public String getAccessTokenFromHeader(HttpServletRequest request) {
-    String accessToken = request.getHeader(AUTH_ACCESS_HEADER);
-    if (StringUtils.hasText(accessToken) && accessToken.startsWith(BEARER_PREFIX)) {
-      return accessToken.substring(BEARER_PREFIX.length());
+  public String getTokenFromHeader(HttpServletRequest request, String HEADER) {
+    String token = request.getHeader(HEADER);
+    if (!(StringUtils.hasText(token) && token.startsWith(BEARER_PREFIX))) {
+      return null;
     }
-    return null;
+    return token.substring(BEARER_PREFIX.length());
+
   }
 
   public boolean validateToken(HttpServletRequest request, String token) {
@@ -81,12 +88,9 @@ public class JwtProvider {
     } catch (SecurityException | MalformedJwtException | SignatureException e) {
       log.error("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.");
       request.setAttribute("jwtException", ErrorEnum.INVALID_JWT);
-    } catch (ExpiredJwtException e) {
-      log.error("Expired JWT token, 만료된 JWT token 입니다.");
-      request.setAttribute("jwtException", ErrorEnum.EXPIRED_JWT);
     } catch (UnsupportedJwtException e) {
       log.error("Unsupported JWT token, 지원되지 않는 JWT 토큰 입니다.");
-      request.setAttribute("jwtException", ErrorEnum.EXPIRED_JWT);
+      request.setAttribute("jwtException", ErrorEnum.EXPIRED_ACCESS_TOKEN);
     } catch (IllegalArgumentException e) {
       log.error("JWT claims is empty, 잘못된 JWT 토큰 입니다.");
       request.setAttribute("jwtException", ErrorEnum.INVALID_JWT);
