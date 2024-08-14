@@ -114,11 +114,7 @@ public class UserService {
    */
   @Transactional
   public UpdateUserProfileImageResponseDto updateUserProfileImage(MultipartFile multipartFile,
-      User user, Long userId) throws IOException {
-
-      if (user.getId() != userId) {
-          throw new CommonException(ErrorEnum.INVALID_ACCESS);
-      }
+      User user) throws IOException {
 
     // 원본 이름
     String originalFileName = multipartFile.getOriginalFilename();
@@ -155,9 +151,9 @@ public class UserService {
   public UserProfileResponseDto updateUserProfile(UserUpdateRequestDto userUpdateRequestDto,
       User user, Long userId) {
 
-      if (user.getId() != userId) {
-          throw new CommonException(ErrorEnum.INVALID_ACCESS);
-      }
+    if (user.getId() != userId) {
+      throw new CommonException(ErrorEnum.INVALID_ACCESS);
+    }
 
     // 변경할 값이 있는지 확인하고 업데이트
     String nickname =
@@ -168,9 +164,9 @@ public class UserService {
     String password = user.getPassword();
 
     // 중복된 닉네임을 가진 사용자가 있을 시 예외처리
-      if (userRepository.existsByNickname(nickname)) {
-          throw new CommonException(ErrorEnum.DUPLICATED_NICKNAME);
-      }
+    if (userRepository.existsByNickname(nickname)) {
+      throw new CommonException(ErrorEnum.DUPLICATED_NICKNAME);
+    }
 
     // 비밀번호 변경 로직
     if (!userUpdateRequestDto.getCurrentPassword().isEmpty()

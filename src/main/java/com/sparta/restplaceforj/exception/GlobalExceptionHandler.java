@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler({CommonException.class})
   public ResponseEntity<CommonResponse> illegalArgumentExceptionHandler(CommonException ex) {
-    return ResponseEntity.ok(
+    return ResponseEntity.status(404).body(
         CommonResponse.builder()
             .response(ex.getResponse())
             .build());

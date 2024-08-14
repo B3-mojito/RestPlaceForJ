@@ -12,7 +12,6 @@ public class WebConfig implements WebMvcConfigurer {
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**")
         .allowedOrigins("https://www.restplaceforj.com")
-        .allowedOrigins("http://localhost:3000")
         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "PATCH")
         .allowedHeaders(JwtProvider.AUTH_ACCESS_HEADER, JwtProvider.AUTH_REFRESH_HEADER,
             "Content-Type")

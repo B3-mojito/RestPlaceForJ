@@ -105,7 +105,7 @@ public class UserController {
    * @param userDetails 로그인 유저 객체
    * @return UserProfileResponseDto :nickname, bio, profilePicture
    */
-  @GetMapping("/{user-id}/myPage")
+  @GetMapping("/myPage")
   public ResponseEntity<CommonResponse<UserProfileResponseDto>> getMyProfile(
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     UserProfileResponseDto userProfileResponseDto = userService.getUserProfile(userDetails.getUser()
@@ -125,13 +125,13 @@ public class UserController {
    * @param userDetails
    * @return UpdateUserProfileImageResponseDto : profileImageUrl
    */
-  @PostMapping("/{user-id}/profile-image")
+  @PostMapping("/myPage/profile-image")
   public ResponseEntity<CommonResponse<UpdateUserProfileImageResponseDto>> createUserProfileImage(
       @RequestPart("images") MultipartFile multipartFile,
-      @AuthenticationPrincipal UserDetailsImpl userDetails,
-      @PathVariable("user-id") Long userId) throws IOException {
+      @AuthenticationPrincipal UserDetailsImpl userDetails
+  ) throws IOException {
     UpdateUserProfileImageResponseDto updateUserProfileImageResponseDto = userService
-        .updateUserProfileImage(multipartFile, userDetails.getUser(), userId);
+        .updateUserProfileImage(multipartFile, userDetails.getUser());
     return ResponseEntity.ok(
         CommonResponse.<UpdateUserProfileImageResponseDto>builder()
             .response(ResponseEnum.CREATE_USER_PROFILE_IMAGE)
