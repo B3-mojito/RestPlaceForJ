@@ -1,9 +1,13 @@
 package com.sparta.restplaceforj.config;
 
-import com.sparta.restplaceforj.jwt.*;
-import com.sparta.restplaceforj.security.UserDetailsServiceImpl;
+import com.sparta.restplaceforj.jwt.JwtAccessDeniedHandler;
+import com.sparta.restplaceforj.jwt.JwtAuthenticationEntryPoint;
+import com.sparta.restplaceforj.jwt.JwtAuthenticationFilter;
+import com.sparta.restplaceforj.jwt.JwtAuthorizationFilter;
+import com.sparta.restplaceforj.jwt.JwtLogoutHandler;
 import com.sparta.restplaceforj.provider.JwtProvider;
 import com.sparta.restplaceforj.provider.RedisProvider;
+import com.sparta.restplaceforj.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -24,16 +28,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtProvider jwtProvider;
-    private final RedisProvider redisProvider;
-    private final UserDetailsServiceImpl userDetailsService;
-    private final AuthenticationConfiguration authenticationConfiguration;
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-    private final JwtLogoutHandler jwtLogoutHandler;
+  private final JwtProvider jwtProvider;
+  private final RedisProvider redisProvider;
+  private final UserDetailsServiceImpl userDetailsService;
+  private final AuthenticationConfiguration authenticationConfiguration;
+  private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+  private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+  private final JwtLogoutHandler jwtLogoutHandler;
 
   // 인증처리를 위한 authenticationManager 처리 : username~Token 설정
-  @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
       throws Exception {
     return configuration.getAuthenticationManager();
@@ -45,22 +48,24 @@ public class SecurityConfig {
     return new BCryptPasswordEncoder();
   }
 
-    //인증 필터
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtProvider, redisProvider);
-        filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
-        return filter;
-    }
+  //인증 필터
+  @Bean
+  public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
+    JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtProvider, redisProvider);
+    filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
+    return filter;
+  }
 
-    //인가 필터
-    @Bean
-    public JwtAuthorizationFilter jwtAuthorizationFilter() {
-        return new JwtAuthorizationFilter(jwtProvider, redisProvider, userDetailsService);
-    }
+  //인가 필터
+  @Bean
+  public JwtAuthorizationFilter jwtAuthorizationFilter() {
+    return new JwtAuthorizationFilter(jwtProvider, redisProvider, userDetailsService);
+  }
 
   @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+  public SecurityFilterChain securityFilterChain(
+      HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter,
+      JwtAuthorizationFilter jwtAuthorizationFilter) throws Exception {
     // csrf 방어 설정
     http.csrf(AbstractHttpConfigurer::disable);
 
@@ -77,6 +82,7 @@ public class SecurityConfig {
             .requestMatchers("/v1/users").permitAll()
             .requestMatchers("/v1/users/login").permitAll()
             .requestMatchers("/v1/users/reissue").permitAll()
+            .requestMatchers("/v1/plans/{plan-id}/invite").permitAll()
             .requestMatchers("/v1/users/kakao/callback").permitAll()
             .requestMatchers("/swagger-ui/**", "/swagger-ui.html",
                 "/v3/api-docs/**", "/swagger/", "/swagger-resources/")
@@ -96,8 +102,8 @@ public class SecurityConfig {
     );
 
     // 필터 순서 설정 : 인가 필터 > 인증 필터 > Username ~ 필터
-    http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
-    http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+    http.addFilterBefore(jwtAuthorizationFilter, JwtAuthenticationFilter.class);
+    http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
     //예외 검증
     http.exceptionHandling(exceptionHandling ->

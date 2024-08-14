@@ -11,11 +11,12 @@ public class WebConfig implements WebMvcConfigurer {
   @Override
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**")
-        .allowedOrigins("https://www.restplaceforj.com",
-            "http://mojito-as-lb-1-346761212.ap-northeast-2.elb.amazonaws.com")
+        .allowedOrigins("https://www.restplaceforj.com")
+        .allowedOrigins("http://localhost:3000")
         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "PATCH")
-        .allowedHeaders(JwtProvider.AUTH_ACCESS_HEADER, "Content-Type")
-        .exposedHeaders(JwtProvider.AUTH_ACCESS_HEADER)
+        .allowedHeaders(JwtProvider.AUTH_ACCESS_HEADER, JwtProvider.AUTH_REFRESH_HEADER,
+            "Content-Type")
+        .exposedHeaders(JwtProvider.AUTH_ACCESS_HEADER, JwtProvider.AUTH_REFRESH_HEADER)
         .allowCredentials(true);
   }
 }
