@@ -98,7 +98,7 @@ public class CardService {
   public List<CardResponseDto> getCardList(Long columId) {
     Column column = columnRepository.findByIdOrThrow(columId);
 
-    return cardRepository.findAllByColumn(column);
+    return cardRepository.findAllByColumnOrderByStartedAt(column);
   }
 
   /**

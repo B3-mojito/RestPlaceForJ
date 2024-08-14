@@ -128,6 +128,6 @@ public class ColumnService {
   public List<ColumnResponseDto> getColumnList(Long planId) {
     Plan plan = planRepository.findByIdOrThrow(planId);
 
-    return columnRepository.findByPlanId(plan.getId());
+    return columnRepository.findByPlanIdOrderByDate(plan.getId());
   }
 }
