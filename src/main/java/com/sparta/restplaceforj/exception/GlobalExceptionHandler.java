@@ -1,6 +1,7 @@
 package com.sparta.restplaceforj.exception;
 
 import com.sparta.restplaceforj.common.CommonResponse;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -19,6 +20,18 @@ public class GlobalExceptionHandler {
     return ResponseEntity.ok(
         CommonResponse.<String>builder()
             .response(ErrorEnum.GLOBAL_ERROR)
+            .data(ex.getMessage())
+            .build()
+    );
+
+  }
+
+  @ExceptionHandler(ExpiredJwtException.class)
+  public ResponseEntity<CommonResponse<String>> ExceptionHandler(ExpiredJwtException ex) {
+    log.warn(ErrorEnum.EXPIRED_REFRESH_TOKEN.getMessage());
+    return ResponseEntity.status(403).body(
+        CommonResponse.<String>builder()
+            .response(ErrorEnum.EXPIRED_REFRESH_TOKEN)
             .data(ex.getMessage())
             .build()
     );
