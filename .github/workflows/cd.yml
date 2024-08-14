@@ -1,4 +1,4 @@
-name: develop ci/cd
+name: livealone-test
 
 on:
 
