@@ -33,7 +33,7 @@ public class KakaoService {
 
   private static final String CONTENT_TYPE = "application/x-www-form-urlencoded;charset=utf-8";
   private static final String GRANT_TYPE = "authorization_code";
-  private static final String REDIRECT_URI = "http://localhost:8080/v1/users/kakao/callback";
+  private static final String REDIRECT_URI = "http://localhost:3000/oauth/kakao/callback";
   private final PasswordEncoder passwordEncoder;
   private final UserRepository userRepository;
   private final RestTemplate restTemplate;
@@ -60,6 +60,7 @@ public class KakaoService {
 
     // 5. refreshToken 설정
     registerRefreshToken(kakaoUserInfo);
+    response.addHeader(JwtProvider.AUTH_REFRESH_HEADER, createdToken);
 
   }
 

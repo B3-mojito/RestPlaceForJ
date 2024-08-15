@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sparta.restplaceforj.common.CommonResponse;
 import com.sparta.restplaceforj.common.ResponseEnum;
 import com.sparta.restplaceforj.dto.UpdateUserProfileImageResponseDto;
+import com.sparta.restplaceforj.dto.UserInfoResponseDto;
 import com.sparta.restplaceforj.dto.UserProfileResponseDto;
 import com.sparta.restplaceforj.dto.UserResignRequestDto;
 import com.sparta.restplaceforj.dto.UserResignResponseDto;
@@ -118,6 +119,18 @@ public class UserController {
     );
   }
 
+  @GetMapping("/me")
+  public ResponseEntity<CommonResponse<UserInfoResponseDto>> getMyInfo(
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    return ResponseEntity.ok(
+        CommonResponse.<UserInfoResponseDto>builder()
+            .response(ResponseEnum.GET_USER_PROFILE)
+            .data(UserInfoResponseDto.builder()
+                .userId(userDetails.getUser().getId()).build())
+            .build()
+    );
+  }
+
   /**
    * 유저 프로필 사진 업로드 controller
    *
@@ -163,6 +176,13 @@ public class UserController {
     );
   }
 
+
+  /**
+   * 카카오 로그인 controller
+   *
+   * @param code : 카카오 서버에서 넘겨주는 인증 코드
+   * @return null
+   */
   @GetMapping("/kakao/callback")
   public ResponseEntity<CommonResponse> kakaoLogin(@RequestParam String code,
       HttpServletResponse response) throws JsonProcessingException {

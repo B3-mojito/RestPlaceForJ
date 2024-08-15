@@ -2,8 +2,10 @@ package com.sparta.restplaceforj.repository;
 
 import com.sparta.restplaceforj.dto.PlanListDto;
 import com.sparta.restplaceforj.dto.PlanResponseDto;
+import com.sparta.restplaceforj.dto.UserImageResponseDto;
 import com.sparta.restplaceforj.entity.Coworker;
 import com.sparta.restplaceforj.entity.Plan;
+import com.sparta.restplaceforj.entity.User;
 import com.sparta.restplaceforj.exception.CommonException;
 import com.sparta.restplaceforj.exception.ErrorEnum;
 import java.util.List;
@@ -19,6 +21,12 @@ public interface CoworkerRepository extends JpaRepository<Coworker, Long> {
   default Coworker findByPlanIdOrThrow(Long planId) {
     return findById(planId).orElseThrow(() -> new CommonException(ErrorEnum.USER_NOT_FOUND));
   }
+
+  @Query(
+      "SELECT new com.sparta.restplaceforj.dto.UserImageResponseDto(c.user.id, c.user.profileImage) "
+          +
+          "FROM Coworker c WHERE c.plan.id = :planId")
+  List<UserImageResponseDto> findUsersByPlanId(Long planId);
 
   boolean existsByUserIdAndPlanId(Long userId, Long planId);
 

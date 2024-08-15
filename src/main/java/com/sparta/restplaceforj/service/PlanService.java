@@ -3,6 +3,7 @@ package com.sparta.restplaceforj.service;
 import com.sparta.restplaceforj.dto.CardResponseDto;
 import com.sparta.restplaceforj.dto.PlanRequestDto;
 import com.sparta.restplaceforj.dto.PlanResponseDto;
+import com.sparta.restplaceforj.dto.UserImageResponseDto;
 import com.sparta.restplaceforj.entity.Column;
 import com.sparta.restplaceforj.entity.Coworker;
 import com.sparta.restplaceforj.entity.Plan;
@@ -56,7 +57,7 @@ public class PlanService {
     columnRepository.save(column);
 
     return PlanResponseDto.builder()
-
+        .id(user.getId())
         .title(plan.getTitle())
         .build();
   }
@@ -142,7 +143,6 @@ public class PlanService {
     if (!coworkerRepository.existsByUserIdAndPlanId(user.getId(), planId)) {
       throw new CommonException(ErrorEnum.BAD_REQUEST);
     }
-
     return PlanResponseDto.builder()
         .id(plan.getId())
         .title(plan.getTitle())
@@ -158,5 +158,10 @@ public class PlanService {
         .collect(Collectors.toList());
 
     return cardRepository.findByColumnIdIn(columnIds);
+  }
+
+  public List<UserImageResponseDto> getUserImageLists(Long planId, User user) {
+    return coworkerRepository.findUsersByPlanId(planId);
+
   }
 }

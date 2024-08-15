@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(Exception.class)
   public ResponseEntity<CommonResponse<String>> ExceptionHandler(Exception ex) {
     log.warn("handleAllException", ex);
-    return ResponseEntity.ok(
+    return ResponseEntity.status(500).body(
         CommonResponse.<String>builder()
             .response(ErrorEnum.GLOBAL_ERROR)
             .data(ex.getMessage())
@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler({CommonException.class})
   public ResponseEntity<CommonResponse> illegalArgumentExceptionHandler(CommonException ex) {
-    return ResponseEntity.status(404).body(
+    return ResponseEntity.status(ex.getResponse().getHttpStatus()).body(
         CommonResponse.builder()
             .response(ex.getResponse())
             .build());
@@ -62,7 +62,7 @@ public class GlobalExceptionHandler {
     }
 
     log.warn("handleAllException", ex);
-    return ResponseEntity.ok(
+    return ResponseEntity.status(404).body(
         CommonResponse.<StringBuilder>builder()
             .response(ErrorEnum.BAD_REQUEST)
             .data(builder)

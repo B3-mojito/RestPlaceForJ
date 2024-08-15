@@ -1,6 +1,9 @@
 package com.sparta.restplaceforj.dto;
 
 import com.sparta.restplaceforj.entity.Plan;
+import com.sparta.restplaceforj.entity.User;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,5 +21,6 @@ public class PlanResponseDto {
   public PlanResponseDto(Long id, String title) {
     this.id = id;
     this.title = title;
+
   }
 }
