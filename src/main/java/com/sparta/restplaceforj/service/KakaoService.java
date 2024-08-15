@@ -60,6 +60,7 @@ public class KakaoService {
 
     // 5. refreshToken 설정
     registerRefreshToken(kakaoUserInfo);
+    response.addHeader(JwtProvider.AUTH_REFRESH_HEADER, createdToken);
 
   }
 

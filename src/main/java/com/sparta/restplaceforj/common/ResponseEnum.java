@@ -39,6 +39,7 @@ public enum ResponseEnum implements Response {
   GET_POST_ID_TITLE_LIST("글 아이디 제목 조회 완료", HttpStatus.OK),
   UPDATE_POST("글 수정 완료", HttpStatus.OK),
   GET_MY_POST_LIST("본인 작성 게시물 조회 완료", HttpStatus.OK),
+  GET_USER_POST_LIST("유저가 작성한 게시물 조회 완료", HttpStatus.OK),
 
   //image
   CREATE_IMAGE("사진 저장 완료", HttpStatus.CREATED),
@@ -75,8 +76,7 @@ public enum ResponseEnum implements Response {
   CREATE_COLUMN("컬럼 생성 완료", HttpStatus.CREATED),
   UPDATE_COLUMN("컬럼 수정 완료", HttpStatus.OK),
   DELETE_COLUMN("컬럼 삭제 완료", HttpStatus.OK),
-  GET_COLUMN("컬럼 조회 성공", HttpStatus.OK),
-  ;
+  GET_COLUMN("컬럼 조회 성공", HttpStatus.OK);
 
   private final String message;
   private final HttpStatus httpStatus;

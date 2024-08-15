@@ -176,6 +176,13 @@ public class UserController {
     );
   }
 
+
+  /**
+   * 카카오 로그인 controller
+   *
+   * @param code : 카카오 서버에서 넘겨주는 인증 코드
+   * @return null
+   */
   @GetMapping("/kakao/callback")
   public ResponseEntity<CommonResponse> kakaoLogin(@RequestParam String code,
       HttpServletResponse response) throws JsonProcessingException {

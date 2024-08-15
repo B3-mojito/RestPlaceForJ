@@ -130,6 +130,8 @@ public class PostController {
   }
 
   /**
+   * 마이페이지에서 로그인 한 유저가 쓴 글 조회
+   *
    * @param userDetails 조회할 대상
    * @param page        현재 페이지
    * @param size        페이지 크기
@@ -147,6 +149,31 @@ public class PostController {
     return ResponseEntity.ok(
         CommonResponse.<PageResponseDto<PostIdTitleDto>>builder()
             .response(ResponseEnum.GET_MY_POST_LIST)
+            .data(postPageResponseDto)
+            .build()
+    );
+  }
+
+  /**
+   * 유저 프로필에서 유저가 쓴 글 조회
+   *
+   * @param userId      유저 아이디
+   * @param page        현재 페이지
+   * @param size        페이지 크기
+   * @param sortBy      정렬 기준
+   * @return PageResponseDto : placeNameList, size, page, totalPages, totalElements
+   */
+  @GetMapping("/users/{user-id}/posts")
+  public ResponseEntity<CommonResponse<PageResponseDto<PostIdTitleDto>>> getUserPostList(
+      @PathVariable(value = "user-id") Long userId,
+      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size,
+      @RequestParam(value = "sort-by", defaultValue = "createdAt") String sortBy) {
+    PageResponseDto<PostIdTitleDto> postPageResponseDto = postService
+        .getMyPostList(page, size, sortBy, userId);
+
+    return ResponseEntity.ok(
+        CommonResponse.<PageResponseDto<PostIdTitleDto>>builder()
+            .response(ResponseEnum.GET_USER_POST_LIST)
             .data(postPageResponseDto)
             .build()
     );
