@@ -258,6 +258,7 @@ public class PostService {
         .page(cardPostList)
         .build();
   }
+
   private void viewCountUp(Post post, HttpServletRequest req, HttpServletResponse res) {
 
     Cookie oldCookie = null;
@@ -274,9 +275,11 @@ public class PostService {
     if (oldCookie != null) {
       if (!oldCookie.getValue().contains("[" + post.getId() + "]")) {
         post.addViewToPost();
-        oldCookie.setValue(oldCookie.getValue() + "_[" + post + "]");
+        oldCookie.setValue(oldCookie.getValue() + "_[" + post.getId() + "]");
         oldCookie.setPath("/");
         oldCookie.setMaxAge(60 * 60 * 24);
+        oldCookie.setHttpOnly(true);
+        oldCookie.setSecure(true); // Use true if using HTTPS
         res.addCookie(oldCookie);
       }
     } else {
@@ -284,6 +287,8 @@ public class PostService {
       Cookie newCookie = new Cookie("postView", "[" + post.getId() + "]");
       newCookie.setPath("/");
       newCookie.setMaxAge(60 * 60 * 24);
+      newCookie.setHttpOnly(true);
+      newCookie.setSecure(true); // Use true if using HTTPS
       res.addCookie(newCookie);
     }
   }
