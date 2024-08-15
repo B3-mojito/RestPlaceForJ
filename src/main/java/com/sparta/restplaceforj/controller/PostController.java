@@ -216,4 +216,20 @@ public class PostController {
             .data(postResponseDto)
             .build());
   }
+
+  @GetMapping("/cards/{card-id}/posts")
+  public ResponseEntity<CommonResponse<PageResponseDto<PostIdTitleDto>>> getCardPostList(
+      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+      @PathVariable("card-id") long cardId) {
+
+    PageResponseDto<PostIdTitleDto> postPageResponseDto = postService.getCardPostList(cardId, page,
+        size);
+
+    return ResponseEntity.ok(
+        CommonResponse.<PageResponseDto<PostIdTitleDto>>builder()
+            .response(ResponseEnum.GET_POST_ID_TITLE_LIST)
+            .data(postPageResponseDto)
+            .build()
+    );
+  }
 }
