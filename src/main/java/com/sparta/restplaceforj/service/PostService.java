@@ -266,7 +266,7 @@ public class PostService {
     if (oldCookie != null) {
       if (!oldCookie.getValue().contains("[" + post.getId() + "]")) {
         post.addViewToPost();
-        oldCookie.setValue(oldCookie.getValue() + "_[" + post + "]");
+        oldCookie.setValue(oldCookie.getValue() + "_[" + post.getId() + "]");
         oldCookie.setPath("/");
         oldCookie.setMaxAge(60 * 60 * 24);
         res.addCookie(oldCookie);
