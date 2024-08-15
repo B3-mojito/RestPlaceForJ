@@ -242,4 +242,13 @@ public class PostService {
       throw new CommonException(ErrorEnum.SORT_NOT_FOUND);
     }
   }
+
+  public PageResponseDto<PostIdTitleDto> getCardPostList(long cardId, int page, int size) {
+    Pageable pageRequest = PageRequest.of(page, size);
+    PageImpl<PostIdTitleDto> cardPostList = postDslRepository.getCardPostList(pageRequest, cardId);
+
+    return PageResponseDto.<PostIdTitleDto>builder()
+        .page(cardPostList)
+        .build();
+  }
 }
