@@ -9,6 +9,8 @@ import com.sparta.restplaceforj.dto.PostRequestDto;
 import com.sparta.restplaceforj.dto.PostResponseDto;
 import com.sparta.restplaceforj.security.UserDetailsImpl;
 import com.sparta.restplaceforj.service.PostService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -184,8 +186,8 @@ public class PostController {
    */
   @GetMapping("/posts/{post-id}")
   public ResponseEntity<CommonResponse<PostResponseDto>> getPost(
-      @PathVariable("post-id") long postId) {
-    PostResponseDto postResponseDto = postService.getPost(postId);
+      @PathVariable("post-id") long postId, HttpServletRequest req, HttpServletResponse res) {
+    PostResponseDto postResponseDto = postService.getPost(postId, req, res);
 
     return ResponseEntity.ok(
         CommonResponse.<PostResponseDto>builder()
