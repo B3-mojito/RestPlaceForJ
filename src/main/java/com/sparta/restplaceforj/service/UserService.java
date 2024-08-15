@@ -100,6 +100,7 @@ public class UserService {
 
     return UserProfileResponseDto.builder()
         .profileImage(user.getProfileImage())
+        .userId(userId)
         .bio(user.getBio())
         .nickname(user.getNickname())
         .build();

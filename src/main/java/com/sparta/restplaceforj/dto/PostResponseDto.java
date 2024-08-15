@@ -11,7 +11,7 @@ public class PostResponseDto {
 
   private final long id;
 
-  private final long userId;
+  private final Long userId;
 
   private final String nickName;
 

@@ -20,6 +20,9 @@ import com.sparta.restplaceforj.repository.ImageRepository;
 import com.sparta.restplaceforj.repository.PostDslRepository;
 import com.sparta.restplaceforj.repository.PostRepository;
 import com.sparta.restplaceforj.repository.RelatedPostRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageImpl;
@@ -164,13 +167,14 @@ public class PostService {
    * 단권글 조회.
    *
    * @param postId 조회 글 아이디
+   * @param req
+   * @param res
    * @return PostResponseDto :id, userId, title, content, address, likesCount, viewsCount, themeEnum
    */
   @Transactional
-  public PostResponseDto getPost(long postId) {
+  public PostResponseDto getPost(long postId, HttpServletRequest req, HttpServletResponse res) {
     Post post = postRepository.findByIdOrThrow(postId);
-    post.addViewToPost();
-
+    viewCountUp(post, req, res);
     return PostResponseDto.builder()
         .post(post)
         .build();
@@ -194,15 +198,18 @@ public class PostService {
       if (relatedPostRepository.findPostsByCardId(cardId).equals(post)) {
         throw new CommonException(ErrorEnum.BAD_REQUEST);
       }
+
       RelatedPost cardPost = RelatedPost.builder()
           .card(card)
           .post(post)
           .build();
       relatedPostRepository.save(cardPost);
+
       return PostResponseDto.builder()
           .post(post)
           .build();
     }
+
     Column column = columnRepository.findByPlanIdAndTitle(addCardRequestDto.getPlanId(), "미정");
     Post post = postRepository.findByIdOrThrow(postId);
     Card card = Card.builder()
@@ -240,6 +247,44 @@ public class PostService {
     if (!(sortBy.equals("createdAt") || sortBy.equals("viewsCount") ||
         sortBy.equals("likesCount"))) {
       throw new CommonException(ErrorEnum.SORT_NOT_FOUND);
+    }
+  }
+
+  public PageResponseDto<PostIdTitleDto> getCardPostList(long cardId, int page, int size) {
+    Pageable pageRequest = PageRequest.of(page, size);
+    PageImpl<PostIdTitleDto> cardPostList = postDslRepository.getCardPostList(pageRequest, cardId);
+
+    return PageResponseDto.<PostIdTitleDto>builder()
+        .page(cardPostList)
+        .build();
+  }
+  private void viewCountUp(Post post, HttpServletRequest req, HttpServletResponse res) {
+
+    Cookie oldCookie = null;
+
+    Cookie[] cookies = req.getCookies();
+    if (cookies != null) {
+      for (Cookie cookie : cookies) {
+        if (cookie.getName().equals("postView")) {
+          oldCookie = cookie;
+        }
+      }
+    }
+
+    if (oldCookie != null) {
+      if (!oldCookie.getValue().contains("[" + post.getId() + "]")) {
+        post.addViewToPost();
+        oldCookie.setValue(oldCookie.getValue() + "_[" + post + "]");
+        oldCookie.setPath("/");
+        oldCookie.setMaxAge(60 * 60 * 24);
+        res.addCookie(oldCookie);
+      }
+    } else {
+      post.addViewToPost();
+      Cookie newCookie = new Cookie("postView", "[" + post.getId() + "]");
+      newCookie.setPath("/");
+      newCookie.setMaxAge(60 * 60 * 24);
+      res.addCookie(newCookie);
     }
   }
 }

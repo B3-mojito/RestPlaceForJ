@@ -1,7 +1,7 @@
 ## Variables
 
 
-@post-id = 2
+@post-id = 1
 
 @title = title12
 @content = content
@@ -102,7 +102,7 @@ Content-Type: application/json
 }
 
 
-
 ### 글 단권 조회
 GET {{host}}/v1/posts/{{post-id}}
 Authorization:{{Authorization}}
+Cookie: theme=dark; country=France

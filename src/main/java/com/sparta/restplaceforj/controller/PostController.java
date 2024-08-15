@@ -9,6 +9,8 @@ import com.sparta.restplaceforj.dto.PostRequestDto;
 import com.sparta.restplaceforj.dto.PostResponseDto;
 import com.sparta.restplaceforj.security.UserDetailsImpl;
 import com.sparta.restplaceforj.service.PostService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -211,8 +213,8 @@ public class PostController {
    */
   @GetMapping("/posts/{post-id}")
   public ResponseEntity<CommonResponse<PostResponseDto>> getPost(
-      @PathVariable("post-id") long postId) {
-    PostResponseDto postResponseDto = postService.getPost(postId);
+      @PathVariable("post-id") long postId, HttpServletRequest req, HttpServletResponse res) {
+    PostResponseDto postResponseDto = postService.getPost(postId, req, res);
 
     return ResponseEntity.ok(
         CommonResponse.<PostResponseDto>builder()
@@ -242,5 +244,21 @@ public class PostController {
             .response(ResponseEnum.ADD_POST)
             .data(postResponseDto)
             .build());
+  }
+
+  @GetMapping("/cards/{card-id}/posts")
+  public ResponseEntity<CommonResponse<PageResponseDto<PostIdTitleDto>>> getCardPostList(
+      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+      @PathVariable("card-id") long cardId) {
+
+    PageResponseDto<PostIdTitleDto> postPageResponseDto = postService.getCardPostList(cardId, page,
+        size);
+
+    return ResponseEntity.ok(
+        CommonResponse.<PageResponseDto<PostIdTitleDto>>builder()
+            .response(ResponseEnum.GET_POST_ID_TITLE_LIST)
+            .data(postPageResponseDto)
+            .build()
+    );
   }
 }
