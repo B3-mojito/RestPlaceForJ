@@ -16,7 +16,8 @@ public class WebConfig implements WebMvcConfigurer {
         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "PATCH")
         .allowedHeaders(JwtProvider.AUTH_ACCESS_HEADER, JwtProvider.AUTH_REFRESH_HEADER,
             "Content-Type")
-        .exposedHeaders(JwtProvider.AUTH_ACCESS_HEADER, JwtProvider.AUTH_REFRESH_HEADER)
+        .exposedHeaders(JwtProvider.AUTH_ACCESS_HEADER, JwtProvider.AUTH_REFRESH_HEADER,
+            "Set-Cookie")
         .allowCredentials(true);
   }
 }
