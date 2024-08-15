@@ -102,31 +102,7 @@ Content-Type: application/json
 }
 
 
-
 ### 글 단권 조회
 GET {{host}}/v1/posts/{{post-id}}
 Authorization:{{Authorization}}
-
-
-
-
-### 카드 연관 글 저장
-POST {{host}}/v1/posts/{{post-id}}
-Authorization:{{Authorization}}
-Content-Type: application/json
-
-{
-  "planId": 4,
-  "cardId": "10",
-  "placeName": "dd",
-  "memo": "dd"
-}
-
-
-
-
-
-### 카드와 연관된 글 조회
-@card-id = 10
-GET {{host}}/v1/cards/{{card-id}}/posts
-Authorization:{{Authorization}}
+Cookie: theme=dark; country=France
