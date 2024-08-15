@@ -7,6 +7,8 @@ import com.sparta.restplaceforj.dto.CardUpdateRequestDto;
 import com.sparta.restplaceforj.dto.PostResponseDto;
 import com.sparta.restplaceforj.entity.Card;
 import com.sparta.restplaceforj.entity.Column;
+import com.sparta.restplaceforj.entity.Plan;
+import com.sparta.restplaceforj.entity.RelatedPost;
 import com.sparta.restplaceforj.repository.CardRepository;
 import com.sparta.restplaceforj.repository.ColumnRepository;
 import com.sparta.restplaceforj.repository.PostRepository;
@@ -39,7 +41,6 @@ public class CardService {
   @Transactional
   public CardResponseDto createCard(Long columId, CardRequestDto cardRequestDto) {
     Column column = columnRepository.findByIdOrThrow(columId);
-
     Card card = Card.builder()
         .column(column)
         .title(cardRequestDto.getTitle())

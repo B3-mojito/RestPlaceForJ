@@ -65,11 +65,7 @@ public class PostService {
       throw new CommonException(ErrorEnum.THEME_NOT_FOUND);
     }
 
-    Post post = postRepository.save(
-        Post.builder()
-            .requestDto(postRequestDto)
-            .user(user)
-            .build());
+    Post post = postRepository.save(Post.builder().requestDto(postRequestDto).user(user).build());
 
     if (!postRequestDto.getImageIdList().isEmpty()) {
       for (Long imageId : postRequestDto.getImageIdList()) {
@@ -80,9 +76,7 @@ public class PostService {
 
     Post savedPost = postRepository.save(post);
 
-    return PostResponseDto.builder()
-        .post(savedPost)
-        .build();
+    return PostResponseDto.builder().post(savedPost).build();
   }
 
   /**
@@ -101,18 +95,15 @@ public class PostService {
     postRepository.deleteById(postId);
   }
 
-  public PageResponseDto<String> getPlaceList(
-      int page, int size, String region, String theme) {
+  public PageResponseDto<String> getPlaceList(int page, int size, String region, String theme) {
 
     ThemeEnum themeEnum = ThemeEnum.valueOf(theme);
     Pageable pageRequest = PageRequest.of(page, size);
 
-    PageImpl<String> placeNameList = postDslRepository
-        .getPostListGroupByPlaceName(pageRequest, region, themeEnum);
+    PageImpl<String> placeNameList = postDslRepository.getPostListGroupByPlaceName(pageRequest,
+        region, themeEnum);
 
-    return PageResponseDto.<String>builder()
-        .page(placeNameList)
-        .build();
+    return PageResponseDto.<String>builder().page(placeNameList).build();
   }
 
   /**
@@ -125,8 +116,8 @@ public class PostService {
    * @param sortBy    정렬 기준
    * @return PageResponseDto : placeNameList, size, page, totalPages, totalElements
    */
-  public PageResponseDto<PostIdTitleDto> getPostTitleList(
-      int page, int size, String placeName, String sortBy, String q) {
+  public PageResponseDto<PostIdTitleDto> getPostTitleList(int page, int size, String placeName,
+      String sortBy, String q) {
 
     sortByCheck(sortBy);
 
@@ -134,12 +125,10 @@ public class PostService {
 
     Pageable pageRequest = PageRequest.of(page, size, sort);
 
-    PageImpl<PostIdTitleDto> postIdTitleList = postDslRepository
-        .getPostTitleList(pageRequest, placeName, q);
+    PageImpl<PostIdTitleDto> postIdTitleList = postDslRepository.getPostTitleList(pageRequest,
+        placeName, q);
 
-    return PageResponseDto.<PostIdTitleDto>builder()
-        .page(postIdTitleList)
-        .build();
+    return PageResponseDto.<PostIdTitleDto>builder().page(postIdTitleList).build();
   }
 
   /**
@@ -158,9 +147,7 @@ public class PostService {
     }
 
     post.update(postRequestDto);
-    return PostResponseDto.builder()
-        .post(post)
-        .build();
+    return PostResponseDto.builder().post(post).build();
   }
 
   /**
@@ -175,9 +162,7 @@ public class PostService {
   public PostResponseDto getPost(long postId, HttpServletRequest req, HttpServletResponse res) {
     Post post = postRepository.findByIdOrThrow(postId);
     viewCountUp(post, req, res);
-    return PostResponseDto.builder()
-        .post(post)
-        .build();
+    return PostResponseDto.builder().post(post).build();
   }
 
   /**
@@ -199,53 +184,39 @@ public class PostService {
         throw new CommonException(ErrorEnum.BAD_REQUEST);
       }
 
-      RelatedPost cardPost = RelatedPost.builder()
-          .card(card)
-          .post(post)
-          .build();
+      RelatedPost cardPost = RelatedPost.builder().card(card).post(post).build();
       relatedPostRepository.save(cardPost);
 
-      return PostResponseDto.builder()
-          .post(post)
-          .build();
+      return PostResponseDto.builder().post(post).build();
     }
 
     Column column = columnRepository.findByPlanIdAndTitle(addCardRequestDto.getPlanId(), "미정");
     Post post = postRepository.findByIdOrThrow(postId);
-    Card card = Card.builder()
-        .column(column)
-        .title(addCardRequestDto.getPlaceName())
-        .address(post.getAddress())
-        .placeName(post.getPlaceName())
-        .startedAt(addCardRequestDto.getStartedAt())
-        .endedAt(addCardRequestDto.getEndedAt())
-        .memo(addCardRequestDto.getMemo())
-        .build();
+    Card card = Card.builder().column(column).title(addCardRequestDto.getPlaceName())
+        .address(post.getAddress()).placeName(post.getPlaceName())
+        .startedAt(addCardRequestDto.getStartedAt()).endedAt(addCardRequestDto.getEndedAt())
+        .memo(addCardRequestDto.getMemo()).build();
     cardRepository.save(card);
-    return PostResponseDto.builder()
-        .post(post)
-        .build();
+    relatedPostRepository.save(RelatedPost.builder().post(post).card(card).build());
+    return PostResponseDto.builder().post(post).build();
   }
 
-  public PageResponseDto<PostIdTitleDto> getMyPostList(
-      int page, int size, String sortBy, long userId) {
+  public PageResponseDto<PostIdTitleDto> getMyPostList(int page, int size, String sortBy,
+      long userId) {
     sortByCheck(sortBy);
 
     Sort sort = Sort.by(Direction.DESC, sortBy);
 
     Pageable pageRequest = PageRequest.of(page, size, sort);
 
-    PageImpl<PostIdTitleDto> postIdTitleList = postDslRepository
-        .getMyPostList(pageRequest, userId);
+    PageImpl<PostIdTitleDto> postIdTitleList = postDslRepository.getMyPostList(pageRequest, userId);
 
-    return PageResponseDto.<PostIdTitleDto>builder()
-        .page(postIdTitleList)
-        .build();
+    return PageResponseDto.<PostIdTitleDto>builder().page(postIdTitleList).build();
   }
 
   private static void sortByCheck(String sortBy) {
-    if (!(sortBy.equals("createdAt") || sortBy.equals("viewsCount") ||
-        sortBy.equals("likesCount"))) {
+    if (!(sortBy.equals("createdAt") || sortBy.equals("viewsCount") || sortBy.equals(
+        "likesCount"))) {
       throw new CommonException(ErrorEnum.SORT_NOT_FOUND);
     }
   }
@@ -254,9 +225,7 @@ public class PostService {
     Pageable pageRequest = PageRequest.of(page, size);
     PageImpl<PostIdTitleDto> cardPostList = postDslRepository.getCardPostList(pageRequest, cardId);
 
-    return PageResponseDto.<PostIdTitleDto>builder()
-        .page(cardPostList)
-        .build();
+    return PageResponseDto.<PostIdTitleDto>builder().page(cardPostList).build();
   }
 
   private void viewCountUp(Post post, HttpServletRequest req, HttpServletResponse res) {
