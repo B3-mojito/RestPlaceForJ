@@ -63,7 +63,7 @@ public class InviteController {
 
         inviteService.createCoworker(planId, authCode);
 
-        return "redirect:http://localhost:3000/home";
+        return "redirect:https://www.restplaceforj.com/plan";
     }
 
 }

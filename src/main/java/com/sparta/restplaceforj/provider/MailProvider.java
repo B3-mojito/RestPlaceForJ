@@ -24,7 +24,7 @@ public class MailProvider {
 
     public MimeMessage createEmailForm(String toEmail, Long planId, String authCode) throws MessagingException {
 
-        String inviteLink = "http://localhost:8080/v1/plans/" + planId + "/invite?authCode=" + authCode;
+        String inviteLink = "https://api.restplaceforj.com/v1/plans/" + planId + "/invite?authCode=" + authCode;
 
         // 메세지 설정
         MimeMessage message = mailSender.createMimeMessage();
