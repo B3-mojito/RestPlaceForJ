@@ -33,7 +33,7 @@ public class KakaoService {
 
   private static final String CONTENT_TYPE = "application/x-www-form-urlencoded;charset=utf-8";
   private static final String GRANT_TYPE = "authorization_code";
-  private static final String REDIRECT_URI = "http://localhost:3000/oauth/kakao/callback";
+  private static final String REDIRECT_URI = "https://restplaceforj.com/oauth/kakao/callback";
   private final PasswordEncoder passwordEncoder;
   private final UserRepository userRepository;
   private final RestTemplate restTemplate;

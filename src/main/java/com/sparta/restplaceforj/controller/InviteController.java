@@ -62,7 +62,7 @@ public class InviteController {
 
     inviteService.createCoworker(planId, authCode);
 
-    return "redirect:https://www.restplaceforj.com/login";
-  }
+        return "redirect:https://www.restplaceforj.com/plan";
+    }
 
 }
