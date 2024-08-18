@@ -23,7 +23,7 @@ public interface CoworkerRepository extends JpaRepository<Coworker, Long> {
   }
 
   @Query(
-      "SELECT new com.sparta.restplaceforj.dto.UserImageResponseDto(c.user.id, c.user.profileImage) "
+      "SELECT new com.sparta.restplaceforj.dto.UserImageResponseDto(c.user.id, c.user.profileImage, c.user.nickname) "
           +
           "FROM Coworker c WHERE c.plan.id = :planId")
   List<UserImageResponseDto> findUsersByPlanId(Long planId);

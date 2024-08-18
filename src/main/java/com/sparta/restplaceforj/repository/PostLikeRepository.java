@@ -10,10 +10,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PostLikeRepository extends JpaRepository<PostLike, Long> {
 
-  Optional<PostLike> findFirstByPostAndUser(Post post, User user);
+  Optional<PostLike> findByPostAndUser(Post post, User user);
 
   default PostLike findByPostLikeOrThrow(Post post, User user) {
-    return findFirstByPostAndUser(post, user).orElseThrow(
+    return findByPostAndUser(post, user).orElseThrow(
         () -> new CommonException(ErrorEnum.POST_LIKE_NOT_FOUND)
     );
   }

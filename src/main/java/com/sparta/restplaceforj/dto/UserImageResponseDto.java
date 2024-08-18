@@ -9,10 +9,12 @@ public class UserImageResponseDto {
 
   private final Long id;
   private final String imageUrl;
+  private final String nickname;
 
   @Builder
-  public UserImageResponseDto(Long id, String imageUrl) {
+  public UserImageResponseDto(Long id, String imageUrl, String nickname) {
     this.id = id;
     this.imageUrl = imageUrl;
+    this.nickname = nickname;
   }
 }
