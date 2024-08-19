@@ -62,8 +62,10 @@ public enum ErrorEnum implements Response {
   // Card errors
   CARD_NOT_FOUND("카드를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
-
+  // Redis errors
+  INVALID_LOCK("유효하지 않은 LockKey", HttpStatus.BAD_REQUEST),
   // Global errors
+
   VALID_ERROR("잘못된 접근 값입니다.", HttpStatus.BAD_REQUEST),
   GLOBAL_ERROR("처리하지 않은 예외", HttpStatus.INTERNAL_SERVER_ERROR);
 

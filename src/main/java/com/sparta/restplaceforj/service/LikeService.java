@@ -40,9 +40,9 @@ public class LikeService {
    */
   public Optional<PostLikeResponseDto> createPostLike(long postId, User user) {
     String lockKey = "post_like_" + postId + "_" + user.getId();
-    boolean lock = redisProvider.validLock(lockKey, 10);
-    if (!lock) {
-      throw new CommonException(ErrorEnum.VALID_ERROR);
+
+    if (!validateLikeLock(lockKey)) {
+      throw new CommonException(ErrorEnum.INVALID_LOCK);
     }
     try {
       Post post = postRepository.findByIdOrThrow(postId);
@@ -81,10 +81,9 @@ public class LikeService {
    */
   public Optional<CommentLikeResponseDto> createCommentLike(long commentId, User user) {
     String lockKey = "commentLike:" + commentId + ":" + user.getId();
-    boolean lock = redisProvider.validLock(lockKey, 10);
 
-    if (!lock) {
-      throw new CommonException(ErrorEnum.VALID_ERROR);
+    if (!validateLikeLock(lockKey)) {
+      throw new CommonException(ErrorEnum.INVALID_LOCK);
     }
     try {
       Comment comment = commentRepository.findByIdOrThrow(commentId);
@@ -115,5 +114,9 @@ public class LikeService {
     } finally {
       redisProvider.returnLock(lockKey);
     }
+  }
+
+  private boolean validateLikeLock(String key) {
+    return redisProvider.validLock(key, 5);
   }
 }
