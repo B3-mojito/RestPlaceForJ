@@ -19,66 +19,70 @@ import org.hibernate.annotations.DynamicUpdate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends Timestamped {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    private String nickname;
+  private String nickname;
 
-    private String name;
+  private String name;
 
-    private String email;
+  private String email;
 
-    private String password;
+  private String password;
 
-    private String bio;
+  private String bio;
 
-    @Setter
-    private String profileImage;
+  @Setter
+  private String profileImage;
 
-    @Enumerated(value = EnumType.STRING)
-    private UserStatus userStatus;
+  @Enumerated(value = EnumType.STRING)
+  private UserStatus userStatus;
 
-    private LocalDateTime authUserAt;
+  private LocalDateTime authUserAt;
 
-    @Enumerated(EnumType.STRING)
-    private UserRole userRole;
+  @Enumerated(EnumType.STRING)
+  private UserRole userRole;
 
-    private Long kakaoId;
+  private Long kakaoId;
 
 
-    @Builder
-    public User(String nickname, String name, String email, String password) {
-        this.nickname = nickname;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.userRole = UserRole.USER;
-        this.userStatus = UserStatus.ACTIVE;
-    }
+  @Builder
+  public User(String nickname, String name, String email, String password) {
+    this.nickname = nickname;
+    this.name = name;
+    this.email = email;
+    this.password = password;
+    this.userRole = UserRole.USER;
+    this.userStatus = UserStatus.ACTIVE;
+  }
 
-    public User(String nickname, String name, String email, String password, Long kakaoId) {
-        this.nickname = nickname;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.userRole = UserRole.USER;
-        this.userStatus = UserStatus.ACTIVE;
-        this.kakaoId = kakaoId;
-    }
+  public User(String nickname, String name, String email, String password, Long kakaoId) {
+    this.nickname = nickname;
+    this.name = name;
+    this.email = email;
+    this.password = password;
+    this.userRole = UserRole.USER;
+    this.userStatus = UserStatus.ACTIVE;
+    this.kakaoId = kakaoId;
+  }
 
-    public void setUserStatusDeactivate(UserStatus userStatus) {
-        this.userStatus = userStatus;
-        this.authUserAt = LocalDateTime.now();
-    }
-    public void updateProfile(String nickname, String bio, String password) {
-        this.nickname = nickname;
-        this.bio = bio;
-        this.password = password;
-    }
+  public void setUserStatusDeactivate(UserStatus userStatus) {
+    this.userStatus = userStatus;
+    this.authUserAt = LocalDateTime.now();
+  }
 
-    public User updateKakao(Long kakaoId) {
-        this.kakaoId = kakaoId;
-        return this;
-    }
+  public void updateProfile(String nickname, String bio) {
+    this.nickname = nickname;
+    this.bio = bio;
+  }
+
+  public void updatePassword(String password) {
+    this.password = password;
+  }
+
+  public User updateKakao(Long kakaoId) {
+    this.kakaoId = kakaoId;
+    return this;
+  }
 }

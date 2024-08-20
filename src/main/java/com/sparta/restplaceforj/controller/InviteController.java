@@ -15,53 +15,52 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
-
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/v1/plans/{plan-id}/invite")
 public class InviteController {
 
-    private final InviteService inviteService;
+  private final InviteService inviteService;
 
 
-    /**
-     * 유저 이메일로 검색, 인증번호 발송 controller
-     *
-     * @param emailRequestDto : email
-     * @param planId
-     * @param userDetails
-     * @return null
-     */
-    @ResponseBody
-    @PostMapping
-    public ResponseEntity<CommonResponse> checkEmailAndSendAuthCode(
-            @RequestBody @Valid EmailRequestDto emailRequestDto,
-            @PathVariable("plan-id") Long planId,
-            @AuthenticationPrincipal UserDetailsImpl userDetails) throws MessagingException {
+  /**
+   * 유저 이메일로 검색, 인증번호 발송 controller
+   *
+   * @param emailRequestDto : email
+   * @param planId
+   * @param userDetails
+   * @return null
+   */
+  @ResponseBody
+  @PostMapping
+  public ResponseEntity<CommonResponse> checkEmailAndSendAuthCode(
+      @RequestBody @Valid EmailRequestDto emailRequestDto,
+      @PathVariable("plan-id") Long planId,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) throws MessagingException {
 
-        inviteService.sendEmail(emailRequestDto.getEmail(), planId, userDetails.getUser());
+    inviteService.sendEmail(emailRequestDto.getEmail(), planId, userDetails.getUser());
 
-        return ResponseEntity.ok(
-                CommonResponse.builder()
-                        .response(ResponseEnum.SEND_AUTH_CODE)
-                        .data(null)
-                        .build()
-        );
-    }
+    return ResponseEntity.ok(
+        CommonResponse.builder()
+            .response(ResponseEnum.SEND_AUTH_CODE)
+            .data(null)
+            .build()
+    );
+  }
 
-    /**
-     * 인증번호 유효성 검사, 공동작업자로 추가 controller
-     *
-     * @param planId
-     * @param authCode
-     * @return coworkerId
-     */
-    @GetMapping
-    public String AuthCheckAndCreateCoworker(
-            @PathVariable("plan-id") Long planId,
-            @RequestParam String authCode) {
+  /**
+   * 인증번호 유효성 검사, 공동작업자로 추가 controller
+   *
+   * @param planId
+   * @param authCode
+   * @return coworkerId
+   */
+  @GetMapping
+  public String AuthCheckAndCreateCoworker(
+      @PathVariable("plan-id") Long planId,
+      @RequestParam String authCode) {
 
-        inviteService.createCoworker(planId, authCode);
+    inviteService.createCoworker(planId, authCode);
 
         return "redirect:https://www.restplaceforj.com/plan";
     }

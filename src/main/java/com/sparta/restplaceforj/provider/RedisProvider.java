@@ -1,5 +1,6 @@
 package com.sparta.restplaceforj.provider;
 
+import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -13,25 +14,36 @@ import java.time.Duration;
 @Component
 @RequiredArgsConstructor
 public class RedisProvider {
-    private final StringRedisTemplate stringRedisTemplate;
 
-    // key를 통해 value 가져오기
-    public String getValues(String key) {
-        return stringRedisTemplate.opsForValue().get(key);
-    }
+  private final StringRedisTemplate stringRedisTemplate;
 
-    // key, value, expiration 설정
-    public void setValuesWithTimeout(String key, String value, Long timeout) {
-        stringRedisTemplate.opsForValue().set(key, value, Duration.ofMillis(timeout));
-    }
+  // key를 통해 value 가져오기
+  public String getValues(String key) {
+    return stringRedisTemplate.opsForValue().get(key);
+  }
 
-    // key를 통해 value 삭제하기
-    public boolean deleteValue(String key) {
-        return stringRedisTemplate.delete(key);
-    }
+  // key, value, expiration 설정
+  public void setValuesWithTimeout(String key, String value, Long timeout) {
+    stringRedisTemplate.opsForValue().set(key, value, Duration.ofMillis(timeout));
+  }
 
-    // key를 통해 value가 있는지 확인
-    public boolean existData(String key) {
-        return Boolean.TRUE.equals(stringRedisTemplate.hasKey(key));
-    }
+  // key를 통해 value 삭제하기
+  public boolean deleteValue(String key) {
+    return stringRedisTemplate.delete(key);
+  }
+
+  // key를 통해 value가 있는지 확인
+  public boolean existData(String key) {
+    return Boolean.TRUE.equals(stringRedisTemplate.hasKey(key));
+  }
+
+  public boolean validLock(String key, long timeoutInSeconds) {
+    Boolean success = stringRedisTemplate.opsForValue()
+        .setIfAbsent(key, "locked", timeoutInSeconds, TimeUnit.SECONDS);
+    return success != null && success;
+  }
+
+  public void returnLock(String key) {
+    stringRedisTemplate.delete(key);
+  }
 }

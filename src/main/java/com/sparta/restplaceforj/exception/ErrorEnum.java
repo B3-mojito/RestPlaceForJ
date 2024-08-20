@@ -18,6 +18,7 @@ public enum ErrorEnum implements Response {
   INVALID_ACCESS("권한이 없습니다.", HttpStatus.UNAUTHORIZED),
   FORBIDDEN_ACCESS("접근할 수 없습니다.", HttpStatus.FORBIDDEN),
   BAD_PASSWORD("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST),
+  BAD_PASSWORD_KAKAO("카카오연동 유저는 변경 불가능합니다.", HttpStatus.BAD_REQUEST),
   ALREADY_DEACTIVATE("이미 탈퇴한 회원입니다.", HttpStatus.BAD_REQUEST),
 
   //auth error
@@ -62,8 +63,10 @@ public enum ErrorEnum implements Response {
   // Card errors
   CARD_NOT_FOUND("카드를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
-
+  // Redis errors
+  INVALID_LOCK("유효하지 않은 LockKey", HttpStatus.BAD_REQUEST),
   // Global errors
+
   VALID_ERROR("잘못된 접근 값입니다.", HttpStatus.BAD_REQUEST),
   GLOBAL_ERROR("처리하지 않은 예외", HttpStatus.INTERNAL_SERVER_ERROR);
 

@@ -5,6 +5,7 @@ import com.sparta.restplaceforj.common.CommonResponse;
 import com.sparta.restplaceforj.common.ResponseEnum;
 import com.sparta.restplaceforj.dto.UpdateUserProfileImageResponseDto;
 import com.sparta.restplaceforj.dto.UserInfoResponseDto;
+import com.sparta.restplaceforj.dto.UserPasswordUpdateDto;
 import com.sparta.restplaceforj.dto.UserProfileResponseDto;
 import com.sparta.restplaceforj.dto.UserResignRequestDto;
 import com.sparta.restplaceforj.dto.UserResignResponseDto;
@@ -168,6 +169,28 @@ public class UserController {
       @PathVariable("user-id") Long userId) {
     UserProfileResponseDto userProfileResponseDto = userService.updateUserProfile(
         userUpdateRequestDto, userDetails.getUser(), userId);
+    return ResponseEntity.ok(
+        CommonResponse.<UserProfileResponseDto>builder()
+            .response(ResponseEnum.UPDATE_USER_PROFILE)
+            .data(userProfileResponseDto)
+            .build()
+    );
+  }
+
+  /**
+   * 유저 비밀번호 수정 controller
+   *
+   * @param userPasswordUpdateDto : nickname, bio, currentPassword, newPassword, confirmPassword;
+   * @param userDetails
+   * @return UserProfileResponseDto :nickname, bio, profilePicture
+   */
+  @PatchMapping("/{user-id}/password")
+  public ResponseEntity<CommonResponse<UserProfileResponseDto>> updateUserProfile(
+      @RequestBody @Valid UserPasswordUpdateDto userPasswordUpdateDto,
+      @AuthenticationPrincipal UserDetailsImpl userDetails,
+      @PathVariable("user-id") Long userId) {
+    UserProfileResponseDto userProfileResponseDto = userService.updateUserPassword(
+        userPasswordUpdateDto, userDetails.getUser(), userId);
     return ResponseEntity.ok(
         CommonResponse.<UserProfileResponseDto>builder()
             .response(ResponseEnum.UPDATE_USER_PROFILE)
