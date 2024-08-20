@@ -39,7 +39,7 @@ public class LikeService {
    * @return PostLikeResponseDto 필드명 : id, userId, postId
    */
   public Optional<PostLikeResponseDto> createPostLike(long postId, User user) {
-    String lockKey = "post_like_" + postId + "_" + user.getId();
+    String lockKey = "postLike:" + postId + "-" + user.getId();
 
     if (!validateLikeLock(lockKey)) {
       throw new CommonException(ErrorEnum.INVALID_LOCK);
@@ -80,7 +80,7 @@ public class LikeService {
    * @return CommentLikeResponseDto 필드명 : id, userId, commentId
    */
   public Optional<CommentLikeResponseDto> createCommentLike(long commentId, User user) {
-    String lockKey = "commentLike:" + commentId + ":" + user.getId();
+    String lockKey = "commentLike:" + commentId + "-" + user.getId();
 
     if (!validateLikeLock(lockKey)) {
       throw new CommonException(ErrorEnum.INVALID_LOCK);
