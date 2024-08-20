@@ -100,7 +100,7 @@ public class PostService {
     postRepository.deleteById(postId);
   }
 
-  //@Cacheable(value = "posts", key = "'posts:' + #page + ':' + #size + ':' + #region + ':' + #theme", cacheManager = "contentCacheManager")
+  @Cacheable(value = "posts", key = "'posts:' + #page + ':' + #size + ':' + #region + ':' + #theme", cacheManager = "contentCacheManager")
   public PageResponseDto<String> getPlaceList(int page, int size, String region, String theme) {
 
     ThemeEnum themeEnum = ThemeEnum.valueOf(theme);

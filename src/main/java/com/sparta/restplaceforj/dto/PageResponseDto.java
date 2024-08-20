@@ -3,16 +3,18 @@ package com.sparta.restplaceforj.dto;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 
 @Getter
+@NoArgsConstructor
 public class PageResponseDto<T> {
 
-  private final List<T> contentList;
-  private final int size;
-  private final int page;
-  private final int totalPages;
-  private final long totalElements;
+  private List<T> contentList;
+  private int size;
+  private int page;
+  private int totalPages;
+  private long totalElements;
 
   @Builder
   public PageResponseDto(Page<T> page) {

@@ -3,23 +3,25 @@ package com.sparta.restplaceforj.dto;
 import com.sparta.restplaceforj.entity.Comment;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class CommentResponseDto {
 
-  private final long id;
+  private long id;
 
-  private final long postId;
+  private long postId;
 
-  private final long userId;
+  private long userId;
 
-  private final String content;
+  private String content;
 
-  private final long likesCount;
+  private long likesCount;
 
-  private final String nickName;
+  private String nickName;
 
-  private final String profileImage;
+  private String profileImage;
 
   @Builder
   public CommentResponseDto(Comment comment) {

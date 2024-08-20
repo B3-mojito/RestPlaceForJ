@@ -2,34 +2,35 @@ package com.sparta.restplaceforj.dto;
 
 import com.sparta.restplaceforj.entity.Post;
 import com.sparta.restplaceforj.entity.ThemeEnum;
-import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class PostResponseDto {
 
-  private final long id;
+  private long id;
 
-  private final Long userId;
+  private Long userId;
 
-  private final String nickName;
+  private String nickName;
 
-  private final String profileImage;
+  private String profileImage;
 
-  private final String title;
+  private String title;
 
-  private final String content;
+  private String content;
 
-  private final String address;
+  private String address;
 
-  private final long likesCount;
+  private long likesCount;
 
-  private final long viewsCount;
+  private long viewsCount;
 
-  private final ThemeEnum themeEnum;
+  private ThemeEnum themeEnum;
 
-  private final String placeName;
+  private String placeName;
 
   @Builder
   public PostResponseDto(Post post) {
