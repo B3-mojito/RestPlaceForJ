@@ -13,6 +13,9 @@ import com.sparta.restplaceforj.repository.PostLikeRepository;
 import com.sparta.restplaceforj.repository.PostRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +36,15 @@ public class LikeService {
    * @param user   좋아요를 하는 사람
    * @return PostLikeResponseDto 필드명 : id, userId, postId
    */
+
+  @Caching(
+      evict = {
+          @CacheEvict(value = "postLikes", key = "'postLikes:' + #postId"),
+      },
+      put = {
+          @CachePut(value = "postLikes", key = "'postLikes:' + #postId", condition = "#result.isPresent()")
+      }
+  )
   public Optional<PostLikeResponseDto> createPostLike(long postId, User user) {
     Post post = postRepository.findByIdOrThrow(postId);
     PostLike postLike = PostLike.builder()
@@ -65,6 +77,15 @@ public class LikeService {
    * @param user      좋아요할 사람
    * @return CommentLikeResponseDto 필드명 : id, userId, commentId
    */
+
+  @Caching(
+      evict = {
+          @CacheEvict(value = "commentLikes", key = "'commentLikes:' + #commentId"),
+      },
+      put = {
+          @CachePut(value = "commentLikes", key = "'commentLikes:' + #commentId", condition = "#result.isPresent()")
+      }
+  )
   public Optional<CommentLikeResponseDto> createCommentLike(long commentId, User user) {
     Comment comment = commentRepository.findByIdOrThrow(commentId);
     CommentLike commentLike = CommentLike.builder()

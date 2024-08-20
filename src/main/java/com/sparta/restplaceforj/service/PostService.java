@@ -25,6 +25,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -57,6 +60,7 @@ public class PostService {
    * @return PostResponseDto : title, content, address, likesCount, viewCount, themeEnum
    */
   @Transactional
+  @CachePut(value = "posts", key = "'posts:' + #result.id", cacheManager = "contentCacheManager")
   public PostResponseDto createPost(PostRequestDto postRequestDto, User user) {
 
     try {
@@ -86,6 +90,7 @@ public class PostService {
    * @param user   : 토큰 유저 정보
    */
   @Transactional
+  @CacheEvict(value = "posts", key = "'posts:' + #result.id", cacheManager = "contentCacheManager")
   public void deletePost(long postId, User user) {
     Post post = postRepository.findByIdOrThrow(postId);
     if (post.getUser().getId() != user.getId()) {
@@ -95,6 +100,7 @@ public class PostService {
     postRepository.deleteById(postId);
   }
 
+  //@Cacheable(value = "posts", key = "'posts:' + #page + ':' + #size + ':' + #region + ':' + #theme", cacheManager = "contentCacheManager")
   public PageResponseDto<String> getPlaceList(int page, int size, String region, String theme) {
 
     ThemeEnum themeEnum = ThemeEnum.valueOf(theme);
@@ -140,6 +146,7 @@ public class PostService {
    * @return PostResponseDto id, userId, title, content, address, likesCount, viewsCount, themeEnum
    */
   @Transactional
+  @CachePut(value = "posts", key = "'posts:' + #result.id", cacheManager = "contentCacheManager")
   public PostResponseDto updatePost(long postId, PostRequestDto postRequestDto, User user) {
     Post post = postRepository.findByIdOrThrow(postId);
     if (post.getUser().getId() != user.getId()) {
@@ -159,6 +166,7 @@ public class PostService {
    * @return PostResponseDto :id, userId, title, content, address, likesCount, viewsCount, themeEnum
    */
   @Transactional
+  @Cacheable(value = "posts", key = "'posts:' + #result.id", cacheManager = "contentCacheManager")
   public PostResponseDto getPost(long postId, HttpServletRequest req, HttpServletResponse res) {
     Post post = postRepository.findByIdOrThrow(postId);
     viewCountUp(post, req, res);
@@ -201,6 +209,8 @@ public class PostService {
     return PostResponseDto.builder().post(post).build();
   }
 
+
+  @Cacheable(value = "posts", key = "'posts:' + #page + ':' + #size + ':' +  #sortBy + ':' + #userId", cacheManager = "contentCacheManager")
   public PageResponseDto<PostIdTitleDto> getMyPostList(int page, int size, String sortBy,
       long userId) {
     sortByCheck(sortBy);

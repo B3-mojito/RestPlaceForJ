@@ -12,6 +12,9 @@ import com.sparta.restplaceforj.repository.CommentRepository;
 import com.sparta.restplaceforj.repository.PostRepository;
 import com.sparta.restplaceforj.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +29,6 @@ public class CommentService {
   private final CommentRepository commentRepository;
   private final CommentDslRepository commentDslRepository;
   private final PostRepository postRepository;
-  private final UserRepository userRepository;
 
   /**
    * 댓글 생성
@@ -37,6 +39,7 @@ public class CommentService {
    * @return CommentResponseDto : id, postId, content, likesCount
    */
   @Transactional
+  @CachePut(value = "comments", key = "'comments:' + #result.id", cacheManager = "contentCacheManager")
   public CommentResponseDto createPost(long postId, String content, User user) {
 
     Post post = postRepository.findByIdOrThrow(postId);
@@ -61,6 +64,7 @@ public class CommentService {
    * @param postId 조회할 글
    * @return PageResponseDto : contentList, size, page, totalPages, totalElements
    */
+  @Cacheable(value = "comments", key = "'comments:' + #postId + ':' + #page + ':' + #size", cacheManager = "contentCacheManager")
   public PageResponseDto<CommentResponseDto> getCommentList(int page, int size, long postId) {
 
     if (!postRepository.existsById(postId)) {
@@ -85,6 +89,7 @@ public class CommentService {
    * @return : id, postId, content, likesCount
    */
   @Transactional
+  @CachePut(value = "comments", key = "'comments:' + #result.id", cacheManager = "contentCacheManager")
   public CommentResponseDto updateComment(long commentId, String content, long userId) {
     Comment comment = commentRepository.findByIdOrThrow(commentId);
     if (comment.getUser().getId() != userId) {
@@ -104,6 +109,7 @@ public class CommentService {
    * @param userId    작성자
    */
   @Transactional
+  @CacheEvict(value = "comments", key = "'comments:' + #commentId", cacheManager = "contentCacheManager")
   public void deleteComment(long commentId, long userId) {
     Comment comment = commentRepository.findByIdOrThrow(commentId);
     if (comment.getUser().getId() != userId) {
