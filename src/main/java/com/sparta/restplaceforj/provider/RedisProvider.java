@@ -1,13 +1,11 @@
 package com.sparta.restplaceforj.provider;
 
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.Duration;
 
 @Slf4j
 @Transactional(readOnly = true)
@@ -37,13 +35,4 @@ public class RedisProvider {
     return Boolean.TRUE.equals(stringRedisTemplate.hasKey(key));
   }
 
-  public boolean validLock(String key, long timeoutInSeconds) {
-    Boolean success = stringRedisTemplate.opsForValue()
-        .setIfAbsent(key, "locked", timeoutInSeconds, TimeUnit.SECONDS);
-    return success != null && success;
-  }
-
-  public void returnLock(String key) {
-    stringRedisTemplate.delete(key);
-  }
 }

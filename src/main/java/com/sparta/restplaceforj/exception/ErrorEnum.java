@@ -43,7 +43,7 @@ public enum ErrorEnum implements Response {
   //like
   POST_LIKE_NOT_FOUND("글 좋아요를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   COMMENT_LIKE_NOT_FOUND("댓글 좋아요를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
-
+  REDISSON_BAD_REQUEST("트렌젝션 충돌 잠시후 시도해주세요.", HttpStatus.BAD_REQUEST),
 
   //Plan error
   PLAN_NOT_FOUND("플랜을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),

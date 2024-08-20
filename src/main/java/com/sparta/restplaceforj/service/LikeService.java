@@ -16,7 +16,12 @@ import com.sparta.restplaceforj.repository.PostLikeRepository;
 import com.sparta.restplaceforj.repository.PostRepository;
 import com.sparta.restplaceforj.repository.UserRepository;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,11 +30,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class LikeService {
 
+  private static final Logger log = LoggerFactory.getLogger(LikeService.class);
   private final PostLikeRepository postLikeRepository;
   private final PostRepository postRepository;
   private final CommentRepository commentRepository;
   private final CommentLikeRepository commentLikeRepository;
-  private final RedisProvider redisProvider;
+  private final RedissonClient redissonClient;
 
   /**
    * 글 좋아요
@@ -39,12 +45,11 @@ public class LikeService {
    * @return PostLikeResponseDto 필드명 : id, userId, postId
    */
   public Optional<PostLikeResponseDto> createPostLike(long postId, User user) {
-    String lockKey = "postLike:" + postId + "-" + user.getId();
-
-    if (!validateLikeLock(lockKey)) {
-      throw new CommonException(ErrorEnum.INVALID_LOCK);
-    }
+    RLock lock = redissonClient.getLock("postLike :" + postId);
     try {
+      if (!lock.tryLock(10, 10, TimeUnit.SECONDS)) {
+        log.info("게시물락 획득시간이 만료됨.");
+      }
       Post post = postRepository.findByIdOrThrow(postId);
       PostLike postLike = PostLike.builder()
           .user(user)
@@ -67,8 +72,10 @@ public class LikeService {
           .build();
 
       return Optional.of(postLikeResponseDto);
+    } catch (InterruptedException e) {
+      throw new CommonException(ErrorEnum.REDISSON_BAD_REQUEST);
     } finally {
-      redisProvider.returnLock(lockKey);
+      lock.unlock();
     }
   }
 
@@ -80,12 +87,12 @@ public class LikeService {
    * @return CommentLikeResponseDto 필드명 : id, userId, commentId
    */
   public Optional<CommentLikeResponseDto> createCommentLike(long commentId, User user) {
-    String lockKey = "commentLike:" + commentId + "-" + user.getId();
+    RLock lock = redissonClient.getLock("commentLike :" + commentId);
 
-    if (!validateLikeLock(lockKey)) {
-      throw new CommonException(ErrorEnum.INVALID_LOCK);
-    }
     try {
+      if (!lock.tryLock(5, 1, TimeUnit.SECONDS)) {
+        log.info("댓글락 획득시간이 만료됨.");
+      }
       Comment comment = commentRepository.findByIdOrThrow(commentId);
       CommentLike commentLike = CommentLike.builder()
           .user(user)
@@ -111,12 +118,10 @@ public class LikeService {
           .build();
 
       return Optional.of(commentLikeResponseDto);
+    } catch (InterruptedException e) {
+      throw new CommonException(ErrorEnum.REDISSON_BAD_REQUEST);
     } finally {
-      redisProvider.returnLock(lockKey);
+      lock.unlock();
     }
-  }
-
-  private boolean validateLikeLock(String key) {
-    return redisProvider.validLock(key, 5);
   }
 }
