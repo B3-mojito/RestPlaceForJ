@@ -23,7 +23,6 @@ public class GlobalExceptionHandler {
             .data(ex.getMessage())
             .build()
     );
-
   }
 
   @ExceptionHandler(ExpiredJwtException.class)

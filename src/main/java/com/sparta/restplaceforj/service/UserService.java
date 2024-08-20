@@ -1,6 +1,7 @@
 package com.sparta.restplaceforj.service;
 
 import com.sparta.restplaceforj.dto.UpdateUserProfileImageResponseDto;
+import com.sparta.restplaceforj.dto.UserPasswordUpdateDto;
 import com.sparta.restplaceforj.dto.UserProfileResponseDto;
 import com.sparta.restplaceforj.dto.UserResignResponseDto;
 import com.sparta.restplaceforj.dto.UserSignUpRequestDto;
@@ -14,6 +15,7 @@ import com.sparta.restplaceforj.provider.ImageProvider;
 import com.sparta.restplaceforj.repository.UserRepository;
 import com.sparta.restplaceforj.s3.S3Service;
 import java.io.IOException;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -165,30 +167,70 @@ public class UserService {
     String password = user.getPassword();
 
     // 중복된 닉네임을 가진 사용자가 있을 시 예외처리
-    if (userRepository.existsByNickname(nickname)) {
+    if (!Objects.equals(userUpdateRequestDto.getNickname(), user.getNickname())
+        && userRepository.existsByNickname(nickname)) {
       throw new CommonException(ErrorEnum.DUPLICATED_NICKNAME);
     }
 
+    // 유저 정보 업데이트 및 저장
+    user.updateProfile(nickname, bio);
+    userRepository.save(user);
+
+    // 응답 DTO 생성
+    return UserProfileResponseDto.builder()
+        .bio(user.getBio())
+        .nickname(user.getNickname())
+        .build();
+  }
+
+  /**
+   * 유저 비밀번호 수정 메서드
+   *
+   * @param userPasswordUpdateDto : nickname, bio, currentPassword, newPassword, confirmPassword;
+   * @param user
+   * @param userId
+   * @return UserProfileResponseDto :nickname, bio, profilePicture
+   */
+  @Transactional
+  public UserProfileResponseDto updateUserPassword(UserPasswordUpdateDto userPasswordUpdateDto,
+      User user, Long userId) {
+
+    if (!Objects.equals(user.getId(), userId)) {
+      throw new CommonException(ErrorEnum.INVALID_ACCESS);
+    }
+
+    if (user.getKakaoId() != null) {
+      throw new CommonException(ErrorEnum.BAD_PASSWORD_KAKAO);
+    }
+
+    String password = user.getPassword();
+
     // 비밀번호 변경 로직
-    if (!userUpdateRequestDto.getCurrentPassword().isEmpty()
-        && !userUpdateRequestDto.getNewPassword().isEmpty()
-        && !userUpdateRequestDto.getConfirmPassword().isEmpty()) {
+    if (!userPasswordUpdateDto.getCurrentPassword().isEmpty()
+        && !userPasswordUpdateDto.getNewPassword().isEmpty()
+        && !userPasswordUpdateDto.getConfirmPassword().isEmpty()) {
 
       // 현재 비밀번호가 올바른지 확인
-      if (!passwordEncoder.matches(userUpdateRequestDto.getCurrentPassword(), password)) {
+      if (!passwordEncoder.matches(userPasswordUpdateDto.getCurrentPassword(), password)) {
+        throw new CommonException(ErrorEnum.BAD_PASSWORD);
+      }
+      // 현재 비밀번호와 바꿀 비밀번호가 일치하면 예외발생
+      if (!passwordEncoder.matches(userPasswordUpdateDto.getCurrentPassword(),
+          userPasswordUpdateDto.getNewPassword())) {
         throw new CommonException(ErrorEnum.BAD_PASSWORD);
       }
 
       // 새 비밀번호와 확인 비밀번호가 일치하는지 확인
-      if (userUpdateRequestDto.getNewPassword().equals(userUpdateRequestDto.getConfirmPassword())) {
-        password = passwordEncoder.encode(userUpdateRequestDto.getNewPassword());
+      if (userPasswordUpdateDto.getNewPassword()
+          .equals(userPasswordUpdateDto.getConfirmPassword())) {
+        password = passwordEncoder.encode(userPasswordUpdateDto.getNewPassword());
       } else {
         throw new CommonException(ErrorEnum.BAD_PASSWORD);
       }
     }
 
     // 유저 정보 업데이트 및 저장
-    user.updateProfile(nickname, bio, password);
+    user.updatePassword(password);
     userRepository.save(user);
 
     // 응답 DTO 생성
