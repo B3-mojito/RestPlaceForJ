@@ -47,8 +47,9 @@ public class LikeService {
   public Optional<PostLikeResponseDto> createPostLike(long postId, User user) {
     RLock lock = redissonClient.getLock("postLike :" + postId);
     try {
-      if (!lock.tryLock(10, 10, TimeUnit.SECONDS)) {
+      if (!lock.tryLock(10, 4, TimeUnit.SECONDS)) {
         log.info("게시물락 획득시간이 만료됨.");
+        return Optional.empty();
       }
       Post post = postRepository.findByIdOrThrow(postId);
       PostLike postLike = PostLike.builder()
@@ -73,6 +74,7 @@ public class LikeService {
 
       return Optional.of(postLikeResponseDto);
     } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
       throw new CommonException(ErrorEnum.REDISSON_BAD_REQUEST);
     } finally {
       lock.unlock();
@@ -90,8 +92,9 @@ public class LikeService {
     RLock lock = redissonClient.getLock("commentLike :" + commentId);
 
     try {
-      if (!lock.tryLock(5, 1, TimeUnit.SECONDS)) {
+      if (!lock.tryLock(10, 4, TimeUnit.SECONDS)) {
         log.info("댓글락 획득시간이 만료됨.");
+        return Optional.empty();
       }
       Comment comment = commentRepository.findByIdOrThrow(commentId);
       CommentLike commentLike = CommentLike.builder()
@@ -119,6 +122,7 @@ public class LikeService {
 
       return Optional.of(commentLikeResponseDto);
     } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
       throw new CommonException(ErrorEnum.REDISSON_BAD_REQUEST);
     } finally {
       lock.unlock();
