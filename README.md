@@ -1,7 +1,9 @@
 ### 🔍 주요 기능
 
-![Uploading 화면 기록 2024-08-23 오후 4.50.21.gif…]()
 
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/a68d6ef7-8ef8-449c-a532-9a410917ea48">
+</p>
 
 - **여행지 추천**
     - 지역과 테마를 골라 여행지를 추천받을 수 있습니다.
