@@ -1,3 +1,8 @@
+### 🏢 프로젝트 소개
+<img width="731" alt="B-3 이미지" src="https://github.com/user-attachments/assets/c16a9c77-5879-4c91-b742-d8b89ce089e0">
+
+’J의 안식처’ 🏖️
+계획하는 “J”들이 모여 추천 여행지를 공유하고 여행 일정을 계획하는 안식처이자, 익명의 여행자 "J"들이 여행 중 발견한 안식처 같은 장소를 공유하고 여행 일정을 계획하는 서비스입니다. 
 ### 🔍 주요 기능
 
 
@@ -8,29 +13,32 @@
 - **여행지 추천**
     - 지역과 테마를 골라 여행지를 추천받을 수 있습니다.
         
-        ![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/83c75a39-3aba-4ba4-a792-7aefe4b07895/1be6f187-f051-47f2-bc68-23daf198fb1a/image.png)
+    ![image (1)](https://github.com/user-attachments/assets/8e5b7ee2-7ef1-42b1-b2a1-e850ab3d885d)
+
         
     - 추천 받은 여행지에 대해 유저들이 작성한 게시글을 조회할 수 있습니다.
         
-        
-        ![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/83c75a39-3aba-4ba4-a792-7aefe4b07895/efc69f16-eaeb-41a2-aadb-a2733aeb5dcf/image.png)
-        
-        ![스크린샷 2024-08-16 오전 11.04.24.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/83c75a39-3aba-4ba4-a792-7aefe4b07895/48feb5aa-a168-4188-8655-493f77e3439c/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2024-08-16_%E1%84%8B%E1%85%A9%E1%84%8C%E1%85%A5%E1%86%AB_11.04.24.png)
+        ![image (2)](https://github.com/user-attachments/assets/e593338b-b640-42f0-8d5b-9563496e3303)
+
+     
+   <img width="719" alt="스크린샷 2024-08-16 오전 11 04 24" src="https://github.com/user-attachments/assets/4bccf0dc-a2f1-489f-9e7a-c6c3697d239c">
+
         
 - **여행 계획**
     - 칸반보드 형식으로 여행 일정을 관리할 수 있습니다.
     - 유저를 초대하여 함께 여행 일정을 계획할 수 있습니다.
     
-    ![스크린샷 2024-08-16 오전 11.42.24.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/83c75a39-3aba-4ba4-a792-7aefe4b07895/21d21d8a-15b1-4930-9f36-7f38b0ec778b/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2024-08-16_%E1%84%8B%E1%85%A9%E1%84%8C%E1%85%A5%E1%86%AB_11.42.24.png)
-    
-    ![스크린샷 2024-08-16 오전 11.42.36.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/83c75a39-3aba-4ba4-a792-7aefe4b07895/f17cf7d0-83c9-4ea6-bf2c-ac546cb55054/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2024-08-16_%E1%84%8B%E1%85%A9%E1%84%8C%E1%85%A5%E1%86%AB_11.42.36.png)
-    
+   <img width="1459" alt="스크린샷 2024-08-16 오전 11 42 24" src="https://github.com/user-attachments/assets/0dcfa14b-eb2d-4eb3-8930-ffc6f670f857">
+
+    <img width="1387" alt="스크린샷 2024-08-16 오전 11 42 36" src="https://github.com/user-attachments/assets/fbb2c56e-0cf2-41d0-8a57-484d2ad7a3c0">
+
 
 ---
 
+
 ### 🏗 서비스 아키텍처
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/83c75a39-3aba-4ba4-a792-7aefe4b07895/a423fd5a-9752-4aad-9096-0e2992137723/image.png)
+![image](https://github.com/user-attachments/assets/f3bc5fdd-279c-418d-a89a-3d99a71d1dfa)
 
 ### 🍀 주요 기술
 
@@ -89,9 +97,236 @@
         
         ⇒ 저희는 단일 서버가 아닌 분산 시스템으로 이루어져 있기 때문에 분산 락을 선택하였습니다. 
         
-- **캐싱 처리**
-    1. **기술 도입 필요성**
-        - 데이터 검색 지연 시간을 줄이고 애플리케이션의 전반적인 성능 향상을 위해 캐싱 처리를 도입하기로 하였습니다.
+
+### 🔒 팀 컨벤션
+    **이슈 관리**
+
+- `작업 타입/개발하려는 기능 명`으로 제목 통일
+- ex) feat/작업명
+- GitHub 프로젝트 보드도 추가로 이용
+    
+    [GitHub 이슈관리 (velog.io)](https://velog.io/@woowoon920/GitHub-%EC%9D%B4%EC%8A%88%EA%B4%80%EB%A6%AC)
+    
+
+**브랜치 네이밍**
+
+- `작업 타입/이슈번호/도메인`
+- ex) feat/#1/users
+
+**커밋 컨벤션**
+
+- `작업 타입: 작업한 내용`
+- ex) feat: 로그인 기능 개발
+
+**PR 방법**
+
+- `작업타입: 작업한 내용`
+- ex) feat: post 생성
+- 기능 하나당 PR 한 번 (한번에 많이 하지 않습니다!)
+
+**코드 컨벤션**
+
+- 네이밍
+    1. **데이터베이스 관련**
+        - 테이블명: 모두 소문자 + 복수형태
+        - 칼럼명: word와 word 사이는 ‘_’로 구분
+        
+        https://12bme.tistory.com/246
+        
+    2. **클래스 이름**: 단수
+    3. **컬렉션**: 엔티티 + 컬렉션 
+    ex) `List<User> UserList`
+    4. **메서드명**
+        - 생성 : create + entity
+        - 단권 조회 : get + entity
+        - 전체 조회 : get + entity + list
+        - 수정 : update + entity
+        - 삭제 : delete+ entity
+    5. **Dto 명**: 엔티티+기능+(Response||Request)Dto 
+    ex) `UserSignupResponseDto`
+        - Dto 변수명은 클래스 이름과 동일하게 설정한다.
+            - ex)  `UserSignupResponseDto userSignupResponseDto` (ㅇ)
+            - `UserSignupResponseDto responseDto`  (X)
+    6. **Default 메서드명** : `findBy○○OrThrow`
+- Controller
+    - urn
+        - 해당 리소스 이름만 넣고 필요한 리소스의 값들은 파람으로 받기
+        - 중요한 정보는 바디에 넣어서 전달
+        - 복수명사 사용
+    - Service만 받기
+    - **반환 타입** : `responseEntity<CommonResponse<dto>>`
+        
+        **CommonResponse**
+        
+        ```jsx
+        @Builder
+        	public CommonResponse(ResponseEnum responseEnum, T data) {
+        		this.statusCode = responseEnum.getHttpStatus();
+        		this.message = responseEnum.getMessage();
+        		this.data = data;
+        	}
+        ```
+        
+        **return**
+        
+        ```jsx
+        return ResponseEntity.ok(
+        			CommonResponse.<...Dto>builder()
+        				.responseEnum(ResponseEnum.GET_CARD)
+        				.data(responseDto)
+        				.build());
+        ```
+        
+- Service
+    - Repository만 받기
+    - 클래스 - @Transactional(readOnly = true)
+    필요할 때 @Transactional
+- 주석
+    - Javadoc 이용 → Controller, Service에만 적용
+    
+    ```jsx
+    /**
+    
+    Multiple lines of Javadoc text are written here,
+    
+    wrapped normally...
+    */
+    public int method(String p1) { ... }
+    ```
+    
+    [https://velog.io/@guswns7451/Java-Javadoc-활용한-주석-처리#see](https://velog.io/@guswns7451/Java-Javadoc-%ED%99%9C%EC%9A%A9%ED%95%9C-%EC%A3%BC%EC%84%9D-%EC%B2%98%EB%A6%AC#see)
+    [[IntelliJ] 주석 태그 & 키워드 활용하기 : TODO, FIXME, Custom Comment Tag — Contributor9 (tistory.com)](https://adjh54.tistory.com/386)
+    
+- 상수 관리
+    - public static final로 선언
+    - 생성자는 private으로 막아두기
+    
+    ```jsx
+    public final class MemberValidation {
+        public static final String USERNAME = "[A-Za-z0-9]{3,30}";
+        public static final String PASSWORD = " ... ";
+        public static final String NICKNAME = " ... ";
+        
+        private MemberValidation() {}
+    }
+    ```
+    
+    https://velog.io/@letsdev/Java-상수-관리-or-Treat
+    
+    [자바에서 상수 정의하기: 추상 클래스와 인터페이스의 활용 (tistory.com)](https://jaykaybaek.tistory.com/4)
+    
+- 외
+    - builder() : 모두 빌더로 통일
+    - 기본 생성자 액세스 레벨은 PROTECTED로 설정한다. `@NoArgsConstructor(access = AccessLevel.PROTECTED)` 
+    [@NoArgsConstructor 액세스 레벨을 PROTECTED로 하는 이유 (tistory.com)](https://skatpdnjs.tistory.com/96)
+    - Optional 붙는 메서드는 repository에서 예외처리
+        - default 메서드 이름: `findBy○○OrThrow`
+    - 너무 길어지는 경우 다음과 같이 줄 바꿈한다.
+    
+    ```
+    ColumnResponseDto responseDto = columnService
+    .createColumn(planId, requestDto);
+    ```
+    
+
+[[JAVA] Google Java Convention, 구글 자바 코드 작성규칙에 대하여 (oopy.io)](https://sihyung92.oopy.io/af26a1f6-b327-45a6-a72b-c6fcb754e219)
+
+**기타 컨벤션**
+
+- 기본 생성자 액세스 레벨은 PROTECTED로 설정한다. `@NoArgsConstructor(access = AccessLevel.PROTECTED)` 
+[@NoArgsConstructor 액세스 레벨을 PROTECTED로 하는 이유 (tistory.com)](https://skatpdnjs.tistory.com/96)
+- HTTP CLIENT로 테스트
+- 패키지 구조: 계층
+- DB 로컬에 저장했다가 공용 DB로 변경
+- S3로 멀티미디어
+
+
+### ⚙️ API 명세서
+# 회원가입
+
+[로그인](https://www.notion.so/a7546dfb9191478c8df8a33d1eab9956?pvs=21)
+
+[로그아웃](https://www.notion.so/551a821b7cd7463e9d8ad697f0e4a269?pvs=21)
+
+[토큰 재발급](https://www.notion.so/a63179c11aa649d4924f82f947450a92?pvs=21)
+
+[회원탈퇴](https://www.notion.so/c28c165365d44556afead45ef7df6c7a?pvs=21)
+
+[프로필 조회](https://www.notion.so/a1ce683ceb6c47b39b700619264ce9a9?pvs=21)
+
+[프로필 이미지 등록](https://www.notion.so/77a9d08f26e341ca88e8f93fe1b9d8ed?pvs=21)
+
+[프로필 수정](https://www.notion.so/e96ed942fdbf43428e4f86b275f7d85d?pvs=21)
+
+[플랜 조회](https://www.notion.so/4c572afe6c6d43428ed209e2bf0bf51e?pvs=21)
+
+[작성한 여행 추천 게시물 조회](https://www.notion.so/9a7148047627425c9b65ab76637b527f?pvs=21)
+
+[글 생성](https://www.notion.so/ae72f46192fc436a852d108909ab5407?pvs=21)
+
+[글 수정](https://www.notion.so/c719b48c3fcd40af9362b573ff1321a2?pvs=21)
+
+[글 리스트 조회](https://www.notion.so/8005384e2dda476a81da9c8496f38e08?pvs=21)
+
+[글 지역명 조회](https://www.notion.so/6a71d646397c4c58b863072149adb2ef?pvs=21)
+
+[글 단건 조회](https://www.notion.so/e1c81d59aa7a423cac6e175a104afc9b?pvs=21)
+
+[글 삭제](https://www.notion.so/f3b316e0c442432cb5c34898feaeffdc?pvs=21)
+
+[글 계획에 추가](https://www.notion.so/a353cd29f1594fab81fc5a1eb6b6caa1?pvs=21)
+
+[사진 업로드](https://www.notion.so/5e94654ef4ae4a9e84ff7a7491f5b1ee?pvs=21)
+
+[사진 조회](https://www.notion.so/e6d8badbf61d4955a5789b0cdb714fcb?pvs=21)
+
+[사진 삭제](https://www.notion.so/9936ed73e57a460898d1e2e0bedb6560?pvs=21)
+
+[댓글 생성](https://www.notion.so/d67f86b9f0f9480982ae8e4267698129?pvs=21)
+
+[댓글 수정](https://www.notion.so/65d04e4dd86540f2a9088cef46707d8b?pvs=21)
+
+[댓글 조회](https://www.notion.so/a54209c8a8284bf7b45cd56585f22d9f?pvs=21)
+
+[댓글 삭제](https://www.notion.so/d7d616588d0d484799562debbab86a2f?pvs=21)
+
+[댓글 좋아요](https://www.notion.so/8af51b2b06394aac9ed783bf9cb8f66b?pvs=21)
+
+[글 좋아요](https://www.notion.so/6bb394f789064aa68073f12c3740460d?pvs=21)
+
+[플랜 조회](https://www.notion.so/bbddf4091a3f44b7a7efd3052d3ffc4b?pvs=21)
+
+[플랜 생성](https://www.notion.so/b93ce336ba334548b3a0849e19bb1063?pvs=21)
+
+[플랜 수정](https://www.notion.so/93e99774c42449a1b4f69e7cbd5c1e48?pvs=21)
+
+[플랜 삭제](https://www.notion.so/46e99b00b4934551b7b2d55e9c331f35?pvs=21)
+
+[플랜 단권 조회](https://www.notion.so/2fdeabcba16f4460b12c84be06ac1959?pvs=21)
+
+[공동 작업자 인증번호 발송](https://www.notion.so/364cdb4953634e55b070c4fd90e1226a?pvs=21)
+
+[인증 코드 유효성 검사, 공동작업자 추가](https://www.notion.so/6cd6bb3304a34892b290e93b0ec2f7dc?pvs=21)
+
+[칼럼 조회](https://www.notion.so/ae60c9d69b5543fead37cf278fbfd2c5?pvs=21)
+
+[칼럼 생성](https://www.notion.so/57c7c6017fcc47819131969f7ff89484?pvs=21)
+
+[칼럼 수정](https://www.notion.so/93952ddaf01c4195976f31461857c251?pvs=21)
+
+[칼럼 삭제](https://www.notion.so/a89ce91772a24cb091b47871487e24e8?pvs=21)
+
+[카드 생성](https://www.notion.so/9936b484092349208e77c453f67af828?pvs=21)
+
+[카드 조회](https://www.notion.so/142157b9a6ee4cecba1b1ca77e85a7d7?pvs=21)
+
+[카드 단건 조회](https://www.notion.so/95a1bb30f3b046bd8a5132f137e52aea?pvs=21)
+
+[카드 수정](https://www.notion.so/c8edc1f8522c46e6ad0397f8f5106c6a?pvs=21)
+
+[카드 삭제](https://www.notion.so/8748f0c5e16745e39bdbbdaa95f5f0d1?pvs=21)
+
+ [API 명세서](https://www.notion.so/433c6d7e78ca4d63a90664f5544db5af?pvs=21)
 
 ### 🛠 트러블 슈팅
 
@@ -99,7 +334,8 @@
     - **1. 문제 상황**
         - 프론트 배포 배포 후 백엔드 서버와 연결을 시도하니, 브라우저에서  `Mixed Contents` 에러가 발생하여 백엔드 서버와 연결이 불가했습니다.
         
-        ![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/83c75a39-3aba-4ba4-a792-7aefe4b07895/ea89378e-bf12-4d3b-9a50-07577bc34696/image.png)
+        ![image (3)](https://github.com/user-attachments/assets/42b0f32e-a07e-44e6-9cb2-d07f0c150ada)
+
         
     - **2. 원인**
         - `Mixed Contents` 란 웹 페이지에서 보안 연결(HTTPS)을 통해 제공되는 페이지에 보안되지 않은 연결(HTTP)를 통해 로드되는 컨텐츠가 있을 경우 발생하는 오류입니다.
@@ -116,17 +352,20 @@
                 - 또한 EC2 서버를 여러 대 가질 때 모든 EC2 서버에서 인증서를 설치, 관리할 필요 없이 로드 밸런서에서 관리할 수 있어 편리하다는 장점이 있습니다.
             - `SSL Termination` 방식을 이용하기 위해 먼저 AWS Certificate Manager에서 인증서를 발급하였습니다.
                 
-                ![스크린샷 2024-08-17 오후 1.34.17.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/83c75a39-3aba-4ba4-a792-7aefe4b07895/b65c4798-2e38-427c-ae6f-bdfc7bae7256/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2024-08-17_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_1.34.17.png)
                 
+                <img width="1305" alt="스크린샷 2024-08-17 오후 1 34 17" src="https://github.com/user-attachments/assets/c4c0541c-adbe-4aa4-bd9e-b082bcb5107e">
+
             
             - AWS Route53를 이용하여 도메인 이름을 호스팅 영역에 등록하고, DNS 설정을 통해 서버와 로드 밸런서와 관련한 레코드를 등록했습니다. 발급받은 인증서를 로드 밸런서에 설정하여 SSL Termination을 구성했습니다.
                 - 서버와 로드 밸런서와 관련한 레코드를 등록
                     
-                    ![스크린샷 2024-08-17 오후 1.37.03.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/83c75a39-3aba-4ba4-a792-7aefe4b07895/716e17df-69ed-400c-9dfa-20dbf693a5a5/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2024-08-17_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_1.37.03.png)
+                    <img width="1266" alt="스크린샷 2024-08-17 오후 1 37 03" src="https://github.com/user-attachments/assets/fddeb15c-ddb1-48ba-b9ef-51b01d8fa598">
+
                     
                 - 로드밸런서에서 HTTP로 온 요청은 HTTPS로 리디렉션 되도록 설정하고, HTTPS 요청은 EC2 인스턴스로 전달
                     
-                    ![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/83c75a39-3aba-4ba4-a792-7aefe4b07895/6e81b315-8d9b-4731-84ed-6780a45d9044/image.png)
+                    ![image (4)](https://github.com/user-attachments/assets/879d894d-f61f-40b4-9c35-a2a79104a4d2)
+
                     
 - **Query did not return a unique result: 2 results were returned 문제**
     - **1. 문제 상황**
@@ -263,26 +502,13 @@
 
 ### 🏖️팀 소개
 
-- 팀원
-    
-    
-    | 이름 | 역할 | 담당 파트 | 개인 깃허브 주소 |
-    | --- | --- | --- | --- |
-    | 최유진 | 팀장 | - 인증 인가 파트 (로그인, 로그아웃, 토큰 재발급)
-    - 유저 파트 (회원가입, 탈퇴, 유저 프로필 조회, 수정)
-    - 플랜 파트 (공동 작업자 메일 발송, 인증 확인)
-    - 프론트
-    - 프론트 서버 배포 | https://github.com/geneeuchoi |
-    | 이재성 | 부팀장 | - 플랜 파트 (플랜 CRUD)
-    - 칼럼 파트 (칼럼 CRUD)
-    - 연관 게시물 파트 (연관 게시물 조회, 포스트에서 카드 생성)
-    - 프론트 | https://github.com/Delphinium52 |
-    | 이제범 | 팀원 | - 카드 파트 (카드 CRUD) | https://github.com/jebum1019 |
-    | 차도범 | 팀원 | - 추천글 파트 (추천글 CRUD, 사진 CRUD, 댓글 CRUD)
-    - 좋아요 파트 (추천글 좋아요, 댓글 좋아요)
-    - 인프라 설계
-    - 프론트
-    - 백엔드 서버 배포 | https://github.com/ckehqja |
+
+  | 이름 | 역할 | 내용                                                                                                                                                                          | 깃허브주소                        |
+|------------|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------|
+| 최유진     | 팀장           |  - 인증 인가 파트 (로그인, 로그아웃, 토큰 재발급) <br>  - 유저 파트 (회원가입, 탈퇴, 유저 프로필 조회, 수정) <br>  - 플랜 파트 (공동 작업자 메일 발송, 인증 확인) <br>  - 프론트 <br>  - 프론트 서버 배포 | https://github.com/geneeuchoi   |
+| 이재성     | 부팀장         | - 플랜 파트 (플랜 CRUD) <br> - 칼럼 파트 (칼럼 CRUD) <br> - 연관 게시물 파트 (연관 게시물 조회, 포스트에서 카드 생성) <br> - 프론트 <br> - 동시성제어                                                               | https://github.com/Delphinium52 |
+| 이제범     | 팀원           | - 카드 파트 (카드 CRUD)                                                                                                                                                               | https://github.com/jebum1019    |
+| 차도범     | 팀원           | - 추천글 파트 (추천글 CRUD, 사진 CRUD, 댓글 CRUD) <br> - 좋아요 파트 (추천글 좋아요, 댓글 좋아요) <br> - 인프라 설계 <br> - 프론트 <br> - 백엔드 서버 배포                                                | https://github.com/ckehqja      |
     
 - 협업 방식
     - `자체 컨벤션`을 설정하여 컨벤션에 맞게 코드 작성 및 `깃허브` 관리 [컨벤션 보러 가기](https://www.notion.so/1544fa88bc2a4b8ea52e95e9eeb03fd9?pvs=21)
