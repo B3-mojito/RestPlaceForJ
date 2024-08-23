@@ -7,7 +7,11 @@
 
 
 <p align="center">
-    <img src="https://github.com/user-attachments/assets/a68d6ef7-8ef8-449c-a532-9a410917ea48">
+    <img width="500" src="https://github.com/user-attachments/assets/a68d6ef7-8ef8-449c-a532-9a410917ea48">
+</p>
+
+<p align="center">
+    <img width="1200" src="https://github.com/user-attachments/assets/3e682bb2-a8ea-4b6f-be67-ee479e56241b">
 </p>
 
 - **여행지 추천**
@@ -21,16 +25,16 @@
         ![image (2)](https://github.com/user-attachments/assets/e593338b-b640-42f0-8d5b-9563496e3303)
 
      
-   <img width="719" alt="스크린샷 2024-08-16 오전 11 04 24" src="https://github.com/user-attachments/assets/4bccf0dc-a2f1-489f-9e7a-c6c3697d239c">
+   <img width="1200" alt="스크린샷 2024-08-16 오전 11 04 24" src="https://github.com/user-attachments/assets/4bccf0dc-a2f1-489f-9e7a-c6c3697d239c">
 
         
 - **여행 계획**
     - 칸반보드 형식으로 여행 일정을 관리할 수 있습니다.
     - 유저를 초대하여 함께 여행 일정을 계획할 수 있습니다.
     
-   <img width="1459" alt="스크린샷 2024-08-16 오전 11 42 24" src="https://github.com/user-attachments/assets/0dcfa14b-eb2d-4eb3-8930-ffc6f670f857">
+   <img width="1200" alt="스크린샷 2024-08-16 오전 11 42 24" src="https://github.com/user-attachments/assets/0dcfa14b-eb2d-4eb3-8930-ffc6f670f857">
 
-    <img width="1387" alt="스크린샷 2024-08-16 오전 11 42 36" src="https://github.com/user-attachments/assets/fbb2c56e-0cf2-41d0-8a57-484d2ad7a3c0">
+    <img width="1200" alt="스크린샷 2024-08-16 오전 11 42 36" src="https://github.com/user-attachments/assets/fbb2c56e-0cf2-41d0-8a57-484d2ad7a3c0">
 
 
 ---
@@ -353,13 +357,13 @@
             - `SSL Termination` 방식을 이용하기 위해 먼저 AWS Certificate Manager에서 인증서를 발급하였습니다.
                 
                 
-                <img width="1305" alt="스크린샷 2024-08-17 오후 1 34 17" src="https://github.com/user-attachments/assets/c4c0541c-adbe-4aa4-bd9e-b082bcb5107e">
+                <img width="1200" alt="스크린샷 2024-08-17 오후 1 34 17" src="https://github.com/user-attachments/assets/c4c0541c-adbe-4aa4-bd9e-b082bcb5107e">
 
             
             - AWS Route53를 이용하여 도메인 이름을 호스팅 영역에 등록하고, DNS 설정을 통해 서버와 로드 밸런서와 관련한 레코드를 등록했습니다. 발급받은 인증서를 로드 밸런서에 설정하여 SSL Termination을 구성했습니다.
                 - 서버와 로드 밸런서와 관련한 레코드를 등록
                     
-                    <img width="1266" alt="스크린샷 2024-08-17 오후 1 37 03" src="https://github.com/user-attachments/assets/fddeb15c-ddb1-48ba-b9ef-51b01d8fa598">
+                    <img width="1200" alt="스크린샷 2024-08-17 오후 1 37 03" src="https://github.com/user-attachments/assets/fddeb15c-ddb1-48ba-b9ef-51b01d8fa598">
 
                     
                 - 로드밸런서에서 HTTP로 온 요청은 HTTPS로 리디렉션 되도록 설정하고, HTTPS 요청은 EC2 인스턴스로 전달
