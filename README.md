@@ -15,7 +15,7 @@
 - **여행지 추천**
     - 지역과 테마를 골라 여행지를 추천받을 수 있습니다.
     - 추천 받은 여행지에 대해 유저들이 작성한 게시글을 조회할 수 있습니다.
-      <img width="1200" src="https://github.com/user-attachments/assets/59ac119d-80f3-4fd4-8a58-67221b2fd3c5">
+      <img width="800" src="https://github.com/user-attachments/assets/59ac119d-80f3-4fd4-8a58-67221b2fd3c5">
 
 [//]: # (  ![image &#40;1&#41;]&#40;https://github.com/user-attachments/assets/8e5b7ee2-7ef1-42b1-b2a1-e850ab3d885d&#41;)
 
@@ -25,9 +25,9 @@
 
 - **여행 계획**
     - 유저를 초대하여 함께 여행 일정을 계획할 수 있습니다.
-      <img width="1200" src="https://github.com/user-attachments/assets/73237276-afac-4b36-9984-2a9d5ab82ec6">
+      <img width="800" src="https://github.com/user-attachments/assets/73237276-afac-4b36-9984-2a9d5ab82ec6">
     - 칸반보드 형식으로 여행 일정을 관리할 수 있습니다.
-      <img width="1200" src="https://github.com/user-attachments/assets/a400fc71-f744-44f5-9c64-11cf9e11b9dc">
+      <img width="800" src="https://github.com/user-attachments/assets/613b4a66-655e-4907-a856-b2f1a8efe845">
 
 [//]: # (  <img width="1200" alt="스크린샷 2024-08-16 오전 11 42 24" src="https://github.com/user-attachments/assets/0dcfa14b-eb2d-4eb3-8930-ffc6f670f857">)
 
