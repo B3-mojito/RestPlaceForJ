@@ -14,11 +14,10 @@
 
 - **여행지 추천**
     - 지역과 테마를 골라 여행지를 추천받을 수 있습니다.
+    - 추천 받은 여행지에 대해 유저들이 작성한 게시글을 조회할 수 있습니다.
+      <img width="1200" src="https://github.com/user-attachments/assets/207c6675-4cfa-42da-b536-de7225b8189a">
 
 [//]: # (  ![image &#40;1&#41;]&#40;https://github.com/user-attachments/assets/8e5b7ee2-7ef1-42b1-b2a1-e850ab3d885d&#41;)
-
-- 추천 받은 여행지에 대해 유저들이 작성한 게시글을 조회할 수 있습니다.
-  <img width="1200" src="https://github.com/user-attachments/assets/ebc9ae2c-292e-46b1-a7d1-7ed9890f147d">
 
 [//]: # (  ![image &#40;2&#41;]&#40;https://github.com/user-attachments/assets/e593338b-b640-42f0-8d5b-9563496e3303&#41;)
 
