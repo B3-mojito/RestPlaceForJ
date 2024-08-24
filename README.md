@@ -25,7 +25,7 @@
 
 - **여행 계획**
     - 유저를 초대하여 함께 여행 일정을 계획할 수 있습니다.
-      <img width="800" src="https://github.com/user-attachments/assets/73237276-afac-4b36-9984-2a9d5ab82ec6">
+      <img width="800" src="https://github.com/user-attachments/assets/36c48e78-e77d-4e12-84a8-9b5d4ad4945a">
     - 칸반보드 형식으로 여행 일정을 관리할 수 있습니다.
       <img width="800" src="https://github.com/user-attachments/assets/613b4a66-655e-4907-a856-b2f1a8efe845">
 
