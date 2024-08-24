@@ -113,4 +113,6 @@ jobs:
               -e SECRET_KEY=${SECRET_KEY}  \
               -e SERVER_PORT=${SERVER_PORT}  \
               -e KAKAO_KEY=${KAKAO_KEY}  \
+              -e EMAIL_ID=${EMAIL_ID}  \
+              -e EMAIL_PW=${EMAIL_PW}  \
               ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE_TAG_NAME}:latest
