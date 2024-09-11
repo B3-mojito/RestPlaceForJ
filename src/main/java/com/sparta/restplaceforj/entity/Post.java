@@ -1,5 +1,6 @@
 package com.sparta.restplaceforj.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sparta.restplaceforj.dto.PostRequestDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

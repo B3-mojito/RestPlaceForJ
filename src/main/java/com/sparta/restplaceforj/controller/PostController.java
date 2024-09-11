@@ -2,14 +2,16 @@ package com.sparta.restplaceforj.controller;
 
 import com.sparta.restplaceforj.common.CommonResponse;
 import com.sparta.restplaceforj.common.ResponseEnum;
-import com.sparta.restplaceforj.dto.ImageResponseDto;
+import com.sparta.restplaceforj.dto.AddCardRequestDto;
 import com.sparta.restplaceforj.dto.PageResponseDto;
 import com.sparta.restplaceforj.dto.PostIdTitleDto;
 import com.sparta.restplaceforj.dto.PostRequestDto;
 import com.sparta.restplaceforj.dto.PostResponseDto;
 import com.sparta.restplaceforj.security.UserDetailsImpl;
 import com.sparta.restplaceforj.service.PostService;
-import java.io.IOException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,9 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 여행 추천 글 api.
@@ -130,13 +130,15 @@ public class PostController {
   }
 
   /**
+   * 마이페이지에서 로그인 한 유저가 쓴 글 조회
+   *
    * @param userDetails 조회할 대상
    * @param page        현재 페이지
    * @param size        페이지 크기
    * @param sortBy      정렬 기준
    * @return PageResponseDto : placeNameList, size, page, totalPages, totalElements
    */
-  @GetMapping("/users/{user-id}/posts")
+  @GetMapping("/users/myPosts")
   public ResponseEntity<CommonResponse<PageResponseDto<PostIdTitleDto>>> getMyPostList(
       @AuthenticationPrincipal UserDetailsImpl userDetails,
       @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size,
@@ -147,6 +149,31 @@ public class PostController {
     return ResponseEntity.ok(
         CommonResponse.<PageResponseDto<PostIdTitleDto>>builder()
             .response(ResponseEnum.GET_MY_POST_LIST)
+            .data(postPageResponseDto)
+            .build()
+    );
+  }
+
+  /**
+   * 유저 프로필에서 유저가 쓴 글 조회
+   *
+   * @param userId      유저 아이디
+   * @param page        현재 페이지
+   * @param size        페이지 크기
+   * @param sortBy      정렬 기준
+   * @return PageResponseDto : placeNameList, size, page, totalPages, totalElements
+   */
+  @GetMapping("/users/{user-id}/posts")
+  public ResponseEntity<CommonResponse<PageResponseDto<PostIdTitleDto>>> getUserPostList(
+      @PathVariable(value = "user-id") Long userId,
+      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size,
+      @RequestParam(value = "sort-by", defaultValue = "createdAt") String sortBy) {
+    PageResponseDto<PostIdTitleDto> postPageResponseDto = postService
+        .getMyPostList(page, size, sortBy, userId);
+
+    return ResponseEntity.ok(
+        CommonResponse.<PageResponseDto<PostIdTitleDto>>builder()
+            .response(ResponseEnum.GET_USER_POST_LIST)
             .data(postPageResponseDto)
             .build()
     );
@@ -186,8 +213,8 @@ public class PostController {
    */
   @GetMapping("/posts/{post-id}")
   public ResponseEntity<CommonResponse<PostResponseDto>> getPost(
-      @PathVariable("post-id") long postId) {
-    PostResponseDto postResponseDto = postService.getPost(postId);
+      @PathVariable("post-id") long postId, HttpServletRequest req, HttpServletResponse res) {
+    PostResponseDto postResponseDto = postService.getPost(postId, req, res);
 
     return ResponseEntity.ok(
         CommonResponse.<PostResponseDto>builder()
@@ -198,22 +225,39 @@ public class PostController {
   }
 
   /**
-   * 사진을 s3 업로드 api.
+   * 게시물 카드에 추가  controller
    *
-   * @param images 저장할 파일
-   * @return ImageResponseDto : id, path, originalFileName, changedFiledName
-   * @throws IOException InputStream getInputStream() throws IOException
+   * @param postId            게시물 아이디
+   * @param addCardRequestDto 저장할 데이터 id, address, memo
+   * @return PostResponseDto : id, userId, title, content, address, likesCount, viewsCount,
+   * themeEnum
    */
-  @PostMapping(value = "/posts/images")
-  public ResponseEntity<CommonResponse<ImageResponseDto>> createPostImage(
-      @RequestPart("images") MultipartFile images) throws IOException {
+  @PostMapping("/posts/{post-id}")
+  public ResponseEntity<CommonResponse<PostResponseDto>> cardAddPost(
+      @PathVariable("post-id") Long postId,
+      @RequestBody @Valid AddCardRequestDto addCardRequestDto) {
 
-    ImageResponseDto imageResponseDto = postService.createPostImage(images);
+    PostResponseDto postResponseDto = postService.cardAddPost(postId, addCardRequestDto);
 
     return ResponseEntity.ok(
-        CommonResponse.<ImageResponseDto>builder()
-            .response(ResponseEnum.CREATE_USER_PROFILE_IMAGE)
-            .data(imageResponseDto)
+        CommonResponse.<PostResponseDto>builder()
+            .response(ResponseEnum.ADD_POST)
+            .data(postResponseDto)
+            .build());
+  }
+
+  @GetMapping("/cards/{card-id}/posts")
+  public ResponseEntity<CommonResponse<PageResponseDto<PostIdTitleDto>>> getCardPostList(
+      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+      @PathVariable("card-id") long cardId) {
+
+    PageResponseDto<PostIdTitleDto> postPageResponseDto = postService.getCardPostList(cardId, page,
+        size);
+
+    return ResponseEntity.ok(
+        CommonResponse.<PageResponseDto<PostIdTitleDto>>builder()
+            .response(ResponseEnum.GET_POST_ID_TITLE_LIST)
+            .data(postPageResponseDto)
             .build()
     );
   }

@@ -15,4 +15,6 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
         () -> new CommonException(ErrorEnum.IMAGE_NOT_FOUND)
     );
   }
+
+  Image findByPostId(long postId);
 }

@@ -1,8 +1,4 @@
 spring:
-  servlet:
-    multipart:
-      max-file-size: 3MB
-      max-request-size: 3MB
   datasource:
     url: ${DATASOURCE_URL}
     username: ${DATASOURCE_USERNAME}
@@ -29,13 +25,13 @@ spring:
 
 spring.mail.host: smtp.naver.com
 spring.mail.port: 465
-spring.mail.username : ${EMAIL_ID}
-spring.mail.password : ${EMAIL_PW}
-spring.mail.properties.debug : true
-spring.mail.properties.mail.smtp.auth : true
-spring.mail.properties.mail.smtp.ssl.enable : true
+spring.mail.username: ${EMAIL_ID}
+spring.mail.password: ${EMAIL_PW}
+spring.mail.properties.debug: true
+spring.mail.properties.mail.smtp.auth: true
+spring.mail.properties.mail.smtp.ssl.enable: true
 spring.mail.properties.mail.smtp.starttls.enable: true
-spring.mail.properties.mail.smtp.ssl.trust : smtp.naver.com
+spring.mail.properties.mail.smtp.ssl.trust: smtp.naver.com
 
 
 cloud:
@@ -57,6 +53,10 @@ jwt:
 
 server:
   port: ${SERVER_PORT}
+
+kakao:
+  secret:
+    key: ${KAKAO_KEY}
 
 
 

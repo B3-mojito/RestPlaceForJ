@@ -17,28 +17,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1/users")
 public class TokenController {
 
-    private final TokenService tokenService;
+  private final TokenService tokenService;
 
-    /**
-     * 토큰 재발급 controller
-     *
-     * @param request
-     * @param response
-     * @return CommonResponse
-     */
-    @PostMapping("/reissue")
-    public ResponseEntity<CommonResponse> updateToken(
-            HttpServletRequest request,
-            HttpServletResponse response
-    ) {
-        // refresh token을 사용하여 유저 정보 검증 및 새로운 토큰 발급
-        User user = tokenService.validateAndGetUserFromRefreshToken(request);
-        tokenService.updateToken(response, user);
-        return ResponseEntity.ok(
-                CommonResponse.builder()
-                        .response(ResponseEnum.UPDATE_TOKEN)
-                        .data(null)
-                        .build()
-        );
-    }
+  /**
+   * 토큰 재발급 controller
+   *
+   * @param request
+   * @param response
+   * @return CommonResponse
+   */
+  @PostMapping("/reissue")
+  public ResponseEntity<CommonResponse> updateToken(
+      HttpServletRequest request, HttpServletResponse response) {
+    // refresh token을 사용하여 유저 정보 검증 및 새로운 토큰 발급
+    User user = tokenService.validateAndGetUserFromRefreshToken(request);
+    tokenService.updateToken(response, user);
+    return ResponseEntity.ok(
+        CommonResponse.builder()
+            .response(ResponseEnum.UPDATE_TOKEN)
+            .data(null)
+            .build()
+    );
+  }
 }

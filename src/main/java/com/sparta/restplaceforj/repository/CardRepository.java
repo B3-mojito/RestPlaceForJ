@@ -7,14 +7,17 @@ import com.sparta.restplaceforj.exception.CommonException;
 import com.sparta.restplaceforj.exception.ErrorEnum;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 public interface CardRepository extends JpaRepository<Card, Long> {
 
-  default Card findCardById(Long id) {
+  default Card findByIdOrThrow(Long id) {
     return findById(id).orElseThrow(() -> new CommonException(ErrorEnum.CARD_NOT_FOUND));
   }
 
-  List<CardResponseDto> findAllByColumn(Column column);
+  List<CardResponseDto> findAllByColumnOrderByStartedAt(Column column);
 
+  List<Card> findByColumnId(Long columnId);
 
+  List<CardResponseDto> findByColumnIdIn(List<Long> columnIds);
 }

@@ -1,24 +1,28 @@
 package com.sparta.restplaceforj.service;
 
-import com.sparta.restplaceforj.dto.ImageResponseDto;
+import com.sparta.restplaceforj.dto.AddCardRequestDto;
 import com.sparta.restplaceforj.dto.PageResponseDto;
 import com.sparta.restplaceforj.dto.PostIdTitleDto;
 import com.sparta.restplaceforj.dto.PostRequestDto;
 import com.sparta.restplaceforj.dto.PostResponseDto;
+import com.sparta.restplaceforj.entity.Card;
+import com.sparta.restplaceforj.entity.Column;
 import com.sparta.restplaceforj.entity.Image;
 import com.sparta.restplaceforj.entity.Post;
+import com.sparta.restplaceforj.entity.RelatedPost;
 import com.sparta.restplaceforj.entity.ThemeEnum;
 import com.sparta.restplaceforj.entity.User;
 import com.sparta.restplaceforj.exception.CommonException;
 import com.sparta.restplaceforj.exception.ErrorEnum;
+import com.sparta.restplaceforj.repository.CardRepository;
+import com.sparta.restplaceforj.repository.ColumnRepository;
 import com.sparta.restplaceforj.repository.ImageRepository;
 import com.sparta.restplaceforj.repository.PostDslRepository;
 import com.sparta.restplaceforj.repository.PostRepository;
-import com.sparta.restplaceforj.s3.S3Service;
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import com.sparta.restplaceforj.repository.RelatedPostRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageImpl;
@@ -26,10 +30,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 추천글 서비스.
@@ -43,7 +45,9 @@ public class PostService {
   private final PostRepository postRepository;
   private final PostDslRepository postDslRepository;
   private final ImageRepository imageRepository;
-  private final S3Service s3Service;
+  private final CardRepository cardRepository;
+  private final RelatedPostRepository relatedPostRepository;
+  private final ColumnRepository columnRepository;
 
   /**
    * 글 생성
@@ -61,11 +65,7 @@ public class PostService {
       throw new CommonException(ErrorEnum.THEME_NOT_FOUND);
     }
 
-    Post post = postRepository.save(
-        Post.builder()
-            .requestDto(postRequestDto)
-            .user(user)
-            .build());
+    Post post = postRepository.save(Post.builder().requestDto(postRequestDto).user(user).build());
 
     if (!postRequestDto.getImageIdList().isEmpty()) {
       for (Long imageId : postRequestDto.getImageIdList()) {
@@ -76,9 +76,7 @@ public class PostService {
 
     Post savedPost = postRepository.save(post);
 
-    return PostResponseDto.builder()
-        .post(savedPost)
-        .build();
+    return PostResponseDto.builder().post(savedPost).build();
   }
 
   /**
@@ -97,18 +95,15 @@ public class PostService {
     postRepository.deleteById(postId);
   }
 
-  public PageResponseDto<String> getPlaceList(
-      int page, int size, String region, String theme) {
+  public PageResponseDto<String> getPlaceList(int page, int size, String region, String theme) {
 
     ThemeEnum themeEnum = ThemeEnum.valueOf(theme);
     Pageable pageRequest = PageRequest.of(page, size);
 
-    PageImpl<String> placeNameList = postDslRepository
-        .getPostListGroupByPlaceName(pageRequest, region, themeEnum);
+    PageImpl<String> placeNameList = postDslRepository.getPostListGroupByPlaceName(pageRequest,
+        region, themeEnum);
 
-    return PageResponseDto.<String>builder()
-        .page(placeNameList)
-        .build();
+    return PageResponseDto.<String>builder().page(placeNameList).build();
   }
 
   /**
@@ -121,8 +116,8 @@ public class PostService {
    * @param sortBy    정렬 기준
    * @return PageResponseDto : placeNameList, size, page, totalPages, totalElements
    */
-  public PageResponseDto<PostIdTitleDto> getPostTitleList(
-      int page, int size, String placeName, String sortBy, String q) {
+  public PageResponseDto<PostIdTitleDto> getPostTitleList(int page, int size, String placeName,
+      String sortBy, String q) {
 
     sortByCheck(sortBy);
 
@@ -130,12 +125,10 @@ public class PostService {
 
     Pageable pageRequest = PageRequest.of(page, size, sort);
 
-    PageImpl<PostIdTitleDto> postIdTitleList = postDslRepository
-        .getPostTitleList(pageRequest, placeName, q);
+    PageImpl<PostIdTitleDto> postIdTitleList = postDslRepository.getPostTitleList(pageRequest,
+        placeName, q);
 
-    return PageResponseDto.<PostIdTitleDto>builder()
-        .page(postIdTitleList)
-        .build();
+    return PageResponseDto.<PostIdTitleDto>builder().page(postIdTitleList).build();
   }
 
   /**
@@ -154,103 +147,118 @@ public class PostService {
     }
 
     post.update(postRequestDto);
-    return PostResponseDto.builder()
-        .post(post)
-        .build();
+    return PostResponseDto.builder().post(post).build();
   }
 
   /**
    * 단권글 조회.
    *
    * @param postId 조회 글 아이디
+   * @param req
+   * @param res
    * @return PostResponseDto :id, userId, title, content, address, likesCount, viewsCount, themeEnum
    */
   @Transactional
-  public PostResponseDto getPost(long postId) {
+  public PostResponseDto getPost(long postId, HttpServletRequest req, HttpServletResponse res) {
     Post post = postRepository.findByIdOrThrow(postId);
-    post.addViewToPost();
-
-    return PostResponseDto.builder()
-        .post(post)
-        .build();
+    viewCountUp(post, req, res);
+    return PostResponseDto.builder().post(post).build();
   }
 
+  /**
+   * 카드 연관 게시물 추가
+   *
+   * @param
+   * @param postId            포스트 아이디
+   * @param addCardRequestDto 저장할 데이터 id, address, memo
+   * @return CardResponseDto List<PlanResponseDto> : planId, title
+   */
   @Transactional
-  public ImageResponseDto createPostImage(MultipartFile multipartFile)
-      throws IOException {
+  public PostResponseDto cardAddPost(Long postId, AddCardRequestDto addCardRequestDto) {
+    Long cardId = addCardRequestDto.getCardId();
+    if (cardId != null) {
+      Card card = cardRepository.findByIdOrThrow(cardId);
+      Post post = postRepository.findByIdOrThrow(postId);
 
-    //원본 이름
-    String originalFileName = multipartFile.getOriginalFilename();
-    //파일 확장자 추출
-    String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
+      if (relatedPostRepository.findPostsByCardId(cardId).equals(post)) {
+        throw new CommonException(ErrorEnum.BAD_REQUEST);
+      }
 
-    imageCheck(ext);
+      RelatedPost cardPost = RelatedPost.builder().card(card).post(post).build();
+      relatedPostRepository.save(cardPost);
 
-    // 중복을 방지하기위한 S3 저장하는 이름
-    String changedFileName = changeImageName(ext);
-    //저장 후 경로
-    String path = s3Service.upload(multipartFile, changedFileName);
-
-    Image image = Image.builder()
-        .originalFileName(originalFileName)
-        .changedFileName(changedFileName)
-        .path(path)
-        .build();
-
-    imageRepository.save(image);
-
-    return ImageResponseDto.builder()
-        .image(image)
-        .build();
-  }
-
-  private static void imageCheck(String ext) {
-    if (!(ext.equals(".jpg") || ext.equals(".jpeg") || ext.equals(".png"))) {
-      throw new CommonException(ErrorEnum.ONLY_IMAGE);
+      return PostResponseDto.builder().post(post).build();
     }
+
+    Column column = columnRepository.findByPlanIdAndTitle(addCardRequestDto.getPlanId(), "미정");
+    Post post = postRepository.findByIdOrThrow(postId);
+    Card card = Card.builder().column(column).title(addCardRequestDto.getPlaceName())
+        .address(post.getAddress()).placeName(post.getPlaceName())
+        .startedAt(addCardRequestDto.getStartedAt()).endedAt(addCardRequestDto.getEndedAt())
+        .memo(addCardRequestDto.getMemo()).build();
+    cardRepository.save(card);
+    relatedPostRepository.save(RelatedPost.builder().post(post).card(card).build());
+    return PostResponseDto.builder().post(post).build();
   }
 
-  //uuid 를 이용해서 중복없는 이름 만든다.
-  private String changeImageName(String ext) {
-    final String uuid = UUID.randomUUID().toString();
-    return uuid + ext;
-  }
-
-  /*
-    일정 시간이 지난 후 연관관계가 없는 이미지는 자동으로 삭제
-                     초 분 시 일 월 요일
-    @Scheduled(cron = "0 40 14 * * *") -> 매일 오후 2시
-    */
-  @Scheduled(cron = "0 0 0 * * *")
-  @Transactional
-  public void deleteUnNecessaryImage() {
-    log.info(new Date() + "스케쥴러 실행");
-    List<Image> images = imageRepository.findByPostIsNull();
-    List<Image> deletedImageList = s3Service.deleteUnNecessaryImage(images);
-    imageRepository.deleteAll(deletedImageList);
-
-  }
-
-  public PageResponseDto<PostIdTitleDto> getMyPostList(
-      int page, int size, String sortBy, long userId) {
+  public PageResponseDto<PostIdTitleDto> getMyPostList(int page, int size, String sortBy,
+      long userId) {
     sortByCheck(sortBy);
 
     Sort sort = Sort.by(Direction.DESC, sortBy);
 
     Pageable pageRequest = PageRequest.of(page, size, sort);
 
-    PageImpl<PostIdTitleDto> postIdTitleList = postDslRepository
-        .getMyPostList(pageRequest, userId);
+    PageImpl<PostIdTitleDto> postIdTitleList = postDslRepository.getMyPostList(pageRequest, userId);
 
-    return PageResponseDto.<PostIdTitleDto>builder()
-        .page(postIdTitleList)
-        .build();
+    return PageResponseDto.<PostIdTitleDto>builder().page(postIdTitleList).build();
   }
 
   private static void sortByCheck(String sortBy) {
-    if (!(sortBy.equals("createdAt") || sortBy.equals("viewsCount") ||
-        sortBy.equals("likesCount"))) {
+    if (!(sortBy.equals("createdAt") || sortBy.equals("viewsCount") || sortBy.equals(
+        "likesCount"))) {
       throw new CommonException(ErrorEnum.SORT_NOT_FOUND);
+    }
+  }
+
+  public PageResponseDto<PostIdTitleDto> getCardPostList(long cardId, int page, int size) {
+    Pageable pageRequest = PageRequest.of(page, size);
+    PageImpl<PostIdTitleDto> cardPostList = postDslRepository.getCardPostList(pageRequest, cardId);
+
+    return PageResponseDto.<PostIdTitleDto>builder().page(cardPostList).build();
+  }
+
+  private void viewCountUp(Post post, HttpServletRequest req, HttpServletResponse res) {
+
+    Cookie oldCookie = null;
+
+    Cookie[] cookies = req.getCookies();
+    if (cookies != null) {
+      for (Cookie cookie : cookies) {
+        if (cookie.getName().equals("postView")) {
+          oldCookie = cookie;
+        }
+      }
+    }
+
+    if (oldCookie != null) {
+      if (!oldCookie.getValue().contains("[" + post.getId() + "]")) {
+        post.addViewToPost();
+        oldCookie.setValue(oldCookie.getValue() + "_[" + post.getId() + "]");
+        oldCookie.setPath("/");
+        oldCookie.setMaxAge(60 * 60 * 24);
+        oldCookie.setHttpOnly(true);
+        oldCookie.setSecure(true); // Use true if using HTTPS
+        res.addCookie(oldCookie);
+      }
+    } else {
+      post.addViewToPost();
+      Cookie newCookie = new Cookie("postView", "[" + post.getId() + "]");
+      newCookie.setPath("/");
+      newCookie.setMaxAge(60 * 60 * 24);
+      newCookie.setHttpOnly(true);
+      newCookie.setSecure(true); // Use true if using HTTPS
+      res.addCookie(newCookie);
     }
   }
 }

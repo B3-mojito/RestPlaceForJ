@@ -5,9 +5,10 @@ import jakarta.validation.constraints.NotNull;
 import java.sql.Time;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import lombok.Builder;
 import lombok.Getter;
 
-
+@Builder
 @Getter
 public class CardUpdateRequestDto {
 

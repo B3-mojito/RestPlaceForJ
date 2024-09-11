@@ -12,10 +12,10 @@ public interface CommentLikeRepository extends JpaRepository<CommentLike, Long> 
 
   boolean existsByCommentAndUser(Comment comment, User user);
 
-  Optional<CommentLike> findByCommentAndUser(Comment comment, User user);
+  Optional<CommentLike> findFirstByCommentAndUser(Comment comment, User user);
 
   default CommentLike findByCommentLikeOrThrow(Comment comment, User user) {
-    return findByCommentAndUser(comment, user).orElseThrow(
+    return findFirstByCommentAndUser(comment, user).orElseThrow(
         () -> new CommonException(ErrorEnum.COMMENT_LIKE_NOT_FOUND)
     );
   }

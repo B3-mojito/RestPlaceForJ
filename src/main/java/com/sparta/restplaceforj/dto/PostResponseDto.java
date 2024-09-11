@@ -2,6 +2,7 @@ package com.sparta.restplaceforj.dto;
 
 import com.sparta.restplaceforj.entity.Post;
 import com.sparta.restplaceforj.entity.ThemeEnum;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,7 +11,7 @@ public class PostResponseDto {
 
   private final long id;
 
-  private final long userId;
+  private final Long userId;
 
   private final String nickName;
 
@@ -28,6 +29,8 @@ public class PostResponseDto {
 
   private final ThemeEnum themeEnum;
 
+  private final String placeName;
+
   @Builder
   public PostResponseDto(Post post) {
     id = post.getId();
@@ -40,5 +43,6 @@ public class PostResponseDto {
     likesCount = post.getLikesCount();
     viewsCount = post.getViewsCount();
     themeEnum = post.getThemeEnum();
+    placeName = post.getPlaceName();
   }
 }
