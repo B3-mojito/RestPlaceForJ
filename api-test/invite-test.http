@@ -1,0 +1,38 @@
+//로드 밸런싱 적용한 주소
+#@host = http://mojito-as-lb-1-346761212.ap-northeast-2.elb.amazonaws.com
+//로컬테스트는 localhost:8080 입력
+@host = localhost:8080
+
+### 로그인
+POST http://{{host}}/v1/users/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+> {%
+  client.global.set("Authorization", response.headers.valueOf("Authorization"));
+  client.log("Authorization: " + response.headers.valueOf("Authorization"));
+
+  client.global.set("RefreshToken", response.headers.valueOf("RefreshToken"));
+  client.log("RefreshToken: " + response.headers.valueOf("RefreshToken"));
+%}
+
+### 인증 코드 전송
+POST http://{{host}}/v1/plans/{{plan-id}}/invite
+Content-Type: application/json
+Authorization: {{Authorization}}
+
+{
+  "email": "chmh3370@gmail.com"
+}
+
+
+### 인증 코드 확인, 공동 작업자 추가
+GET http://{{host}}/v1/plans/{{plan-id}}/invite?authCode=
+Content-Type: application/json
+Authorization: {{Authorization}}
+
+

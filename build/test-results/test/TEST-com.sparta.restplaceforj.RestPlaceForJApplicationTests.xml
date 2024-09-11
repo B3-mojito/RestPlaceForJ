@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.sparta.restplaceforj.RestPlaceForJApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-08-21T03:21:18" hostname="DESKTOP-81F2C9L" time="0.012">
+  <properties/>
+  <testcase name="contextLoads()" classname="com.sparta.restplaceforj.RestPlaceForJApplicationTests" time="0.012"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

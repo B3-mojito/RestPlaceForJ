@@ -1,0 +1,49 @@
+## Variables
+
+//로드 밸런싱 적용한 주소
+#@host = http://mojito-as-lb-1-346761212.ap-northeast-2.elb.amazonaws.com
+//로컬테스트는 localhost:8080 입력
+@host = localhost:8080
+
+### 로그인
+POST {{host}}/v1/users/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+> {%
+  client.global.set("Authorization", response.headers.valueOf("Authorization"));
+  client.log("Authorization: " + response.headers.valueOf("Authorization"));
+
+  client.global.set("RefreshToken", response.headers.valueOf("RefreshToken"));
+  client.log("RefreshToken: " + response.headers.valueOf("RefreshToken"));
+%}
+
+
+
+
+### 이미지 생성
+POST {{host}}/v1/images
+Authorization: {{Authorization}}
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="images"; filename="sparta.png"
+Content-Type: image/png
+
+< /Users/dobam/Downloads/sparta.png
+--boundary--
+
+
+### 이미지 조회
+GET {{host}}/v1/images/8
+Authorization: {{Authorization}}
+
+
+### 이미지 삭제
+DELETE {{host}}/v1/images/7
+Authorization: {{Authorization}}
+

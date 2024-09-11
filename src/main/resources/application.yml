@@ -1,0 +1,65 @@
+spring:
+  datasource:
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+
+spring.mail.host: smtp.naver.com
+spring.mail.port: 465
+spring.mail.username: ${EMAIL_ID}
+spring.mail.password: ${EMAIL_PW}
+spring.mail.properties.debug: true
+spring.mail.properties.mail.smtp.auth: true
+spring.mail.properties.mail.smtp.ssl.enable: true
+spring.mail.properties.mail.smtp.starttls.enable: true
+spring.mail.properties.mail.smtp.ssl.trust: smtp.naver.com
+
+
+cloud:
+  aws:
+    s3:
+      bucket: ${BUCKET_NAME}
+    credentials:
+      accessKey: ${ACCESS_KEY}
+      secretKey: ${SECRET_KEY}
+    region:
+      static: ${REGION}
+    stack:
+      auto: false
+    cron: ${CRON}
+
+jwt:
+  secret:
+    key: ${JWT_SECRET_KEY}
+
+server:
+  port: ${SERVER_PORT}
+
+kakao:
+  secret:
+    key: ${KAKAO_KEY}
+
+
+
+
+
+logging.level.org.springframework.boot.autoconfigure: ERROR

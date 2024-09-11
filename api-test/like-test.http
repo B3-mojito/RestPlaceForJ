@@ -1,0 +1,50 @@
+## Variables
+
+
+
+@contentId = 9
+@contentType_post = post
+@contentType_comment = comment
+
+//로드 밸런싱 적용한 주소
+#@host = http://mojito-as-lb-1-346761212.ap-northeast-2.elb.amazonaws.com
+//로컬테스트는 localhost:8080 입력
+@host = localhost:8080
+
+### 로그인
+POST http://{{host}}/v1/users/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+> {%
+  client.global.set("Authorization", response.headers.valueOf("Authorization"));
+  client.log("Authorization: " + response.headers.valueOf("Authorization"));
+
+  client.global.set("RefreshToken", response.headers.valueOf("RefreshToken"));
+  client.log("RefreshToken: " + response.headers.valueOf("RefreshToken"));
+%}
+
+
+
+### 좋아요 작성 - post
+POST http://{{host}}/v1/posts/2/likes
+Authorization:{{Authorization}}
+Content-Type: application/json
+
+
+
+
+
+### 좋아요 작성 - comment
+POST http://{{host}}/v1/comments/1/likes
+Authorization:{{Authorization}}
+Content-Type: application/json
+
+
+
+
+

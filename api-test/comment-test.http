@@ -1,0 +1,67 @@
+## Variables
+
+@content = 힘내세요!
+@edit_content = edit 힘내세요!dd
+
+@post-id = 1
+@comment-id = 1
+
+//로드 밸런싱 적용한 주소
+#@host = http://mojito-as-lb-1-346761212.ap-northeast-2.elb.amazonaws.com
+//로컬테스트는 localhost:8080 입력
+@host = localhost:8080
+
+####  로그인
+POST http://{{host}}/v1/users/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+> {%
+  client.global.set("Authorization", response.headers.valueOf("Authorization"));
+  client.log("Authorization: " + response.headers.valueOf("Authorization"));
+
+  client.global.set("RefreshToken", response.headers.valueOf("RefreshToken"));
+  client.log("RefreshToken: " + response.headers.valueOf("RefreshToken"));
+%}
+
+
+### 댓글 작성
+POST http://{{host}}/posts/{{post-id}}/comments
+Authorization:{{Authorization}}
+Content-Type: application/json
+
+{
+  "content": "{{content}}"
+}
+
+
+
+### 댓글 수정
+PATCH http://{{host}}/posts/{{post-id}}/comments/{{comment-id}}
+Authorization:{{Authorization}}
+Content-Type: application/json
+
+{
+  "content": "{{edit_content}}"
+}
+
+
+### 댓글 삭제
+DELETE http://{{host}}/posts/{{post-id}}/comments/{{comment-id}}
+Authorization:{{Authorization}}
+Content-Type: application/json
+
+
+
+### 댓글 조회
+GET http://{{host}}/posts/{{post-id}}/comments?page=0
+Authorization:{{Authorization}}
+
+
+
+
+

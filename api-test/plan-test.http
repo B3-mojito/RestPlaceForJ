@@ -1,0 +1,72 @@
+## Variables
+# @no-cookie-jar
+@user_id = 1
+@plan_id = 1
+@title = 유저 1 테스트
+@title2 = 유저 1 테스트 - 플랜 수정 테스트
+@name = 하이요2
+@nickname = 하이요24
+
+//로드 밸런싱 적용한 주소
+#@host = http://mojito-as-lb-1-346761212.ap-northeast-2.elb.amazonaws.com
+//로컬테스트는 localhost:8080 입력
+@host = localhost:8080
+
+### 로그인
+POST http://{{host}}/v1/users/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+> {%
+  client.global.set("Authorization", response.headers.valueOf("Authorization"));
+  client.log("Authorization: " + response.headers.valueOf("Authorization"));
+
+  client.global.set("RefreshToken", response.headers.valueOf("RefreshToken"));
+  client.log("RefreshToken: " + response.headers.valueOf("RefreshToken"));
+%}
+
+### 플랜 생성
+POST http://{{host}}/v1/plans
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+{
+  "title": "{{title}}"
+}
+
+### 플랜 수정
+PATCH http://{{host}}/v1/plans/{{plan_id}}
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+{
+  "title": "{{title2}}"
+}
+
+
+### 플랜 삭제
+DELETE http://{{host}}/v1/plans/{{plan_id}}
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+
+### 플랜 전체 조회
+GET http://{{host}}/v1/plans?userId={{user_id}}
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+
+### 플랜 조회
+GET http://{{host}}/v1/plans/{{plan_id}}
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+
+### 플랜Id로 플랜에 있는 카드 조회
+GET http://{{host}}/v1/plans/{{plan_id}}/cards
+Authorization: {{Authorization}}
+Content-Type: application/json

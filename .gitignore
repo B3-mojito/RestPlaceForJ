@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+/gradle/ext/
+
+### query dsl q파일 ###
+/src/main/generated
